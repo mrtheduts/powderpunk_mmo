@@ -1,8 +1,8 @@
-#include <Window/window.h>
+#include <GUI/gui.h>
 
 int main(int argc, char **argv){
 
-    CreateWindow(argc, argv);
+    GUI main_window(argc, argv);
 
     return 0;
 }

@@ -1,4 +1,4 @@
-add_subdirectory(Window)
+add_subdirectory(GUI)
 
 #####################################################################
 # Creating Executable target 
@@ -13,5 +13,5 @@ target_compile_options(Application PRIVATE -Werror -Wall)
 # Link libs to it
 target_link_libraries(Application
     PRIVATE
-        Window
+        GUI 
 )

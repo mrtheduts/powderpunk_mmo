@@ -1,3 +1,4 @@
 build/
 .clangd/
 application/compile_commands.json
+tags
