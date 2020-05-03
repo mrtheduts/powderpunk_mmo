@@ -1,0 +1,17 @@
+[
+{
+  "directory": "/home/mrtheduts/Git/my_stuff/powderpunk_mmo/application/gui/build/src",
+  "command": "/usr/bin/c++  -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -I/home/mrtheduts/Git/my_stuff/powderpunk_mmo/application/gui/src -isystem /usr/include/qt -isystem /usr/include/qt/QtWidgets -isystem /usr/include/qt/QtGui -isystem /usr/include/qt/QtCore -isystem /usr/lib/qt/mkspecs/linux-g++    -Werror -Wall -fPIC -std=gnu++2a -o CMakeFiles/Application_GUI.dir/main.cpp.o -c /home/mrtheduts/Git/my_stuff/powderpunk_mmo/application/gui/src/main.cpp",
+  "file": "/home/mrtheduts/Git/my_stuff/powderpunk_mmo/application/gui/src/main.cpp"
+},
+{
+  "directory": "/home/mrtheduts/Git/my_stuff/powderpunk_mmo/application/gui/build/src/GUI",
+  "command": "/usr/bin/c++  -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -I/home/mrtheduts/Git/my_stuff/powderpunk_mmo/application/gui/src/GUI -isystem /usr/include/qt -isystem /usr/include/qt/QtWidgets -isystem /usr/include/qt/QtGui -isystem /usr/include/qt/QtCore -isystem /usr/lib/qt/mkspecs/linux-g++    -Werror -Wall -fPIC -std=gnu++2a -o CMakeFiles/GUI.dir/gui.cpp.o -c /home/mrtheduts/Git/my_stuff/powderpunk_mmo/application/gui/src/GUI/gui.cpp",
+  "file": "/home/mrtheduts/Git/my_stuff/powderpunk_mmo/application/gui/src/GUI/gui.cpp"
+},
+{
+  "directory": "/home/mrtheduts/Git/my_stuff/powderpunk_mmo/application/gui/build/src/GUI",
+  "command": "/usr/bin/c++  -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -I/home/mrtheduts/Git/my_stuff/powderpunk_mmo/application/gui/src/GUI -isystem /usr/include/qt -isystem /usr/include/qt/QtWidgets -isystem /usr/include/qt/QtGui -isystem /usr/include/qt/QtCore -isystem /usr/lib/qt/mkspecs/linux-g++    -Werror -Wall -fPIC -std=gnu++2a -o CMakeFiles/GUI.dir/verticalbox.cpp.o -c /home/mrtheduts/Git/my_stuff/powderpunk_mmo/application/gui/src/GUI/verticalbox.cpp",
+  "file": "/home/mrtheduts/Git/my_stuff/powderpunk_mmo/application/gui/src/GUI/verticalbox.cpp"
+}
+]

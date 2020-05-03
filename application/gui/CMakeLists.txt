@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.17)
 
 # Project Name
-project(pwdpnkmmoapp VERSION 0.0.0 LANGUAGES CXX)
+project(Powderpunk_GUI_Client VERSION 0.0.0 LANGUAGES CXX)
 
 # Specifying C++ version
 set(CMAKE_CXX_STANDARD 20)
