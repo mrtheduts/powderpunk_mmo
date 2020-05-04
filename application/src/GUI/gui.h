@@ -1,3 +1,5 @@
+//#include <Debugtools/debugtools.h>
+
 #include <QApplication>
 #include <QMainWindow>
 #include <QVBoxLayout>

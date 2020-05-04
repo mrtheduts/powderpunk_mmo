@@ -1,6 +1,7 @@
 build/
+debug/
+release/
 .clangd/
 application/compile_commands.json
 tags
 .vim/
-debug/

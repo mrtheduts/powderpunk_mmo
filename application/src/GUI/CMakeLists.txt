@@ -5,7 +5,7 @@ add_library(GUI gui.cpp verticalbox.cpp)
 # Adding properties of GUI target
 target_include_directories(GUI
     PRIVATE
-        ${Powderpunk_GUI_Client_SOURCE_DIR}/src/GUI
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/GUI
 )
 target_compile_options(GUI PRIVATE -Werror -Wall)
 # Searches for Qt5
