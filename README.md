@@ -12,10 +12,16 @@ It also requires the [gsl-lite](https://github.com/gsl-lite/gsl-lite/) and [teln
 ## How to clone it:
 As the repository has submodules, it is required you clone with the following command:
 
-```git
+```
 git clone --recurse-submodules --jobs 2  https://github.com/mrtheduts/powderpunk_mmo.git
 ```
 > The `--jobs 2` is used to fetch up to 2 submodules at a time in parallel
+
+This _should_ download all submodules. If it doesn't, just run:
+```
+git submodule init
+git submodule update
+```
 
 ## How to build it:
 It is recommended to generate the build files in a separated folder, as `./build/`:
