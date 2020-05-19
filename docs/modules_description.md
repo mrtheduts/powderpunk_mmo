@@ -1,5 +1,6 @@
 # Modules Description
-This document's purpose is to clarify how the server should work, being adapted as work gets done.
+## Introduction
+This document's purpose is to clarify how the server should work and be implemented, being adapted as work gets done.
 
 ```mermaid
 graph TB
@@ -29,7 +30,7 @@ graph TB
 
 ## Communication
 ### Communicator
-Module responsible for receiving and sending data to user. It should be able handle new communications, triggering Login Handler, and maintain them once logged, interacting with Game Engine - capturing a shot of its current state and sending to the user, when required - and feeding it with new information coming from said user.
+Module responsible for receiving and sending data to user. It should be able to handle new communications, triggering Login Handler, and maintain them once logged, interacting with Game Engine - capturing a shot of its current state and sending to the user, when required - and feeding it with new information coming from said user. It is planned to have a dedicated thread for every user.
 
 ### Text Server Interface
 Responsible for translating the game data captured from the Game Engine, formatting accordingly to the text interface and sending it to the user, using Telnet(?) protocol.
@@ -49,4 +50,4 @@ Maps, enemies, characters, state of the world is stored here.
 Database for login information, like username, password and mail.
 
 ### Login Handler
-Module to handle login. Security measures should be implemented here, as to prevent SQL injections or brute force attempts to discover password.
+Module to handle login. Security measures should be implemented here, as to prevent SQL injections or brute force attempts to discover passwords.
