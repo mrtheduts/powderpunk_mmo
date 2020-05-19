@@ -2,6 +2,8 @@ add_subdirectory(
     DebugTools
 )
 
+find_library(telnetpp REQUIRED)
+
 #####################################################################
 # Creating Server Executable target
 #####################################################################
@@ -16,5 +18,6 @@ target_compile_options(powderpunk_server PRIVATE -Werror -Wall -Wpedantic -Wextr
 target_link_libraries(powderpunk_server
     PRIVATE
         DebugTools
+        telnetpp
 )
 

@@ -1,0 +1,6 @@
+[submodule "server/external/gsl-lite"]
+	path = server/external/gsl-lite
+	url = https://github.com/gsl-lite/gsl-lite
+[submodule "server/external/telnetpp"]
+	path = server/external/telnetpp
+	url = https://github.com/KazDragon/telnetpp.git

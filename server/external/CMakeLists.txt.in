@@ -1,0 +1,339 @@
+if (POLICY CMP0048)
+    cmake_policy(SET CMP0048 NEW)
+    project(TELNETPP VERSION 2.0.1 LANGUAGES C CXX)
+else()
+    project(TELNETPP LANGUAGES C CXX)
+endif()
+
+cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
+cmake_policy(VERSION 3.2)
+
+if (POLICY CMP0063)
+    cmake_policy(SET CMP0063 OLD) # Do not allow hidden visibility for static libs
+endif()
+
+message("TELNETPP_SOURCE_DIR: ${TELNETPP_SOURCE_DIR}")
+
+option(TELNETPP_WITH_ZLIB "Build using ZLib" False)
+option(TELNETPP_COVERAGE  "Build with code coverage options")
+option(TELNETPP_SANITIZE "Build using sanitizers" "")
+message("Building Telnet++ with config: ${CMAKE_BUILD_TYPE}")
+message("Building Telnet++ with zlib: ${TELNETPP_WITH_ZLIB}")
+message("Building Telnet++ with code coverage: ${TELNETPP_COVERAGE}")
+message("Building Telnet++ with sanitizers: ${TELNETPP_SANITIZE}")
+
+find_library(gsl-lite REQUIRED)
+
+find_package(Boost CONFIG)
+include_directories(${Boost_INCLUDE_DIRS})
+
+# The required C++ Standard for Telnet++ is C++14.
+set(CMAKE_CXX_STANDARD 14)
+
+# When building shared objects, etc., we only want to export certain symbols.
+# Therefore, we need to generate a header suitable for declaring which
+# symbols should be included.
+include(GenerateExportHeader)
+
+# For producing automatically-generated documentation, we use Doxygen.
+find_package(Doxygen)
+
+if (TELNETPP_SANITIZE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=${TELNETPP_SANITIZE}")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=${TELNETPP_SANITIZE}")
+endif()
+
+if (TELNETPP_COVERAGE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage -g -O0")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
+endif()
+
+set (TELNETPP_PUBLIC_SOURCE_FILES
+    ${TELNETPP_SOURCE_DIR}/src/command.cpp
+    ${TELNETPP_SOURCE_DIR}/src/element.cpp
+    ${TELNETPP_SOURCE_DIR}/src/negotiation.cpp
+    ${TELNETPP_SOURCE_DIR}/src/options/mccp/client.cpp
+    ${TELNETPP_SOURCE_DIR}/src/options/mccp/codec.cpp
+    ${TELNETPP_SOURCE_DIR}/src/options/mccp/server.cpp
+    ${TELNETPP_SOURCE_DIR}/src/options/msdp/client.cpp
+    ${TELNETPP_SOURCE_DIR}/src/options/msdp/server.cpp
+    ${TELNETPP_SOURCE_DIR}/src/options/msdp/variable.cpp
+    ${TELNETPP_SOURCE_DIR}/src/options/naws/client.cpp
+    ${TELNETPP_SOURCE_DIR}/src/options/naws/server.cpp
+    ${TELNETPP_SOURCE_DIR}/src/options/new_environ/client.cpp
+    ${TELNETPP_SOURCE_DIR}/src/options/new_environ/server.cpp
+    ${TELNETPP_SOURCE_DIR}/src/options/terminal_type/client.cpp
+    ${TELNETPP_SOURCE_DIR}/src/session.cpp
+    ${TELNETPP_SOURCE_DIR}/src/subnegotiation.cpp
+)
+
+set (TELNETPP_PUBLIC_HEADER_FILES
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/client_option.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/command.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/core.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/element.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/generator.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/negotiation.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/option.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/parser.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/server_option.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/session.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/subnegotiation.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/telnetpp.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/version.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/echo/client.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/echo/server.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/mccp/client.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/mccp/codec.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/mccp/server.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/msdp/client.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/msdp/server.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/msdp/variable.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/naws/client.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/naws/server.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/new_environ/client.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/new_environ/server.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/terminal_type/client.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/subnegotiationless_client.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/subnegotiationless_server.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/suppress_ga/client.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/suppress_ga/server.hpp
+)
+
+# The zlib compressors for MCCP should only be compiled into the library
+# if zlib is available.
+if (TELNETPP_WITH_ZLIB)
+    find_package(ZLIB REQUIRED)
+    set (TELNETPP_PUBLIC_SOURCE_FILES
+        ${TELNETPP_PUBLIC_SOURCE_FILES}
+        ${TELNETPP_SOURCE_DIR}/src/options/mccp/zlib/compressor.cpp
+        ${TELNETPP_SOURCE_DIR}/src/options/mccp/zlib/decompressor.cpp
+    )
+
+    set (TELNETPP_PUBLIC_INCLUDE_FILES
+        ${TELNETPP_PUBLIC_SOURCE_FILES}
+        ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/mccp/zlib/compressor.hpp
+        ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/mccp/zlib/decompressor.hpp
+    )
+endif()
+
+set (TELNETPP_PRIVATE_SOURCE_FILES
+    ${TELNETPP_SOURCE_DIR}/src/options/msdp/detail/decoder.cpp
+    ${TELNETPP_SOURCE_DIR}/src/options/msdp/detail/encoder.cpp
+    ${TELNETPP_SOURCE_DIR}/src/options/new_environ/detail/stream.cpp
+    ${TELNETPP_SOURCE_DIR}/src/detail/registration.cpp
+)
+
+set (TELNETPP_PRIVATE_HEADER_FILES
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/detail/command_router.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/detail/export.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/detail/generate_helper.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/detail/lambda_visitor.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/detail/negotiation_router.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/detail/parse_helper.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/detail/registration.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/detail/return_default.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/detail/router.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/detail/subnegotiation_router.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/echo/detail/protocol.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/mccp/detail/protocol.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/msdp/detail/decoder.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/msdp/detail/encoder.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/msdp/detail/protocol.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/naws/detail/protocol.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/new_environ/detail/protocol.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/new_environ/detail/for_each_request.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/new_environ/detail/for_each_response.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/new_environ/detail/request_parser_helper.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/new_environ/detail/response_parser_helper.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/new_environ/detail/stream.hpp
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/options/suppress_ga/detail/protocol.hpp
+)
+
+add_library(telnetpp
+    ${TELNETPP_PUBLIC_HEADER_FILES}
+    ${TELNETPP_PUBLIC_SOURCE_FILES}
+    ${TELNETPP_PRIVATE_SOURCE_FILES}
+    ${TELNETPP_PRIVATE_INCLUDE_FILES}
+)
+
+target_link_libraries(telnetpp
+    PUBLIC
+        gsl-lite
+        ${Boost_LIBRARIES}
+)
+
+if (TELNETPP_WITH_ZLIB)
+    target_link_libraries(telnetpp
+        PRIVATE
+        ZLIB::zlib
+    )
+endif()
+
+set_target_properties(telnetpp
+    PROPERTIES
+        CXX_VISIBILITY_PRESET hidden
+        VERSION ${TELNETPP_VERSION}
+        SOVERSION ${TELNETPP_VERSION}
+)
+
+target_include_directories(telnetpp
+    PUBLIC
+        $<BUILD_INTERFACE:${TELNETPP_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:${TELNETPP_SOUCE_DIR}/include/telnetpp-${TELNETPP_VERSION}>
+        "${Boost_INCLUDE_DIRS}"
+)
+
+generate_export_header(telnetpp
+    EXPORT_FILE_NAME "${TELNETPP_SOURCE_DIR}/include/telnetpp/detail/export.hpp"
+)
+
+configure_file(
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/version.hpp.in
+    ${TELNETPP_SOURCE_DIR}/include/telnetpp/version.hpp
+    @ONLY)
+
+install(
+    TARGETS
+        telnetpp
+    EXPORT
+        telnetpp-config
+    ARCHIVE DESTINATION
+        lib/telnetpp-${TELNETPP_VERSION}
+    LIBRARY DESTINATION
+        lib/telnetpp-${TELNETPP_VERSION}
+)
+
+install(
+    DIRECTORY
+        include/
+    DESTINATION
+        include/telnetpp-${TELNETPP_VERSION}
+)
+
+export(
+    EXPORT
+        telnetpp-config
+    FILE
+        "${CMAKE_CURRENT_BINARY_DIR}/telnetpp-config.cmake"
+)
+
+install(
+    EXPORT
+        telnetpp-config
+    DESTINATION
+        lib/telnetpp-${TELNETPP_VERSION}
+)
+
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/telnetpp-config-version.cmake"
+    VERSION
+        "${TELNETPP_VERSION}"
+    COMPATIBILITY AnyNewerVersion
+)
+
+install(
+    FILES
+        "${CMAKE_CURRENT_BINARY_DIR}/telnetpp-config-version.cmake"
+    DESTINATION
+        lib/telnetpp-${TELNETPP_VERSION}
+)
+
+#enable_testing()
+
+#set (telnetpp_tester_external_tests
+    #test/client_option_test.cpp
+    #test/command_router_test.cpp
+    #test/echo_client_test.cpp
+    #test/echo_server_test.cpp
+    #test/generator_test.cpp
+    #test/mccp_client_test.cpp
+    #test/mccp_server_test.cpp
+    #test/msdp_client_test.cpp
+    #test/msdp_server_test.cpp
+    #test/naws_client_test.cpp
+    #test/naws_server_test.cpp
+    #test/new_environ_client_test.cpp
+    #test/new_environ_server_test.cpp
+    #test/negotiation_router_test.cpp
+    #test/parser_test.cpp
+    #test/q_method_test.cpp
+    #test/server_option_test.cpp
+    #test/session_test.cpp
+    #test/subnegotiation_router_test.cpp
+    #test/suppress_ga_client_test.cpp
+    #test/suppress_ga_server_test.cpp
+    #test/terminal_type_client_test.cpp
+#)
+
+## The tests for the zlib compressors for MCCP should only be compiled into
+## the executable if zlib is available.
+#if (TELNETPP_WITH_ZLIB)
+    #set (telnetpp_tester_external_tests
+        #${telnetpp_tester_external_tests}
+        #test/mccp_zlib_compressor_test.cpp
+        #test/mccp_zlib_decompressor_test.cpp
+    #)
+#endif()
+
+## If we are building shared libraries, then we wont be able to test any of
+## the modules in the detail directory since they're not visible (this is ok,
+## since all those are tested indirectly via other parts of the API anyway.)
+## For a normal archive, all symbols are visible, so they can be tested directly.
+#if (BUILD_SHARED_LIBS)
+    #set(telnetpp_tester_tests
+        #${telnetpp_tester_external_tests}
+    #)
+#else()
+    #set(telnetpp_tester_tests
+        #${telnetpp_tester_internal_tests}
+        #${telnetpp_tester_external_tests}
+    #)
+#endif()
+
+#add_executable(telnetpp_tester
+    #${telnetpp_tester_tests}
+#)
+
+#target_link_libraries(telnetpp_tester
+    #PRIVATE
+        #telnetpp
+        #CONAN_PKG::gtest
+#)
+
+#if (TELNETPP_WITH_ZLIB)
+    #target_link_libraries(telnetpp_tester
+        #PRIVATE
+        #ZLIB::zlib
+    #)
+#endif()
+
+#add_test(telnetpp_test telnetpp_tester)
+
+# Add a rule for generating documentation
+if (DOXYGEN_FOUND)
+    configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in
+        ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+        @ONLY)
+
+    add_custom_target(telnetpp_doc
+        ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+        WORKING_DIRECTORY
+            ${CMAKE_CURRENT_BINARY_DIR}
+        COMMENT
+            "Generate API documentation with Doxygen" VERBATIM
+    )
+endif()
+
+# Add customizations for packaging
+set(CPACK_PACKAGE_NAME "Telnet++")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Telnet++")
+set(CPACK_PACKAGE_VENDOR "Matthew Chaplain")
+set(CPACK_PACKAGE_DESCRIPTION_FILE "${TELNETPP_SOURCE_DIR}/README.md")
+set(CPACK_RESOURCE_FILE_LICENSE "${TELNETPP_SOURCE_DIR}/LICENSE")
+set(CPACK_PACKAGE_VERSION_MAJOR ${TELNETPP_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${TELNETPP_VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH ${TELNETPP_VERSION_PATCH})
+include(CPack)

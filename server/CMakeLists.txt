@@ -1,3 +1,6 @@
+#####################################################################
+# Powderpunk_Server Project
+#####################################################################
 cmake_minimum_required(VERSION 3.17)
 
 # Project Name
@@ -17,8 +20,13 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Output binary files in specific dir
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-# Add directories
-add_subdirectory(
-    src
-)
+#####################################################################
+# Preparing external libraries
+#####################################################################
+add_subdirectory(external)
+
+#####################################################################
+# Compiling source code 
+#####################################################################
+add_subdirectory(src)
 

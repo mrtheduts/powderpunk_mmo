@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/home/mrtheduts/Git/my_stuff/powderpunk_mmo/server/build/src",
-  "command": "/sbin/c++   -I/home/mrtheduts/Git/my_stuff/powderpunk_mmo/server/src -I/home/mrtheduts/Git/my_stuff/powderpunk_mmo/server/src/DebugTools/src/DebugTools  -g   -Werror -Wall -Wpedantic -Wextra -std=gnu++2a -o CMakeFiles/powderpunk_server.dir/main.cpp.o -c /home/mrtheduts/Git/my_stuff/powderpunk_mmo/server/src/main.cpp",
-  "file": "/home/mrtheduts/Git/my_stuff/powderpunk_mmo/server/src/main.cpp"
-}
-]
