@@ -4,11 +4,13 @@
 Powderpunk is a pretentious project for a MMO.
 
 ## Requirements
-This project is intended to use a C++20 compiler and it requires the following installed programs:
-- CMake (used 3.17)
-- Boost Source Libraries (used 1.72)
+This project is intended to use a C++20 compiler and it requires the following installed program:
+- [CMake](https://cmake.org) (used 3.17)
 
-It also requires the [gsl-lite](https://github.com/gsl-lite/gsl-lite/) and [telnet++](https://github.com/KazDragon/telnetpp) repositories, added as git submodules.
+It also requires the following submodules:
+- [Boost](https://github.com/boostorg/boost) (boost-1.71.0)
+- [gsl-lite](https://github.com/gsl-lite/gsl-lite) (v0.34.0)
+- [Telnet++](https://github.com/KazDragon/telnetpp) (master)
 
 ## How to clone it:
 As the repository has submodules, it is required you clone this project with the following command:
@@ -21,7 +23,7 @@ $ git clone --recurse-submodules --jobs 2  https://github.com/mrtheduts/powderpu
 This _should_ download all submodules. If it doesn't, just run:
 ```shell
 $ git submodule init
-$ git submodule update
+$ git submodule update --recursive
 ```
 
 ## How to build it:
