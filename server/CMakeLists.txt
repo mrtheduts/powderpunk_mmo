@@ -5,20 +5,25 @@ cmake_minimum_required(VERSION 3.17)
 
 # Project Name
 project(
-    Powderpunk_Server VERSION 0.0.0 
-    DESCRIPTION "Server for the Powderpunk MUD"
+    PowderpunkServer VERSION 0.0.0 
+    DESCRIPTION "Server for the Powderpunk MMO"
     LANGUAGES CXX
 )
 
 # Specifying C++ version
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+#set(CMAKE_CXX_STANDARD 20)
+#set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Generate JSON file for LSP
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+# The Boost C++ Libraries were successfully built!
 
-# Output binary files in specific dir
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+#The following directory should be added to compiler include paths:
+
+    #/home/mrtheduts/Git/my_stuff/powderpunk_mmo/server/external/boost
+
+#The following directory should be added to linker library paths:
+
+    #/home/mrtheduts/Git/my_stuff/powderpunk_mmo/server/external/boost/stage/lib
+
 
 #####################################################################
 # Preparing external libraries

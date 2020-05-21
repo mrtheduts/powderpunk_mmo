@@ -10,10 +10,16 @@
  *
  */
 
+#ifdef __unix__
+    #include <sys/socket.h>
+    #include <arpa/inet.h>
+#elif _Win32
+    #include <winsock2.h>
+#endif
+
 #include <DebugTools/assert_debug_print.h>
 
 #include <iostream>
-
 
 using namespace std;
 

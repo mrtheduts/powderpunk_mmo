@@ -4,3 +4,7 @@
 [submodule "server/external/telnetpp"]
 	path = server/external/telnetpp
 	url = https://github.com/KazDragon/telnetpp.git
+    ignore = dirty
+[submodule "server/external/boost"]
+	path = server/external/boost
+	url = https://github.com/boostorg/boost.git

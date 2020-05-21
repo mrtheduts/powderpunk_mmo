@@ -2,7 +2,7 @@ if (POLICY CMP0048)
     cmake_policy(SET CMP0048 NEW)
     project(TELNETPP VERSION 2.0.1 LANGUAGES C CXX)
 else()
-    project(TELNETPP LANGUAGES C CXX)
+    project(TELNETPP)
 endif()
 
 cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
@@ -22,10 +22,6 @@ message("Building Telnet++ with zlib: ${TELNETPP_WITH_ZLIB}")
 message("Building Telnet++ with code coverage: ${TELNETPP_COVERAGE}")
 message("Building Telnet++ with sanitizers: ${TELNETPP_SANITIZE}")
 
-find_library(gsl-lite REQUIRED)
-
-find_package(Boost CONFIG)
-include_directories(${Boost_INCLUDE_DIRS})
 
 # The required C++ Standard for Telnet++ is C++14.
 set(CMAKE_CXX_STANDARD 14)
@@ -157,10 +153,18 @@ add_library(telnetpp
     ${TELNETPP_PRIVATE_INCLUDE_FILES}
 )
 
+find_library(gsl-lite REQUIRED)
+message("BOOST_ROOT: ${BOOST_ROOT}")
+find_package(Boost REQUIRED COMPONENTS container)
+message("BOOST_INCLUDE_DIRS: ${BOOST_INCLUDE_DIRS}")
+message("BOOST_LIBRARY_DIRS: ${BOOST_LIBRARY_DIRS}")
+include_directories(${BOOST_INCLUDE_DIRS})
+
 target_link_libraries(telnetpp
     PUBLIC
+        Boost::boost
+        Boost::container
         gsl-lite
-        ${Boost_LIBRARIES}
 )
 
 if (TELNETPP_WITH_ZLIB)
@@ -180,8 +184,7 @@ set_target_properties(telnetpp
 target_include_directories(telnetpp
     PUBLIC
         $<BUILD_INTERFACE:${TELNETPP_SOURCE_DIR}/include>
-        $<INSTALL_INTERFACE:${TELNETPP_SOUCE_DIR}/include/telnetpp-${TELNETPP_VERSION}>
-        "${Boost_INCLUDE_DIRS}"
+        $<INSTALL_INTERFACE:include/telnetpp-${TELNETPP_VERSION}>
 )
 
 generate_export_header(telnetpp
@@ -196,6 +199,7 @@ configure_file(
 install(
     TARGETS
         telnetpp
+        gsl-lite
     EXPORT
         telnetpp-config
     ARCHIVE DESTINATION
@@ -206,7 +210,7 @@ install(
 
 install(
     DIRECTORY
-        include/
+        ${TELNETPP_SOURCE_DIR}/include/
     DESTINATION
         include/telnetpp-${TELNETPP_VERSION}
 )
