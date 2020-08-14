@@ -1,12 +1,19 @@
 # Dev Ideas record
 
+## 2020-06-13
+### Design Ideas
+- Crafting fun as FFXIV;
+- Item quality;
+- Gambits;
+- Companions (with gambits);
+
 ## 2020-05-04
 ### Design Ideas
-- Try to mantain telnet, client and graphical client in one application.
+- Try to maintain telnet, client and graphical client in one application.
 
 ## 2020-05-03
 ### Design Ideas
-- Abstrair o hp para só porcentagem. Sem números brutos;
+- Abstract HP to just percentage - no absolute values;
 
 ## 2020-05-01
 ### Implementation Ideas

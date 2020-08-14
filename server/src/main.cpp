@@ -10,16 +10,10 @@
  *
  */
 
-#ifdef __unix__
-    #include <sys/socket.h>
-    #include <arpa/inet.h>
-#elif _Win32
-    #include <winsock2.h>
-#endif
+#include <iostream>
 
 #include <DebugTools/assert_debug_print.h>
-
-#include <iostream>
+#include <TelnetInterface/telnet_interface.h>
 
 using namespace std;
 
@@ -28,6 +22,18 @@ int main() {
     cout << "It compiled!" << endl;
 
     DEBUG("Debug mode activated.");
+    DEBUG("Hello.");
+
+    try {
+
+        boost::asio::io_context io_context;
+        TelnetServer telnet_server(io_context);
+        io_context.run();
+    }
+    catch(exception& e){
+
+        cerr << e.what() << endl;
+    }
 
     return 0;
 }
