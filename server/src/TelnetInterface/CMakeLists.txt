@@ -36,16 +36,18 @@ set(BOOST_ROOT ${CMAKE_SOURCE_DIR}/external/boost_install)
 set(BOOST_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/external/boost_install/include)
 set(BOOST_LIBRARY_DIRS ${CMAKE_SOURCE_DIR}/external/boost_install/lib)
 
-find_package(Boost REQUIRED)
+find_package(Boost COMPONENTS thread REQUIRED)
 include_directories(${BOOST_INCLUDE_DIRS})
 
 find_library(telnetpp SHARED IMPORTED)
+find_library(DebugTools SHARED IMPORTED)
 
 # Link it to libs
 target_link_libraries(TelnetInterface
     PUBLIC 
 		telnetpp
-        Boost::boost
+        Boost::thread
+        DebugTools
 )
 
 target_include_directories(TelnetInterface

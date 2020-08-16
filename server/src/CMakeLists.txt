@@ -14,7 +14,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 # Set std c++ version for the code
 set (CMAKE_CXX_STANDARD 20)
 set (CMAKE_CXX_STANDARD_REQUIRED TRUE)
-set (CMAKE_CXX_EXTENSIONS FALSE)
+set (CMAKE_CXX_EXTENSIONS TRUE)
 
 add_executable(powderpunk_server main.cpp)
 # Adding properties of GUI target
@@ -22,16 +22,6 @@ target_include_directories(powderpunk_server
     PRIVATE
         ${Powderpunk_Server_SOURCE_DIR}/src
 )
-
-# Possible solution for pthread problem:
-# https://stackoverflow.com/questions/34143265/undefined-reference-to-symbol-pthread-createglibc-2-2-5
-# With a mix of in the target_link_libraries:
-# https://stackoverflow.com/questions/50545214/adding-compiler-flags-to-cmakelists-txt
-#set(CMAKE_THREAD_LIBS_INIT "-lpthread")
-#set(CMAKE_HAVE_THREADS_LIBRARY 1)
-#set(CMAKE_USE_WIN32_THREADS_INIT 0)
-#set(CMAKE_USE_PTHREADS_INIT 1)
-#set(THREADS_PREFER_PTHREAD_FLAG ON)
 
 add_compile_options("-Werror" "-Wall" "-Wpedantic" "-Wextra")
 
@@ -43,7 +33,7 @@ set(BOOST_ROOT ${CMAKE_SOURCE_DIR}/external/boost_install)
 set(BOOST_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/external/boost_install/include)
 set(BOOST_LIBRARY_DIRS ${CMAKE_SOURCE_DIR}/external/boost_install/lib)
 
-find_package(Boost REQUIRED)
+find_package(Boost COMPONENTS thread REQUIRED)
 include_directories(${BOOST_INCLUDE_DIRS})
 
 #####################################################################
@@ -62,7 +52,7 @@ find_library(DebugTools SHARED IMPORTED)
 # Link it to libs
 target_link_libraries(powderpunk_server
     PRIVATE 
-        pthread
+        Boost::thread
         DebugTools
         TelnetInterface
 )

@@ -32,6 +32,7 @@ class TelnetConnection : public boost::enable_shared_from_this<TelnetConnection>
 
     private:
         TelnetConnection(boost::asio::io_context& io_context);
+        void WriteToClient(const std::string message);
         void HandleWrite(const boost::system::error_code& /*error*/, size_t /*bytes_transf*/);
 
         tcp::socket socket_;

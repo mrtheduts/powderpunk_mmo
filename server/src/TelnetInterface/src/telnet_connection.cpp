@@ -12,6 +12,10 @@
 
 #include "telnet_connection.h"
 
+#include <iostream>
+
+#include <DebugTools/assert_debug_print.h>
+
 TelnetConnection::Ptr TelnetConnection::CreatePtr(boost::asio::io_context &io_context) {
     return Ptr(new TelnetConnection(io_context));
 }
@@ -22,9 +26,23 @@ tcp::socket& TelnetConnection::GetSocket() {
 
 void TelnetConnection::Start() {
 
-    message_ = "Hello, friend. How are you?";
+    DEBUG("Starting TelnetConnection...");
+
+    for (int i = 0; i < 10; ++i) {
+        std::ostringstream tmp_str;
+        tmp_str << "You are receiving: " << i << std::endl;
+        WriteToClient(tmp_str.str());
+        tmp_str.clear();
+    }
+}
+
+TelnetConnection::TelnetConnection(boost::asio::io_context& io_context) : socket_(io_context) {
+}
+
+void TelnetConnection::WriteToClient(const std::string message) {
+
     boost::asio::async_write(socket_,
-                             boost::asio::buffer(message_),
+                             boost::asio::buffer(message),
                              boost::bind(&TelnetConnection::HandleWrite,
                                          shared_from_this(),
                                          boost::asio::placeholders::error,
@@ -32,9 +50,7 @@ void TelnetConnection::Start() {
                                         )
                             );
 
-}
-
-TelnetConnection::TelnetConnection(boost::asio::io_context& io_context) : socket_(io_context) {
+    message_ = message;
 }
 
 void TelnetConnection::HandleWrite(const boost::system::error_code& /*error*/, size_t /*bytes_transf*/){

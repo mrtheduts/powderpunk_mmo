@@ -14,7 +14,10 @@
 
 #define PORT_NUMBER 22222
 
+#include <vector>
+
 #include <boost/asio.hpp>
+#include <boost/thread.hpp>
 
 #include "telnet_connection.h"
 
@@ -24,13 +27,16 @@ class TelnetServer {
 
     public:
         TelnetServer(boost::asio::io_context& io_context);
+        void StartAccept();
 
     private:
-        void StartAccept();
         void HandleAccept(TelnetConnection::Ptr new_connection, const boost::system::error_code& error);
 
         boost::asio::io_context& io_context_;
         tcp::acceptor acceptor_;
+
+        boost::thread_group t_curr_connections;
+        std::vector<TelnetConnection::Ptr> curr_connections; 
 };
 
 #endif

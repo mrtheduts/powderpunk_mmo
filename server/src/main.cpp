@@ -12,27 +12,30 @@
 
 #include <iostream>
 
+#include <boost/thread.hpp>
+
 #include <DebugTools/assert_debug_print.h>
 #include <TelnetInterface/telnet_interface.h>
 
-using namespace std;
-
 int main() {
 
-    cout << "It compiled!" << endl;
+    std::cout << "It compiled!" << std::endl;
 
     DEBUG("Debug mode activated.");
-    DEBUG("Hello.");
 
     try {
 
         boost::asio::io_context io_context;
+
         TelnetServer telnet_server(io_context);
+        boost::thread t_telnet_server(&TelnetServer::StartAccept, &telnet_server);
+        t_telnet_server.join();
+
         io_context.run();
     }
-    catch(exception& e){
+    catch(std::exception& e) {
 
-        cerr << e.what() << endl;
+        std::cerr << e.what() << std::endl;
     }
 
     return 0;
