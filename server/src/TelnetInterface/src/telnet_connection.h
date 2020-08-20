@@ -19,6 +19,9 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/asio.hpp>
 
+#include <telnetpp/core.hpp>
+#include <telnetpp/session.hpp>
+
 using boost::asio::ip::tcp;
 
 class TelnetConnection : public boost::enable_shared_from_this<TelnetConnection> {
@@ -32,11 +35,12 @@ class TelnetConnection : public boost::enable_shared_from_this<TelnetConnection>
 
     private:
         TelnetConnection(boost::asio::io_context& io_context);
-        void WriteToClient(const std::string message);
+        void WriteToClient(telnetpp::bytes message);
         void HandleWrite(const boost::system::error_code& /*error*/, size_t /*bytes_transf*/);
 
+        telnetpp::session telnet_session_;
         tcp::socket socket_;
-        std::string message_;
+        telnetpp::bytes last_message_;
 };
 
 #endif

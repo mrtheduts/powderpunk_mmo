@@ -11,10 +11,11 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Output binary files in specific dir
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-# Set std c++ version for the code
-set (CMAKE_CXX_STANDARD 20)
+# Set std C++ version for the code
+# C++ 14 is required for Telnet++
+set (CMAKE_CXX_STANDARD 14)
 set (CMAKE_CXX_STANDARD_REQUIRED TRUE)
-set (CMAKE_CXX_EXTENSIONS TRUE)
+set (CMAKE_CXX_EXTENSIONS FALSE)
 
 add_executable(powderpunk_server main.cpp)
 # Adding properties of GUI target
@@ -23,7 +24,8 @@ target_include_directories(powderpunk_server
         ${Powderpunk_Server_SOURCE_DIR}/src
 )
 
-add_compile_options("-Werror" "-Wall" "-Wpedantic" "-Wextra")
+# -Werror was removed because of Telnet++
+add_compile_options("-Wall" "-Wpedantic" "-Wextra")
 
 #####################################################################
 # Adding external libs 

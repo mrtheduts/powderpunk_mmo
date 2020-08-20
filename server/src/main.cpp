@@ -25,13 +25,11 @@ int main() {
 
     try {
 
-        boost::asio::io_context io_context;
+        TelnetServer telnet_server;
+        boost::thread t_telnet_server(&TelnetServer::Start, &telnet_server);
 
-        TelnetServer telnet_server(io_context);
-        boost::thread t_telnet_server(&TelnetServer::StartAccept, &telnet_server);
         t_telnet_server.join();
 
-        io_context.run();
     }
     catch(std::exception& e) {
 

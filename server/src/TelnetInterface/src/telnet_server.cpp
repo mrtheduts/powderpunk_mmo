@@ -12,37 +12,50 @@
 
 #include "telnet_server.h"
 
-#include <iostream>
-
 #include <boost/bind.hpp>
 
 #include <DebugTools/assert_debug_print.h>
 
-TelnetServer::TelnetServer(boost::asio::io_context& io_context)
-    : io_context_(io_context),
-      acceptor_(io_context, tcp::endpoint(tcp::v4(), PORT_NUMBER)){
+TelnetServer::TelnetServer() {
 
-    // this->StartAccept();
+    acceptor_ = new tcp::acceptor(io_context_,
+                                  tcp::endpoint(tcp::v4(), DEFAULT_PORT));
+}
+
+TelnetServer::TelnetServer(unsigned int port) {
+
+    acceptor_ = new tcp::acceptor(io_context_,
+                                  tcp::endpoint(tcp::v4(), port));
+}
+
+TelnetServer::~TelnetServer() {
+
+    DEBUG("Vou deletar o TelnetServer...");
+    delete(acceptor_);
+}
+
+void TelnetServer::Start() {
+
+    StartAccept();
+    io_context_.run();
 }
 
 void TelnetServer::StartAccept() {
 
-    std::cout << "Entrei em StartAccept" << std::endl;
     TelnetConnection::Ptr new_connection;
     new_connection = TelnetConnection::CreatePtr(io_context_);
 
-    acceptor_.async_accept(new_connection->GetSocket(),
-                           boost::bind(&TelnetServer::HandleAccept, 
-                                       this, 
-                                       new_connection, 
-                                       boost::asio::placeholders::error
-                                      )
-                          );
+    acceptor_->async_accept(new_connection->GetSocket(),
+                            boost::bind(&TelnetServer::HandleAccept, 
+                                        this, 
+                                        new_connection, 
+                                        boost::asio::placeholders::error)
+                           );
+
 }
 
 void TelnetServer::HandleAccept(TelnetConnection::Ptr new_connection, const boost::system::error_code& error){
 
-    std::cout << "Entrei em HandleAccept" << std::endl;
 
     if(!error){
 
@@ -55,7 +68,7 @@ void TelnetServer::HandleAccept(TelnetConnection::Ptr new_connection, const boos
     }
     else {
 
-        std::cout << error.message() << std::endl;
+        DEBUG(error.message());
     }
 
     this->StartAccept();

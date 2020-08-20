@@ -10,6 +10,7 @@
 #ifdef NDEBUG
 #define DEBUG(x)
 #else
+#include <iostream>
 #define DEBUG(x) do {std::cerr << x << std::endl;} while(0)
 #endif
 
