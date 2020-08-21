@@ -2,52 +2,36 @@
 ## Introduction
 This document's purpose is to clarify how the server should work and be implemented, being adapted as work gets done.
 
+Obs: each node _should_ represent a class, instead when said otherwise.
 ```mermaid
-graph TB
-    subgraph Server
-    subgraph Login
-    db1[(User DB)] --- lm1(Login Handler)
-    end
+erDiagram
 
-    subgraph Game
-    db2[(Game DB)] --- ge1(Game Engine)
-    end
+    USER-ON-GUI }|--|| GUI-SERVER: "requests"
+    GUI-SERVER ||--|{ GUI-CONNECTION: "creates"
+    USER-ON-GUI ||--|| GUI-CONNECTION: "connects to"
 
-    subgraph Communication
-    lm1 & ge1 --- com1{Communicator}
-    com1 --- ti1(Text Server Interface) & gi1(Graphical Server Interface)
-    end
-    end
+    USER-ON-TELNET }|--|| TELNET-SERVER: "requests"
+    TELNET-SERVER ||--|{ TELNET-CONNECTION: "creates"
+    USER-ON-TELNET ||--|| TELNET-CONNECTION: "connects to"
 
-    subgraph User
-    tu1(Text Client)
-    gu1(Graphical Client)
-
-    ti1 -.- tu1
-    gi1 -.- gu1
-    end
+    GUI-CONNECTION }|--|| GAME-ENGINE: "commands"
+    TELNET-CONNECTION }|--|| GAME-ENGINE: "commands"
 ```
+## Description
+### USER-ON-[CLIENT]
+User requesting a connection to **[CLIENT]-SERVER** through a GUI or Telnet client.
 
-## Communication
-### Communicator
-Module responsible for receiving and sending data to user. It should be able to handle new communications, triggering Login Handler, and maintain them once logged, interacting with Game Engine - capturing a shot of its current state and sending to the user, when required - and feeding it with new information coming from said user. It is planned to have a dedicated thread for every user.
+### [CLIENT]-SERVER
+An object responsible for creating new **[CLIENT]-CONNECTION** objects.
 
-### Text Server Interface
-Responsible for translating the game data captured from the Game Engine, formatting accordingly to the text interface and sending it to the user, using Telnet(?) protocol.
+### [CLIENT]-CONNECTION
+Object responsible for receiving data from **USER-ON-[CLIENT]** and translating it to issue commands to **PLAYER-ENTITY**. Also receives data from **PLAYER-ENTITY** and translates it accordingly to [CLIENT], sending it to **USER-ON-[CLIENT]**. Additionally, it's responsible for requesting **PLAYER-ENTITY** to **GAME-ENGINE**.
 
-### Graphical Server Interface
-Responsible for translating the game data captured from the Game Engine, formatting accordingly to the graphical interface and sending it to the user, using UDP(?) protocol.
+### GAME-ENGINE
+Responsible for creating, transforming and deleting entities. Also manages locations.
 
-## Game
-### Game Engine
-Where the actual game takes place. It should be able to receive user input by Communicator, process it and send it back to the Communicator module. It keeps its data stored Game DB.
+#### PLAYER-ENTITY
+Object representing user's character. It can interact with **LOCATION** and **ENTITY**. It's managed by **GAME-ENGINE** and it's also an **ENTITY**.
 
-### Game DB
-Maps, enemies, characters, state of the world is stored here.
-
-## Login
-### User DB
-Database for login information, like username, password and mail.
-
-### Login Handler
-Module to handle login. Security measures should be implemented here, as to prevent SQL injections or brute force attempts to discover passwords.
+#### ENTITY
+An Object that represents a creature or item.

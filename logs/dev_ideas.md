@@ -1,15 +1,25 @@
 # Dev Ideas record
 
+## 2020-08-21
+### Design Ideas
+- Standalone client cancelled. Only telnet remains for text (check integration with telegram bots to use it);
+
+### Implementation Ideas
+- Godot for developing graphical client;
+- Lock for every entity in the world - each player is a thread;
+- NPCs of an area controlled in rounds - maybe set a roundrobin scheme of priority;
+- If every NPC is thread, SO scheduling scheme will be used? No need to implement it, then;
+
 ## 2020-06-13
 ### Design Ideas
-- Crafting fun as FFXIV;
+- Crafting as fun as FFXIV;
 - Item quality;
-- Gambits;
+- Gambits - increase size/diversity with experience/witnessed situations;
 - Companions (with gambits);
 
 ## 2020-05-04
 ### Design Ideas
-- Try to maintain telnet, client and graphical client in one application.
+- Try to assemble telnet, client and graphical client in one server application.
 
 ## 2020-05-03
 ### Design Ideas
