@@ -29,18 +29,23 @@ class TelnetConnection : public boost::enable_shared_from_this<TelnetConnection>
     public:
         typedef boost::shared_ptr<TelnetConnection> Ptr;
         static Ptr CreatePtr(boost::asio::io_context& io_context);
+        ~TelnetConnection();
 
         tcp::socket& GetSocket();
         void Start();
 
     private:
         TelnetConnection(boost::asio::io_context& io_context);
+
+        void Send(std::string message);
         void WriteToClient(telnetpp::bytes message);
         void HandleWrite(const boost::system::error_code& /*error*/, size_t /*bytes_transf*/);
 
+        // telnetpp::bytes ReadFromClient();
+        // void HandleRead(const boost::system::error_code& [>error<]);
+
         telnetpp::session telnet_session_;
         tcp::socket socket_;
-        telnetpp::bytes last_message_;
 };
 
 #endif

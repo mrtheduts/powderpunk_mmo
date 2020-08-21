@@ -26,32 +26,48 @@ void TelnetConnection::Start() {
 
     DEBUG("Starting TelnetConnection...");
 
-    using telnetpp::literals::operator""_tb;
-    telnetpp::byte_storage message("Oi, consigo enviar!\n"_tb);
-
-    WriteToClient(message);
+    Send("Hello, it worked!\n");
+    Send("Well, that's it. Bye!\n");
 }
 
 TelnetConnection::TelnetConnection(boost::asio::io_context& io_context)
     : telnet_session_(),
-      socket_(io_context){
+      socket_(io_context) {
 }
 
-void TelnetConnection::WriteToClient(telnetpp::bytes message) {
+TelnetConnection::~TelnetConnection() {
+}
+
+void TelnetConnection::Send(std::string message) {
+
+    std::vector<uint8_t> tmp_vector(message.begin(), message.end());
+    telnetpp::element message_bytes(tmp_vector);
+
+    telnet_session_.send(
+        message_bytes,
+        [this](telnetpp::bytes data){
+            WriteToClient(data);
+        }
+);
+}
+
+void TelnetConnection::WriteToClient(telnetpp::bytes data) {
 
     boost::asio::async_write(socket_,
-                             boost::asio::buffer(message.data(), message.size_bytes()),
+                             boost::asio::buffer(data.data(), data.size_bytes()),
                              boost::bind(&TelnetConnection::HandleWrite,
                                          shared_from_this(),
                                          boost::asio::placeholders::error,
                                          boost::asio::placeholders::bytes_transferred
                                         )
                             );
-
-    last_message_ = message;
-
-    while(1);
 }
 
 void TelnetConnection::HandleWrite(const boost::system::error_code& /*error*/, size_t /*bytes_transf*/){
 }
+
+// telnetpp::bytes TelnetConnection::ReadFromClient() {
+// }
+
+// void TelnetConnection::HandleRead(const boost::system::error_code& [>error<]){
+// }

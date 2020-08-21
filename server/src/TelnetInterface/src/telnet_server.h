@@ -20,6 +20,8 @@
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
 
+#include <telnetpp/session.hpp>
+
 #include "telnet_connection.h"
 
 using boost::asio::ip::tcp;
@@ -38,12 +40,14 @@ class TelnetServer {
         void HandleAccept(TelnetConnection::Ptr new_connection, const boost::system::error_code& error);
 
         boost::asio::io_context io_context_;
-        boost::thread *t_start_accept_;
 
+        boost::thread *t_start_accept_;
         tcp::acceptor *acceptor_;
 
         boost::thread_group t_curr_connections;
         std::vector<TelnetConnection::Ptr> curr_connections; 
+
+        telnetpp::session telnet_session_;
 };
 
 #endif

@@ -31,6 +31,7 @@ TelnetServer::TelnetServer(unsigned int port) {
 TelnetServer::~TelnetServer() {
 
     DEBUG("Vou deletar o TelnetServer...");
+    t_curr_connections.join_all();
     delete(acceptor_);
 }
 
@@ -63,8 +64,6 @@ void TelnetServer::HandleAccept(TelnetConnection::Ptr new_connection, const boos
 
         curr_connections.push_back(new_connection);
         t_curr_connections.add_thread(&t_new_connection);
-
-        t_new_connection.detach();
     }
     else {
 
