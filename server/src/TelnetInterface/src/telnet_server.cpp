@@ -52,11 +52,9 @@ void TelnetServer::StartAccept() {
                                         new_connection, 
                                         boost::asio::placeholders::error)
                            );
-
 }
 
 void TelnetServer::HandleAccept(TelnetConnection::Ptr new_connection, const boost::system::error_code& error){
-
 
     if(!error){
 

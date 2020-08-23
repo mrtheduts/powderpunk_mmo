@@ -12,6 +12,8 @@
 #ifndef TELNET_CONNECTION_H
 #define TELNET_CONNECTION_H
 
+#define INPUT_BUFFER_SIZE 1024
+
 #include <string>
 
 #include <boost/bind.hpp>
@@ -41,11 +43,15 @@ class TelnetConnection : public boost::enable_shared_from_this<TelnetConnection>
         void WriteToClient(telnetpp::bytes message);
         void HandleWrite(const boost::system::error_code& /*error*/, size_t /*bytes_transf*/);
 
-        // telnetpp::bytes ReadFromClient();
-        // void HandleRead(const boost::system::error_code& [>error<]);
+        std::string Receive();
+        void TranslateData(telnetpp::bytes data);
+        size_t ReadFromClient(telnetpp::byte *buffer, size_t size);
+        void HandleRead(const boost::system::error_code& error, size_t recv_len);
 
         telnetpp::session telnet_session_;
         tcp::socket socket_;
+
+        std::string* last_msg_received_;
 };
 
 #endif

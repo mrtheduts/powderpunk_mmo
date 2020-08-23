@@ -1,5 +1,12 @@
 # Dev Ideas record
 
+## 2020-08-22
+### Design Ideas
+- Crafting system includes magic. Different MP costs for differents functions - like "All targets within ranged", "Single Target", element, if inflicts damage or status;
+
+### Implementation Ideas
+- Make user actions an Interface, to be implemented by two specifics classes: Telnet feedback and gui feedback(?). Ex: Player-Entity has the "Shout" action. It uses it, but how the action is perceived by the user changes accordingly to the plataform he's in. It will be a part of the game engine;
+
 ## 2020-08-21
 ### Design Ideas
 - Standalone client cancelled. Only telnet remains for text (check integration with telegram bots to use it);

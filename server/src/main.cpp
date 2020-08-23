@@ -21,7 +21,7 @@ int main() {
 
     std::cout << "It compiled!" << std::endl;
 
-    DEBUG("Debug mode activated.");
+    DEBUG("Debug mode activated.\n");
 
     try {
 
