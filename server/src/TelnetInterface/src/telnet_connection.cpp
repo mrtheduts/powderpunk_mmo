@@ -33,8 +33,16 @@ void TelnetConnection::Start() {
     DEBUG(this->socket_.remote_endpoint());
     DEBUG("\n");
 
-    while(1){
-        std::cout << Receive();
+    try {
+        while(1){
+            std::cout << Receive();
+        }
+    }
+    catch(boost::system::system_error error) {
+        if(error.code() == boost::asio::error::eof) {
+            DEBUG("E aí, vamo fecha?\n");
+            return;
+        }
     }
 }
 
@@ -84,12 +92,15 @@ std::string TelnetConnection::Receive() {
     try {
         num_recv_bytes = ReadFromClient(buffer, sizeof(buffer));
     }
-    catch(const boost::system::system_error error) {
+    catch(boost::system::system_error error) {
 
         // Tratar erro EOF - significa que conexão foi fechada por cliente
         DEBUG("Peguei um erro aqui: ");
         DEBUG(error.what());
         DEBUG("\n");
+
+        if(error.code() == boost::asio::error::eof)
+            throw error;
 
         return "";
     }
@@ -126,8 +137,9 @@ size_t TelnetConnection::ReadFromClient(telnetpp::byte *buffer, size_t size) {
  
     num_recv_bytes = socket_.read_some(boost::asio::buffer(buffer, size), error);
 
-    if(error)
-        throw boost::system::system_error(error);
+    if(error == boost::asio::error::eof){
+        throw boost::system::system_error(boost::asio::error::eof);
+    }
 
     return num_recv_bytes;
 }
