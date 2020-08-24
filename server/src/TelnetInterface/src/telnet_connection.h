@@ -14,44 +14,43 @@
 
 #define INPUT_BUFFER_SIZE 1024
 
-#include <string>
-
+#include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/shared_ptr.hpp>
-#include <boost/asio.hpp>
-
+#include <string>
 #include <telnetpp/core.hpp>
 #include <telnetpp/session.hpp>
 
 using boost::asio::ip::tcp;
 
-class TelnetConnection : public boost::enable_shared_from_this<TelnetConnection> {
+class TelnetConnection
+    : public boost::enable_shared_from_this<TelnetConnection> {
+ public:
+  typedef boost::shared_ptr<TelnetConnection> Ptr;
+  static Ptr CreatePtr(boost::asio::io_context& io_context);
+  ~TelnetConnection();
 
-    public:
-        typedef boost::shared_ptr<TelnetConnection> Ptr;
-        static Ptr CreatePtr(boost::asio::io_context& io_context);
-        ~TelnetConnection();
+  tcp::socket& GetSocket();
+  void Start();
 
-        tcp::socket& GetSocket();
-        void Start();
+ private:
+  TelnetConnection(boost::asio::io_context& io_context);
 
-    private:
-        TelnetConnection(boost::asio::io_context& io_context);
+  void Send(std::string message);
+  void WriteToClient(telnetpp::bytes message);
+  void HandleWrite(const boost::system::error_code& /*error*/,
+                   size_t /*bytes_transf*/);
 
-        void Send(std::string message);
-        void WriteToClient(telnetpp::bytes message);
-        void HandleWrite(const boost::system::error_code& /*error*/, size_t /*bytes_transf*/);
+  std::string Receive();
+  void TranslateData(telnetpp::bytes data);
+  size_t ReadFromClient(telnetpp::byte* buffer, size_t size);
+  void HandleRead(const boost::system::error_code& error, size_t recv_len);
 
-        std::string Receive();
-        void TranslateData(telnetpp::bytes data);
-        size_t ReadFromClient(telnetpp::byte *buffer, size_t size);
-        void HandleRead(const boost::system::error_code& error, size_t recv_len);
+  telnetpp::session telnet_session_;
+  tcp::socket socket_;
 
-        telnetpp::session telnet_session_;
-        tcp::socket socket_;
-
-        std::string* last_msg_received_;
+  std::string* last_msg_received_;
 };
 
 #endif

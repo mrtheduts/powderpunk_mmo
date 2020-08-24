@@ -19,7 +19,6 @@
 #define BOOST_ASIO_NO_DEPRECATED
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
-
 #include <telnetpp/session.hpp>
 
 #include "telnet_connection.h"
@@ -27,27 +26,27 @@
 using boost::asio::ip::tcp;
 
 class TelnetServer {
+ public:
+  TelnetServer();
+  TelnetServer(unsigned int port);
+  ~TelnetServer();
 
-    public:
-        TelnetServer();
-        TelnetServer(unsigned int port);
-        ~TelnetServer();
+  void Start();
 
-        void Start();
+ private:
+  void StartAccept();
+  void HandleAccept(TelnetConnection::Ptr new_connection,
+                    const boost::system::error_code &error);
 
-    private:
-        void StartAccept();
-        void HandleAccept(TelnetConnection::Ptr new_connection, const boost::system::error_code& error);
+  boost::asio::io_context io_context_;
 
-        boost::asio::io_context io_context_;
+  boost::thread *t_start_accept_;
+  tcp::acceptor *acceptor_;
 
-        boost::thread *t_start_accept_;
-        tcp::acceptor *acceptor_;
+  boost::thread_group t_curr_connections;
+  std::vector<TelnetConnection::Ptr> curr_connections;
 
-        boost::thread_group t_curr_connections;
-        std::vector<TelnetConnection::Ptr> curr_connections; 
-
-        telnetpp::session telnet_session_;
+  telnetpp::session telnet_session_;
 };
 
 #endif

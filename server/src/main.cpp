@@ -10,32 +10,27 @@
  *
  */
 
-#include <iostream>
-
-#include <boost/thread.hpp>
-
 #include <DebugTools/assert_debug_print.h>
 #include <TelnetInterface/telnet_interface.h>
 
+#include <boost/thread.hpp>
+#include <iostream>
+
 int main() {
+  std::cout << "It compiled!" << std::endl;
 
-    std::cout << "It compiled!" << std::endl;
+  DEBUG("Debug mode activated.\n");
 
-    DEBUG("Debug mode activated.\n");
+  try {
+    TelnetServer telnet_server;
+    boost::thread t_telnet_server(&TelnetServer::Start, &telnet_server);
 
-    try {
+    t_telnet_server.join();
 
-        TelnetServer telnet_server;
-        boost::thread t_telnet_server(&TelnetServer::Start, &telnet_server);
+  } catch (std::exception& e) {
+    std::cerr << e.what() << std::endl;
+  }
 
-        t_telnet_server.join();
-
-    }
-    catch(std::exception& e) {
-
-        std::cerr << e.what() << std::endl;
-    }
-
-    return 0;
+  return 0;
 }
 

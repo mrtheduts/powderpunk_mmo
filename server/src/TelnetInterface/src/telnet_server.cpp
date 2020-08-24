@@ -12,61 +12,51 @@
 
 #include "telnet_server.h"
 
-#include <boost/bind.hpp>
-
 #include <DebugTools/assert_debug_print.h>
 
-TelnetServer::TelnetServer() {
+#include <boost/bind.hpp>
 
-    acceptor_ = new tcp::acceptor(io_context_,
-                                  tcp::endpoint(tcp::v4(), DEFAULT_PORT));
+TelnetServer::TelnetServer() {
+  acceptor_ =
+      new tcp::acceptor(io_context_, tcp::endpoint(tcp::v4(), DEFAULT_PORT));
 }
 
 TelnetServer::TelnetServer(unsigned int port) {
-
-    acceptor_ = new tcp::acceptor(io_context_,
-                                  tcp::endpoint(tcp::v4(), port));
+  acceptor_ = new tcp::acceptor(io_context_, tcp::endpoint(tcp::v4(), port));
 }
 
 TelnetServer::~TelnetServer() {
-
-    DEBUG("Vou deletar o TelnetServer...");
-    t_curr_connections.join_all();
-    delete(acceptor_);
+  DEBUG("Vou deletar o TelnetServer...");
+  t_curr_connections.join_all();
+  delete (acceptor_);
 }
 
 void TelnetServer::Start() {
-
-    StartAccept();
-    io_context_.run();
+  StartAccept();
+  io_context_.run();
 }
 
 void TelnetServer::StartAccept() {
+  TelnetConnection::Ptr new_connection;
+  new_connection = TelnetConnection::CreatePtr(io_context_);
 
-    TelnetConnection::Ptr new_connection;
-    new_connection = TelnetConnection::CreatePtr(io_context_);
-
-    acceptor_->async_accept(new_connection->GetSocket(),
-                            boost::bind(&TelnetServer::HandleAccept, 
-                                        this, 
-                                        new_connection, 
-                                        boost::asio::placeholders::error)
-                           );
+  acceptor_->async_accept(
+      new_connection->GetSocket(),
+      boost::bind(&TelnetServer::HandleAccept, this, new_connection,
+                  boost::asio::placeholders::error));
 }
 
-void TelnetServer::HandleAccept(TelnetConnection::Ptr new_connection, const boost::system::error_code& error){
+void TelnetServer::HandleAccept(TelnetConnection::Ptr new_connection,
+                                const boost::system::error_code& error) {
+  if (!error) {
+    boost::thread t_new_connection(&TelnetConnection::Start,
+                                   &(*new_connection));
 
-    if(!error){
+    curr_connections.push_back(new_connection);
+    t_curr_connections.add_thread(&t_new_connection);
+  } else {
+    DEBUG(error.message());
+  }
 
-        boost::thread t_new_connection(&TelnetConnection::Start, &(*new_connection));
-
-        curr_connections.push_back(new_connection);
-        t_curr_connections.add_thread(&t_new_connection);
-    }
-    else {
-
-        DEBUG(error.message());
-    }
-
-    this->StartAccept();
+  this->StartAccept();
 }
