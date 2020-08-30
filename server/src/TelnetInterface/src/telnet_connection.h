@@ -21,7 +21,7 @@
 #include <boost/thread.hpp>
 #include <string>
 #include <telnetpp/core.hpp>
-#include <telnetpp/options/echo/client.hpp>
+#include <telnetpp/options/echo/server.hpp>
 #include <telnetpp/session.hpp>
 #include <vector>
 
@@ -40,7 +40,7 @@ class TelnetConnection
  private:
   TelnetConnection(boost::asio::io_context& io_context);
 
-  void Login();
+  void SetupOptions();
 
   void Send(std::string message);
   void Write(telnetpp::element const& data);
@@ -53,14 +53,9 @@ class TelnetConnection
   void HandleRead(const boost::system::error_code& error, size_t recv_len);
 
   telnetpp::session telnet_session_;
-  telnetpp::options::echo::client echo_client_;
+  telnetpp::options::echo::server t_echo_server_;
 
   tcp::socket socket_;
-  std::string* last_msg_received_;
-
-  telnetpp::byte_storage tmp_buffer_;
-
-  std::string username_;
 };
 
 #endif

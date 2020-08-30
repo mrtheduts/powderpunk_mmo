@@ -26,18 +26,15 @@ TelnetConnection::~TelnetConnection() {}
 tcp::socket& TelnetConnection::GetSocket() { return socket_; }
 
 void TelnetConnection::Start() {
-  std::string message;
   DEBUG("Starting TelnetConnection for IP: ");
   DEBUG(this->socket_.remote_endpoint());
   DEBUG("\n");
 
-  // Login();
+  SetupOptions();
 
   try {
     while (1) {
       Receive();
-      // std::cout << username_ << ": ";
-      // std::cout << message << std::endl;
     }
   } catch (boost::system::system_error error) {
     if (error.code() == boost::asio::error::eof) {
@@ -50,9 +47,14 @@ void TelnetConnection::Start() {
 TelnetConnection::TelnetConnection(boost::asio::io_context& io_context)
     : telnet_session_(), socket_(io_context) {}
 
-void TelnetConnection::Login() {
-  Send("What's your name?\n");
-  Send("Hello, " + username_ + "!\n");
+void TelnetConnection::SetupOptions() {
+  telnet_session_.install(t_echo_server_);
+
+  // auto const& write_continuation = [this](telnetpp::element const& elem) {
+  // Write(elem);
+  // };
+
+  // t_echo_server_.activate(write_continuation);
 }
 
 void TelnetConnection::Send(std::string message) {
