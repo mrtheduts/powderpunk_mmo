@@ -18,9 +18,12 @@
 #include <boost/bind.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/thread.hpp>
 #include <string>
 #include <telnetpp/core.hpp>
+#include <telnetpp/options/echo/client.hpp>
 #include <telnetpp/session.hpp>
+#include <vector>
 
 using boost::asio::ip::tcp;
 
@@ -37,20 +40,27 @@ class TelnetConnection
  private:
   TelnetConnection(boost::asio::io_context& io_context);
 
-  void Send(std::string message);
-  void WriteToClient(telnetpp::bytes message);
-  void HandleWrite(const boost::system::error_code& /*error*/,
-                   size_t /*bytes_transf*/);
+  void Login();
 
-  std::string Receive();
-  void TranslateData(telnetpp::bytes data);
-  size_t ReadFromClient(telnetpp::byte* buffer, size_t size);
+  void Send(std::string message);
+  void Write(telnetpp::element const& data);
+  void RawWrite(telnetpp::bytes data);
+  void HandleWrite(const boost::system::error_code& error, size_t bytes_transf);
+
+  void Receive();
+  void ReadFromClient(telnetpp::bytes data);
+
   void HandleRead(const boost::system::error_code& error, size_t recv_len);
 
   telnetpp::session telnet_session_;
-  tcp::socket socket_;
+  telnetpp::options::echo::client echo_client_;
 
+  tcp::socket socket_;
   std::string* last_msg_received_;
+
+  telnetpp::byte_storage tmp_buffer_;
+
+  std::string username_;
 };
 
 #endif
