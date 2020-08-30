@@ -38,23 +38,53 @@ void TelnetConnection::Start() {
     }
   } catch (boost::system::system_error error) {
     if (error.code() == boost::asio::error::eof) {
-      DEBUG("E aí, vamo fecha?\n");
+      DEBUG("Ending TelnetConnection for IP: ");
+      DEBUG(this->socket_.remote_endpoint());
+      DEBUG("\n");
       return;
     }
   }
+}
+
+void TelnetConnection::ActivateNoEcho() {
+  t_echo_server_.activate([this](telnetpp::element elem) { Write(elem); });
+}
+
+void TelnetConnection::DeactivateNoEcho() {
+  t_echo_server_.deactivate([this](telnetpp::element elem) { Write(elem); });
 }
 
 TelnetConnection::TelnetConnection(boost::asio::io_context& io_context)
     : telnet_session_(), socket_(io_context) {}
 
 void TelnetConnection::SetupOptions() {
+  t_naws_client_.on_window_size_changed.connect(
+      [/*this*/](const int& width, const int& height, auto&& /*continuation*/) {
+        std::cout << "(W,H) = (" << width << "," << height << ")" << std::endl;
+      });
+
+  t_termtype_client_.on_state_changed.connect([this](auto&& continuation) {
+    if (t_termtype_client_.active()) {
+      t_termtype_client_.request_terminal_type(continuation);
+    }
+  });
+
+  t_termtype_client_.on_terminal_type.connect(
+      [/*this*/](auto&& type, auto&& /*continuation*/) {
+        std::cout << "Terminal type: " << std::string(type.begin(), type.end())
+                  << std::endl;
+      });
+
   telnet_session_.install(t_echo_server_);
+  telnet_session_.install(t_naws_client_);
+  telnet_session_.install(t_termtype_client_);
 
-  // auto const& write_continuation = [this](telnetpp::element const& elem) {
-  // Write(elem);
-  // };
+  auto const& write_continuation = [this](telnetpp::element const& elem) {
+    Write(elem);
+  };
 
-  // t_echo_server_.activate(write_continuation);
+  t_naws_client_.activate(write_continuation);
+  t_termtype_client_.activate(write_continuation);
 }
 
 void TelnetConnection::Send(std::string message) {
@@ -82,7 +112,8 @@ void TelnetConnection::RawWrite(telnetpp::bytes data) {
 
 void TelnetConnection::HandleWrite(const boost::system::error_code& error,
                                    size_t bytes_transf) {
-  std::cout << error.message() << " - " << bytes_transf << std::endl;
+  std::cout << "Write: [" << error.message() << " - " << bytes_transf << "]"
+            << std::endl;
 }
 
 void TelnetConnection::ReadFromClient(telnetpp::bytes data) {

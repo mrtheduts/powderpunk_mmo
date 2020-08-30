@@ -22,6 +22,8 @@
 #include <string>
 #include <telnetpp/core.hpp>
 #include <telnetpp/options/echo/server.hpp>
+#include <telnetpp/options/terminal_type/client.hpp>
+#include <telnetpp/options/naws/client.hpp>
 #include <telnetpp/session.hpp>
 #include <vector>
 
@@ -36,6 +38,9 @@ class TelnetConnection
 
   tcp::socket& GetSocket();
   void Start();
+
+  void ActivateNoEcho();
+  void DeactivateNoEcho();
 
  private:
   TelnetConnection(boost::asio::io_context& io_context);
@@ -54,6 +59,8 @@ class TelnetConnection
 
   telnetpp::session telnet_session_;
   telnetpp::options::echo::server t_echo_server_;
+  telnetpp::options::naws::client t_naws_client_;
+  telnetpp::options::terminal_type::client t_termtype_client_;
 
   tcp::socket socket_;
 };
