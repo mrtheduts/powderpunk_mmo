@@ -22,8 +22,7 @@ $ git clone --recurse-submodules --jobs 2  https://github.com/mrtheduts/powderpu
 
 This _should_ download all submodules. If it doesn't, just run:
 ```shell
-$ git submodule init
-$ git submodule update --recursive
+$ git submodule update --init --recursive
 ```
 
 ## How to build it:
