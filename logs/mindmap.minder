@@ -1,0 +1,372 @@
+<?xml version="1.0"?>
+<minder version="1.11.3">
+  <theme name="dark" label="Escuro" index="-1"/>
+  <styles>
+    <style level="0" isset="true" branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true" connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
+    <style level="1" isset="true" branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true" connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
+    <style level="2" isset="true" branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true" connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
+    <style level="3" isset="true" branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true" connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
+    <style level="4" isset="true" branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true" connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
+    <style level="5" isset="true" branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true" connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
+    <style level="6" isset="true" branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true" connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
+    <style level="7" isset="true" branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true" connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
+    <style level="8" isset="true" branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true" connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
+    <style level="9" isset="true" branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true" connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
+    <style level="10" isset="true" branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true" connectiondash="dotted" connectionlwidth="2" connectionarrow="fromto" connectionpadding="3" connectionfont="Sans 10" connectiontwidth="100"/>
+  </styles>
+  <drawarea x="1368.8706309000654" y="-151.69475809733194" scale="0.75"/>
+  <images/>
+  <nodes>
+    <node id="0" posx="-963.39598083496196" posy="584.0620676676433" width="236" height="90" side="left" fold="false" treesize="1984.9999999999977" layout="Horizontal" sticker="settings" group="false">
+      <style branchmargin="84" linktype="curved" linkwidth="6" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="8" nodefill="true" nodemargin="1" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+      <nodename posx="-888.39598083496196" posy="618.5620676676433" maxwidth="200">
+        <text data="PowderPunk MMO"/>
+      </nodename>
+      <nodenote></nodenote>
+      <nodes>
+        <node id="1" posx="-1263.3959808349605" posy="584.0620676676433" width="216" height="90" side="left" fold="false" treesize="1984.9999999999977" color="#3689e6" colorroot="true" layout="Horizontal" sticker="survey" group="false">
+          <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="8" nodefill="true" nodemargin="1" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+          <nodename posx="-1188.3959808349605" posy="618.5620676676433" maxwidth="200">
+            <text data="Design Ideas"/>
+          </nodename>
+          <nodenote></nodenote>
+          <nodes>
+            <node id="2" posx="-1549.3959808349618" posy="-296.93793233235442" width="186" height="90" side="left" fold="false" treesize="223" color="#68b723" colorroot="true" layout="Horizontal" sticker="home" group="false">
+              <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="11" nodefill="true" nodemargin="1" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+              <nodename posx="-1474.3959808349618" posy="-262.43793233235442" maxwidth="200">
+                <text data="Buildings"/>
+              </nodename>
+              <nodenote></nodenote>
+              <nodes>
+                <node id="3" posx="-1919.3959808349582" posy="-363.43793233235442" width="270" height="101" side="left" fold="false" treesize="101" color="#68b723" colorroot="false" layout="Horizontal" group="false">
+                  <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="8" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                  <nodename posx="-1879.3959808349582" posy="-323.43793233235442" maxwidth="200">
+                    <text data="Build, sell and buy"/>
+                  </nodename>
+                  <nodenote></nodenote>
+                </node>
+                <node id="49" posx="-1919.3959808349596" posy="-262.43793233235442" width="270" height="122" side="left" fold="false" treesize="122" color="#68b723" colorroot="false" layout="Horizontal" group="false">
+                  <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                  <nodename posx="-1879.3959808349596" posy="-222.43793233235442" maxwidth="200">
+                    <text data="First aproppriation rule for the land"/>
+                  </nodename>
+                  <nodenote></nodenote>
+                </node>
+              </nodes>
+            </node>
+            <node id="4" posx="-1539.3959808349618" posy="60.562067667646033" width="176" height="90" side="left" fold="false" treesize="492" color="#7a36b1" colorroot="true" layout="Horizontal" sticker="support" group="false">
+              <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="8" nodefill="true" nodemargin="1" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+              <nodename posx="-1464.3959808349618" posy="95.062067667646033" maxwidth="200">
+                <text data="Crafting"/>
+              </nodename>
+              <nodenote></nodenote>
+              <nodes>
+                <node id="32" posx="-1785.3959808349605" posy="-82.437932332353739" width="146" height="90" side="left" fold="false" treesize="206" color="#7a36b1" colorroot="false" layout="Horizontal" sticker="biohazard" group="false">
+                  <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="1" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                  <nodename posx="-1710.3959808349605" posy="-47.937932332353739" maxwidth="200">
+                    <text data="Magic"/>
+                  </nodename>
+                  <nodenote></nodenote>
+                  <nodes>
+                    <node id="34" posx="-2145.3959808349609" posy="-140.43793233235419" width="260" height="206" side="left" fold="false" treesize="206" color="#7a36b1" colorroot="false" layout="Horizontal" group="false">
+                      <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                      <nodename posx="-2105.3959808349609" posy="-100.43793233235419" maxwidth="200">
+                        <text data="Set spell's fucntions, as &quot;All targets within certain range&quot;, element, damage, status"/>
+                      </nodename>
+                      <nodenote></nodenote>
+                      <nodes>
+                        <node id="35" posx="-2505.3959808349582" posy="-140.43793233235419" width="260" height="206" side="left" fold="false" treesize="206" color="#7a36b1" colorroot="false" layout="Horizontal" group="false">
+                          <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                          <nodename posx="-2465.3959808349582" posy="-100.43793233235419" maxwidth="200">
+                            <text data="Different craft's difficulty classes to craft them/MP costs to use it depending on the chosen attributes"/>
+                          </nodename>
+                          <nodenote></nodenote>
+                        </node>
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
+                <node id="50" posx="-1785.3959808349609" posy="163.56206766764592" width="146" height="90" side="left" fold="false" treesize="286" color="#7a36b1" colorroot="false" layout="Horizontal" sticker="biomass" group="false">
+                  <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="1" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                  <nodename posx="-1710.3959808349609" posy="198.06206766764592" maxwidth="200">
+                    <text data="Items"/>
+                  </nodename>
+                  <nodenote></nodenote>
+                  <nodes>
+                    <node id="5" posx="-2155.3959808349609" posy="65.562067667646033" width="270" height="143" side="left" fold="false" treesize="143" color="#7a36b1" colorroot="false" layout="Horizontal" group="false">
+                      <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="8" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                      <nodename posx="-2115.3959808349609" posy="105.56206766764603" maxwidth="200">
+                        <text data="Heavy focus on number of craftable items"/>
+                      </nodename>
+                      <nodenote></nodenote>
+                    </node>
+                    <node id="6" posx="-2155.3959808349609" posy="208.56206766764581" width="270" height="143" side="left" fold="false" treesize="143" color="#7a36b1" colorroot="false" layout="Horizontal" group="false">
+                      <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="8" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                      <nodename posx="-2115.3959808349609" posy="248.56206766764581" maxwidth="200">
+                        <text data="Progress and quality system with skills"/>
+                      </nodename>
+                      <nodenote></nodenote>
+                    </node>
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+            <node id="7" posx="-1519.3959808349605" posy="716.56206766764376" width="156" height="90" side="left" fold="false" treesize="819.9999999999992" color="#3fb9bf" colorroot="true" layout="Horizontal" sticker="high_priority" group="false">
+              <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="10" nodefill="true" nodemargin="1" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+              <nodename posx="-1444.3959808349605" posy="751.06206766764376" maxwidth="200">
+                <text data="Combat"/>
+              </nodename>
+              <nodenote></nodenote>
+              <nodes>
+                <node id="8" posx="-1819.3959808349591" posy="351.5620676676449" width="200" height="122" side="left" fold="false" treesize="122" color="#3fb9bf" colorroot="false" layout="Horizontal" group="false">
+                  <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="8" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                  <nodename posx="-1779.3959808349591" posy="391.5620676676449" maxwidth="200">
+                    <text data="Abstract HP (percentage)"/>
+                  </nodename>
+                  <nodenote></nodenote>
+                </node>
+                <node id="9" posx="-1855.3959808349596" posy="542.0620676676433" width="236" height="90" side="left" fold="false" treesize="227" color="#3fbfa8" colorroot="true" layout="Horizontal" sticker="medium_priority" group="false">
+                  <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="8" nodefill="true" nodemargin="1" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                  <nodename posx="-1780.3959808349596" posy="576.5620676676433" maxwidth="200">
+                    <text data="Battle Planner"/>
+                  </nodename>
+                  <nodenote></nodenote>
+                  <nodes>
+                    <node id="10" posx="-2225.3959808349609" posy="473.56206766764512" width="270" height="227" side="left" fold="false" treesize="227" color="#3fbfa8" colorroot="false" layout="Horizontal" group="false">
+                      <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="8" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                      <nodename posx="-2185.3959808349609" posy="513.56206766764512" maxwidth="200">
+                        <text data="Commands and triggers are unlocked with specific situations and/or encounters and/or monsters or books about it"/>
+                      </nodename>
+                      <nodenote></nodenote>
+                    </node>
+                  </nodes>
+                </node>
+                <node id="37" posx="-1879.39598083496" posy="700.56206766764399" width="260" height="101" side="left" fold="false" treesize="101" color="#3fb9bf" colorroot="false" layout="Horizontal" group="false">
+                  <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                  <nodename posx="-1839.39598083496" posy="740.56206766764399" maxwidth="200">
+                    <text data="Turn-based combat?"/>
+                  </nodename>
+                  <nodenote></nodenote>
+                </node>
+                <node id="38" posx="-1889.3959808349605" posy="801.56206766764501" width="270" height="143" side="left" fold="false" treesize="143" color="#3fb9bf" colorroot="false" layout="Horizontal" group="false">
+                  <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                  <nodename posx="-1849.3959808349605" posy="841.56206766764501" maxwidth="200">
+                    <text data="Is the relative position around the enemy important?"/>
+                  </nodename>
+                  <nodenote></nodenote>
+                </node>
+                <node id="39" posx="-1889.3959808349605" posy="944.56206766764467" width="270" height="227" side="left" fold="false" treesize="227" color="#3fb9bf" colorroot="false" layout="Horizontal" group="false">
+                  <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                  <nodename posx="-1849.3959808349605" posy="984.56206766764467" maxwidth="200">
+                    <text data="When a battle starts, its participants go to a different realm - accessable by a battle indicator in the world"/>
+                  </nodename>
+                  <nodenote></nodenote>
+                  <nodes>
+                    <node id="46" posx="-2259.3959808349609" posy="976.0620676676441" width="270" height="164" side="left" fold="false" treesize="227" color="#3fb9bf" colorroot="false" layout="Horizontal" group="false">
+                      <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                      <nodename posx="-2219.3959808349609" posy="1016.0620676676441" maxwidth="200">
+                        <text data="Other players can join, but owner of battle have to give permission"/>
+                      </nodename>
+                      <nodenote></nodenote>
+                      <nodes>
+                        <node id="47" posx="-2629.3959808349591" posy="944.56206766764467" width="270" height="227" side="left" fold="false" treesize="227" color="#3fb9bf" colorroot="false" layout="Horizontal" group="false">
+                          <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                          <nodename posx="-2589.3959808349591" posy="984.56206766764467" maxwidth="200">
+                            <text data="If they don't, the players can still join, but will be marked as KS if they kill the monsters or PK if they kill the owner"/>
+                          </nodename>
+                          <nodenote></nodenote>
+                        </node>
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+            <node id="11" posx="-1519.3959808349605" posy="1351.5620676676449" width="156" height="90" side="left" fold="false" treesize="449.99999999999977" color="#3689e6" colorroot="false" layout="Horizontal" sticker="conference_call" group="false">
+              <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="8" nodefill="true" nodemargin="1" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+              <nodename posx="-1444.3959808349605" posy="1386.0620676676449" maxwidth="200">
+                <text data="Living"/>
+              </nodename>
+              <nodenote></nodenote>
+              <nodes>
+                <node id="13" posx="-1879.3959808349591" posy="1182.0620676676454" width="260" height="122" side="left" fold="false" treesize="143" color="#3689e6" colorroot="false" layout="Horizontal" group="false">
+                  <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="8" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                  <nodename posx="-1839.3959808349591" posy="1222.0620676676454" maxwidth="200">
+                    <text data="Freedom to live as they like"/>
+                  </nodename>
+                  <nodenote></nodenote>
+                  <nodes>
+                    <node id="12" posx="-2239.3959808349591" posy="1171.5620676676454" width="260" height="143" side="left" fold="false" treesize="143" color="#3689e6" colorroot="false" layout="Horizontal" group="false">
+                      <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="8" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                      <nodename posx="-2199.3959808349591" posy="1211.5620676676454" maxwidth="200">
+                        <text data="NPCs and players could age and have children"/>
+                      </nodename>
+                      <nodenote></nodenote>
+                    </node>
+                  </nodes>
+                </node>
+                <node id="40" posx="-1905.39598083496" posy="1423.0620676676458" width="286" height="90" side="left" fold="false" treesize="307" color="#3689e6" colorroot="false" layout="Horizontal" sticker="binoculars" group="false">
+                  <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="1" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                  <nodename posx="-1830.39598083496" posy="1457.5620676676458" maxwidth="200">
+                    <text data="Balancing Mechanics"/>
+                  </nodename>
+                  <nodenote></nodenote>
+                  <nodes>
+                    <node id="42" posx="-2225.3959808349609" posy="1417.5620676676458" width="220" height="101" side="left" fold="false" treesize="307" color="#3689e6" colorroot="false" layout="Horizontal" group="false">
+                      <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                      <nodename posx="-2185.3959808349609" posy="1457.5620676676458" maxwidth="200">
+                        <text data="Justice System"/>
+                      </nodename>
+                      <nodenote></nodenote>
+                      <nodes>
+                        <node id="43" posx="-2595.3959808349582" posy="1375.5620676676449" width="270" height="185" side="left" fold="false" treesize="307" color="#3689e6" colorroot="false" layout="Horizontal" group="false">
+                          <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                          <nodename posx="-2555.3959808349582" posy="1415.5620676676449" maxwidth="200">
+                            <text data="Quests for imprisoning/killing KS (killer steal) or PK (player killer) players"/>
+                          </nodename>
+                          <nodenote></nodenote>
+                          <nodes>
+                            <node id="45" posx="-2965.3959808349573" posy="1314.5620676676444" width="270" height="122" side="left" fold="false" treesize="122" color="#3689e6" colorroot="false" layout="Horizontal" group="false">
+                              <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                              <nodename posx="-2925.3959808349573" posy="1354.5620676676444" maxwidth="200">
+                                <text data="Created by NPCS and players"/>
+                              </nodename>
+                              <nodenote></nodenote>
+                            </node>
+                            <node id="44" posx="-2945.3959808349582" posy="1436.5620676676449" width="250" height="185" side="left" fold="false" treesize="185" color="#3689e6" colorroot="false" layout="Horizontal" group="false">
+                              <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                              <nodename posx="-2905.3959808349582" posy="1476.5620676676449" maxwidth="200">
+                                <text data="Police guilds can take these contracts, but a single player may too"/>
+                              </nodename>
+                              <nodenote></nodenote>
+                            </node>
+                          </nodes>
+                        </node>
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+          </nodes>
+        </node>
+        <node id="14" posx="-643.39598083496071" posy="584.0620676676433" width="296" height="90" side="right" fold="false" treesize="856.99999999999886" color="#c6262e" colorroot="true" layout="Horizontal" sticker="services" group="false">
+          <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="8" nodefill="true" nodemargin="1" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+          <nodename posx="-568.39598083496071" posy="618.5620676676433" maxwidth="200">
+            <text data="Implementation Ideas"/>
+          </nodename>
+          <nodenote></nodenote>
+          <nodes>
+            <node id="16" posx="-247.395980834959" posy="287.56206766764421" width="136" height="90" side="right" fold="false" treesize="265.00000000000045" color="#bf3fb8" colorroot="true" layout="Horizontal" sticker="document" group="false">
+              <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="8" nodefill="true" nodemargin="1" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+              <nodename posx="-172.395980834959" posy="322.06206766764421" maxwidth="200">
+                <text data="Text"/>
+              </nodename>
+              <nodenote></nodenote>
+              <nodes>
+                <node id="17" posx="-11.395980834960596" posy="237.06206766764433" width="156" height="90" side="right" fold="false" treesize="164" color="#bf3fb8" colorroot="false" layout="Horizontal" sticker="news" group="false">
+                  <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="8" nodefill="true" nodemargin="1" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                  <nodename posx="63.604019165039404" posy="271.56206766764433" maxwidth="200">
+                    <text data="Telnet"/>
+                  </nodename>
+                  <nodenote></nodenote>
+                  <nodes>
+                    <node id="36" posx="244.60401916503986" posy="200.06206766764433" width="270" height="164" side="right" fold="false" treesize="164" color="#bf3fb8" colorroot="false" layout="Horizontal" group="false">
+                      <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                      <nodename posx="284.60401916503986" posy="240.06206766764433" maxwidth="200">
+                        <text data="Option to add virtual splits if terminal width and height is available"/>
+                      </nodename>
+                      <nodenote></nodenote>
+                      <nodes>
+                        <node id="18" posx="614.60401916503963" posy="210.56206766764433" width="210" height="143" side="right" fold="false" treesize="143" color="#bf3fb8" colorroot="false" layout="Horizontal" group="false">
+                          <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="8" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                          <nodename posx="654.60401916503963" posy="250.56206766764433" maxwidth="200">
+                            <text data="Would it be possible with NCurses?"/>
+                          </nodename>
+                          <nodenote></nodenote>
+                        </node>
+                      </nodes>
+                    </node>
+                  </nodes>
+                </node>
+                <node id="19" posx="-11.395980834960596" posy="369.56206766764467" width="176" height="90" side="right" fold="false" treesize="101" color="#bf3fb8" colorroot="false" layout="Horizontal" sticker="multiple_devices" group="false">
+                  <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="8" nodefill="true" nodemargin="1" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                  <nodename posx="63.604019165039404" posy="404.06206766764467" maxwidth="200">
+                    <text data="Telegram"/>
+                  </nodename>
+                  <nodenote></nodenote>
+                  <nodes>
+                    <node id="48" posx="264.60401916503895" posy="364.06206766764467" width="150" height="101" side="right" fold="false" treesize="101" color="#bf3fb8" colorroot="false" layout="Horizontal" group="false">
+                      <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                      <nodename posx="304.60401916503895" posy="404.06206766764467" maxwidth="200">
+                        <text data="Emojis?"/>
+                      </nodename>
+                      <nodenote></nodenote>
+                    </node>
+                  </nodes>
+                </node>
+              </nodes>
+            </node>
+            <node id="20" posx="-247.39598083495719" posy="470.56206766764558" width="246" height="90" side="right" fold="false" treesize="101" color="#f37329" colorroot="true" layout="Horizontal" sticker="panorama" group="false">
+              <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="8" nodefill="true" nodemargin="1" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+              <nodename posx="-172.39598083495719" posy="505.06206766764558" maxwidth="200">
+                <text data="GUI Application"/>
+              </nodename>
+              <nodenote></nodenote>
+              <nodes>
+                <node id="21" posx="98.604019165039176" posy="465.06206766764558" width="240" height="101" side="right" fold="false" treesize="101" color="#f37329" colorroot="false" layout="Horizontal" group="false">
+                  <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="8" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                  <nodename posx="138.60401916503918" posy="505.06206766764558" maxwidth="200">
+                    <text data="Built with Godot"/>
+                  </nodename>
+                  <nodenote></nodenote>
+                </node>
+              </nodes>
+            </node>
+            <node id="15" posx="-247.395980834959" posy="767.06206766764308" width="156" height="90" side="right" fold="false" treesize="492.00000000000028" color="#f9c440" colorroot="true" layout="Horizontal" sticker="filing_cabinet" group="false">
+              <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="8" nodefill="true" nodemargin="1" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+              <nodename posx="-172.395980834959" posy="801.56206766764308" maxwidth="200">
+                <text data="Server"/>
+              </nodename>
+              <nodenote></nodenote>
+              <nodes>
+                <node id="23" posx="8.6040191650412225" posy="566.06206766764285" width="270" height="122" side="right" fold="false" treesize="122" color="#f9c440" colorroot="false" layout="Horizontal" group="false">
+                  <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="8" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                  <nodename posx="48.604019165041223" posy="606.06206766764285" maxwidth="200">
+                    <text data="Lock for every entity in the world"/>
+                  </nodename>
+                  <nodenote></nodenote>
+                </node>
+                <node id="29" posx="8.6040191650394036" posy="698.5620676676433" width="270" height="143" side="right" fold="false" treesize="163.99999999999989" color="#f9c440" colorroot="false" layout="Horizontal" group="false">
+                  <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="8" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                  <nodename posx="48.604019165039404" posy="738.5620676676433" maxwidth="200">
+                    <text data="Every player and NPC posts an action to the server"/>
+                  </nodename>
+                  <nodenote></nodenote>
+                  <nodes>
+                    <node id="30" posx="378.60401916503986" posy="688.0620676676433" width="260" height="164" side="right" fold="false" treesize="163.99999999999994" color="#f9c440" colorroot="false" layout="Horizontal" group="false">
+                      <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="10" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                      <nodename posx="418.60401916503986" posy="728.0620676676433" maxwidth="200">
+                        <text data="The server takes rounds to execute NPC's and Player's actions"/>
+                      </nodename>
+                      <nodenote></nodenote>
+                    </node>
+                  </nodes>
+                </node>
+                <node id="31" posx="8.6040191650412225" posy="852.06206766764319" width="270" height="206" side="right" fold="false" treesize="206" color="#f9c440" colorroot="false" layout="Horizontal" group="false">
+                  <style branchmargin="100" linktype="curved" linkwidth="4" linkarrow="false" linkdash="solid" nodeborder="rounded" nodewidth="200" nodeborderwidth="4" nodefill="true" nodemargin="20" nodepadding="20" nodefont="Source Code Pro 12" nodemarkup="true"/>
+                  <nodename posx="48.604019165041223" posy="892.06206766764319" maxwidth="200">
+                    <text data="Different translator classes to send information to and retrieve info from GUI, Telnet and Telegram"/>
+                  </nodename>
+                  <nodenote></nodenote>
+                </node>
+              </nodes>
+            </node>
+          </nodes>
+        </node>
+      </nodes>
+    </node>
+  </nodes>
+  <groups/>
+  <stickers/>
+</minder>
