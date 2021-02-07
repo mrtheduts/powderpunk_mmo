@@ -12,7 +12,7 @@
 
 #include "telnet_connection.h"
 
-#include <DebugTools/assert_debug_print.h>
+#include <Utils/DebugTools/assert_debug_print.h>
 
 #include <string>
 
@@ -99,10 +99,6 @@ void TelnetConnection::Write(telnetpp::element const& data) {
 }
 
 void TelnetConnection::RawWrite(telnetpp::bytes data) {
-  std::cout << "Enviando:[ ";
-  for (const auto& i : data) printf("%3u ", i);
-  printf("]\n");
-
   boost::asio::async_write(
       socket_, boost::asio::buffer(data.data(), data.size_bytes()),
       boost::bind(&TelnetConnection::HandleWrite, shared_from_this(),
@@ -131,10 +127,6 @@ void TelnetConnection::Receive() {
 
   num_recv_bytes =
       socket_.read_some(boost::asio::buffer(buffer, INPUT_BUFFER_SIZE), error);
-
-  std::cout << "Recebido: [ ";
-  for (size_t i = 0; i < num_recv_bytes; ++i) printf("%3u ", buffer[i]);
-  printf("]\n");
 
   if (error == boost::asio::error::eof) {
     throw boost::system::system_error(boost::asio::error::eof);

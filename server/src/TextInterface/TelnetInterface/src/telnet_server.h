@@ -9,6 +9,7 @@
  *  (C) Copyright 2020 Eduardo "mrtheduts" Souza All Rights Reserved
  *
  */
+
 #ifndef TELNET_SERVER_H
 #define TELNET_SERVER_H
 
@@ -25,6 +26,9 @@
 
 using boost::asio::ip::tcp;
 
+/*
+ * Responsible for listening to and creating Telnet connections.
+ */
 class TelnetServer {
  public:
   TelnetServer();
@@ -34,18 +38,29 @@ class TelnetServer {
   void Start();
 
  private:
+  /* Starts accepting loop for new connections. */
   void StartAccept();
+
+  /* Binds new_connection to the new connection in a new thread. */
   void HandleAccept(TelnetConnection::Ptr new_connection,
                     const boost::system::error_code &error);
 
+  /* Boost IO context handler for thread-safe operations within it. */
   boost::asio::io_context io_context_;
 
+  /* TODO: I'm sure I had plans with it. Now, I have no clue anymore. */
   boost::thread *t_start_accept_;
+
+  /* Responsible for asynchronously accepting new tcp connections */
   tcp::acceptor *acceptor_;
 
+  /* Thread group responsible for managing TelnetConnections threads. */
   boost::thread_group t_curr_connections;
+
+  /* Thread group responsible for managing TelnetConnections. */
   std::vector<TelnetConnection::Ptr> curr_connections;
 
+  /* Telnetpp session handler - Server side */
   telnetpp::session telnet_session_;
 };
 

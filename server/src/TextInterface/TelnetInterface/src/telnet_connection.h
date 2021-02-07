@@ -9,6 +9,7 @@
  *  (C) Copyright 2020 Eduardo "mrtheduts" Souza All Rights Reserved
  *
  */
+
 #ifndef TELNET_CONNECTION_H
 #define TELNET_CONNECTION_H
 
@@ -22,8 +23,8 @@
 #include <string>
 #include <telnetpp/core.hpp>
 #include <telnetpp/options/echo/server.hpp>
-#include <telnetpp/options/terminal_type/client.hpp>
 #include <telnetpp/options/naws/client.hpp>
+#include <telnetpp/options/terminal_type/client.hpp>
 #include <telnetpp/session.hpp>
 #include <vector>
 
@@ -36,7 +37,9 @@ class TelnetConnection
   static Ptr CreatePtr(boost::asio::io_context& io_context);
   ~TelnetConnection();
 
+  /* Get Telnet connection socket */
   tcp::socket& GetSocket();
+
   void Start();
 
   void ActivateNoEcho();
@@ -45,6 +48,7 @@ class TelnetConnection
  private:
   TelnetConnection(boost::asio::io_context& io_context);
 
+  /* Install default options on client session */
   void SetupOptions();
 
   void Send(std::string message);
@@ -54,14 +58,15 @@ class TelnetConnection
 
   void Receive();
   void ReadFromClient(telnetpp::bytes data);
-
   void HandleRead(const boost::system::error_code& error, size_t recv_len);
 
+  /* Telnetpp session handler - Client side */
   telnetpp::session telnet_session_;
   telnetpp::options::echo::server t_echo_server_;
   telnetpp::options::naws::client t_naws_client_;
   telnetpp::options::terminal_type::client t_termtype_client_;
 
+  /* Socket file descriptor to raw async-write to and sync read from. */
   tcp::socket socket_;
 };
 

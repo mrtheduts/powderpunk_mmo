@@ -14,8 +14,8 @@ erDiagram
     TELNET-SERVER ||--|{ TELNET-CONNECTION: "creates"
     USER-ON-TELNET ||--|| TELNET-CONNECTION: "connects to"
 
-    GUI-CONNECTION }|--|| GAME-ENGINE: "commands"
-    TELNET-CONNECTION }|--|| GAME-ENGINE: "commands"
+    GUI-CONNECTION }|--|| GAME-ENGINE: "adds command to pool"
+    TELNET-CONNECTION }|--|| GAME-ENGINE: "adds command to pool"
 ```
 ## Description
 ### USER-ON-[CLIENT]

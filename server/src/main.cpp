@@ -10,8 +10,8 @@
  *
  */
 
-#include <DebugTools/assert_debug_print.h>
 #include <TelnetInterface/telnet_interface.h>
+#include <Utils/DebugTools/assert_debug_print.h>
 
 #include <boost/thread.hpp>
 #include <iostream>

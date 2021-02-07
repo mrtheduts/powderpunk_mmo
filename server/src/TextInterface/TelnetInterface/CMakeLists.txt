@@ -3,7 +3,10 @@
 #####################################################################
 
 cmake_minimum_required(VERSION 3.17)
-project(telnetinterface LANGUAGES CXX)
+
+set(project TelnetInterface)
+
+project(${project} LANGUAGES CXX)
 
 set(TELNETINTERFACE_PUBLIC_HEADERS
         include/TelnetInterface/telnet_interface.h
@@ -22,11 +25,19 @@ set(TELNETINTERFACE_PRIVATE_SOURCE
         src/telnet_server.cpp
 )
 
-add_library(TelnetInterface 
+add_library(${project} 
         ${TELNETINTERFACE_PUBLIC_HEADERS}
         ${TELNETINTERFACE_PUBLIC_SOURCE}
         ${TELNETINTERFACE_PRIVATE_HEADERS}
         ${TELNETINTERFACE_PRIVATE_SOURCE}
+)
+
+target_include_directories(${project}
+    PUBLIC 
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>
+        $<INSTALL_INTERFACE:include>
+    PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}/src
 )
 
 #####################################################################
@@ -40,21 +51,13 @@ find_package(Boost COMPONENTS thread REQUIRED)
 include_directories(${BOOST_INCLUDE_DIRS})
 
 find_library(telnetpp SHARED IMPORTED)
-find_library(DebugTools SHARED IMPORTED)
+find_library(TextInputTranslator SHARED IMPORTED)
 
 # Link it to libs
-target_link_libraries(TelnetInterface
+target_link_libraries(${project}
     PUBLIC 
-		telnetpp
         Boost::thread
-        DebugTools
-)
-
-target_include_directories(TelnetInterface
-    PUBLIC 
-        $<INSTALL_INTERFACE:include>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>
-    PRIVATE
-        ${CMAKE_CURRENT_LIST_DIR}/src
+		telnetpp
+        TextInputTranslator
 )
 

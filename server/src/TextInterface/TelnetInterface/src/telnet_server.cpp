@@ -12,7 +12,7 @@
 
 #include "telnet_server.h"
 
-#include <DebugTools/assert_debug_print.h>
+#include <Utils/DebugTools/assert_debug_print.h>
 
 #include <boost/bind.hpp>
 
