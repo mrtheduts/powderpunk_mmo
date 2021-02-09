@@ -38,8 +38,9 @@ include_directories(${BOOST_INCLUDE_DIRS})
 #####################################################################
 # Building local libs 
 #####################################################################
-add_subdirectory(Utils)
+add_subdirectory(DataStructures)
 add_subdirectory(TextInterface)
+add_subdirectory(Utils)
 
 #####################################################################
 # Adding local libs 

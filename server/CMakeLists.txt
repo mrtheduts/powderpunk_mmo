@@ -35,3 +35,10 @@ add_subdirectory(external)
 #####################################################################
 add_subdirectory(src)
 
+#####################################################################
+# Copying config files
+#####################################################################
+file(
+    COPY ${CMAKE_CURRENT_SOURCE_DIR}/configs/
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin/configs/
+)

@@ -1,11 +1,11 @@
 #####################################################################
-# Creating TelnetInterface library target
+# Creating TextInterface library target
 #####################################################################
 
 cmake_minimum_required(VERSION 3.17)
 
-#####################################################################
-# Building local libs 
-#####################################################################
+set(project TextInterface)
+project(${project} LANGUAGES CXX)
+
 add_subdirectory(TelnetInterface)
-add_subdirectory(TextInputTranslator)
+

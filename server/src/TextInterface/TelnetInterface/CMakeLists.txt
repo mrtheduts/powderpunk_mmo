@@ -51,13 +51,13 @@ find_package(Boost COMPONENTS thread REQUIRED)
 include_directories(${BOOST_INCLUDE_DIRS})
 
 find_library(telnetpp SHARED IMPORTED)
-find_library(TextInputTranslator SHARED IMPORTED)
+find_library(Utils SHARED IMPORTED)
 
 # Link it to libs
 target_link_libraries(${project}
     PUBLIC 
         Boost::thread
 		telnetpp
-        TextInputTranslator
+        Utils
 )
 
