@@ -15,20 +15,24 @@
 #include <Utils/DebugTools/assert_debug_print.h>
 
 #include <boost/bind.hpp>
+#include <boost/fiber/all.hpp>
+#include <boost/smart_ptr/make_shared_object.hpp>
 
-TelnetServer::TelnetServer() {
-  acceptor_ =
-      new tcp::acceptor(io_context_, tcp::endpoint(tcp::v4(), DEFAULT_PORT));
+#include "telnet_connection.h"
+
+TelnetServer::TelnetServer()
+    : acceptor_(io_context_, tcp::endpoint(tcp::v4(), DEFAULT_PORT)) {
+  next_id_ = 0;
 }
 
-TelnetServer::TelnetServer(unsigned int port) {
-  acceptor_ = new tcp::acceptor(io_context_, tcp::endpoint(tcp::v4(), port));
+TelnetServer::TelnetServer(unsigned int port)
+    : acceptor_(io_context_, tcp::endpoint(tcp::v4(), port)) {
+  next_id_ = 0;
 }
 
 TelnetServer::~TelnetServer() {
   DEBUG("Vou deletar o TelnetServer...");
   t_curr_connections.join_all();
-  delete (acceptor_);
 }
 
 void TelnetServer::Start() {
@@ -37,26 +41,53 @@ void TelnetServer::Start() {
 }
 
 void TelnetServer::StartAccept() {
-  TelnetConnection::Ptr new_connection;
-  new_connection = TelnetConnection::CreatePtr(io_context_);
+  acceptor_.async_accept([this](std::error_code error,
+                                boost::asio::ip::tcp::socket new_socket) {
+    if (!error) {
+      boost::shared_ptr<TelnetConnection> new_connection =
+          boost::make_shared<TelnetConnection>(
+              io_context_, std::move(new_socket), next_id_++);
+      boost::thread t_new_connection(&TelnetConnection::Start, new_connection);
 
-  acceptor_->async_accept(
-      new_connection->GetSocket(),
-      boost::bind(&TelnetServer::HandleAccept, this, new_connection,
-                  boost::asio::placeholders::error));
+      curr_connections.push_back(new_connection);
+      t_curr_connections.add_thread(&t_new_connection);
+    } else {
+      DEBUG(error.message());
+    }
+
+    StartAccept();
+  });
 }
 
-void TelnetServer::HandleAccept(TelnetConnection::Ptr new_connection,
-                                const boost::system::error_code& error) {
-  if (!error) {
-    boost::thread t_new_connection(&TelnetConnection::Start,
-                                   &(*new_connection));
+/* void TelnetServer::HandleAccept(const boost::system::error_code &error, */
+/*                                 boost::asio::ip::tcp::socket new_socket) { */
+/*   if (!error) { */
+/*     boost::shared_ptr<TelnetConnection> new_connection = */
+/*         boost::make_shared<TelnetConnection>(io_context_,
+ * std::move(new_socket), */
+/*                                              next_id_++); */
+/*     boost::thread t_new_connection(&TelnetConnection::Start, new_connection);
+ */
 
-    curr_connections.push_back(new_connection);
-    t_curr_connections.add_thread(&t_new_connection);
-  } else {
-    DEBUG(error.message());
-  }
+/*     curr_connections.push_back(new_connection); */
+/*     t_curr_connections.add_thread(&t_new_connection); */
+/*   } else { */
+/*     DEBUG(error.message()); */
+/*   } */
 
-  this->StartAccept();
-}
+/*   StartAccept(); */
+/* } */
+/* void TelnetServer::HandleAccept(TelnetConnection::Ptr new_connection, */
+/*                                 const boost::system::error_code& error) { */
+/*   if (!error) { */
+/*     boost::thread t_new_connection(&TelnetConnection::Start, */
+/*                                    &(*new_connection)); */
+
+/*     curr_connections.push_back(new_connection); */
+/*     t_curr_connections.add_thread(&t_new_connection); */
+/*   } else { */
+/*     DEBUG(error.message()); */
+/*   } */
+
+/*   this->StartAccept(); */
+/* } */

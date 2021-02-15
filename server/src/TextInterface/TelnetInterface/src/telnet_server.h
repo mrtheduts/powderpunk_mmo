@@ -13,6 +13,7 @@
 #ifndef TELNET_SERVER_H
 #define TELNET_SERVER_H
 
+#include <boost/smart_ptr/shared_ptr.hpp>
 #define DEFAULT_PORT 22222
 
 #include <vector>
@@ -41,10 +42,6 @@ class TelnetServer {
   /* Starts accepting loop for new connections. */
   void StartAccept();
 
-  /* Binds new_connection to the new connection in a new thread. */
-  void HandleAccept(TelnetConnection::Ptr new_connection,
-                    const boost::system::error_code &error);
-
   /* Boost IO context handler for thread-safe operations within it. */
   boost::asio::io_context io_context_;
 
@@ -52,13 +49,15 @@ class TelnetServer {
   boost::thread *t_start_accept_;
 
   /* Responsible for asynchronously accepting new tcp connections */
-  tcp::acceptor *acceptor_;
+  tcp::acceptor acceptor_;
+
+  unsigned long int next_id_;
 
   /* Thread group responsible for managing TelnetConnections threads. */
   boost::thread_group t_curr_connections;
 
   /* Thread group responsible for managing TelnetConnections. */
-  std::vector<TelnetConnection::Ptr> curr_connections;
+  std::vector<boost::shared_ptr<TelnetConnection>> curr_connections;
 
   /* Telnetpp session handler - Server side */
   telnetpp::session telnet_session_;

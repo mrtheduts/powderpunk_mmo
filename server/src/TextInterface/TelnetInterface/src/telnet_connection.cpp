@@ -16,14 +16,12 @@
 
 #include <string>
 
-TelnetConnection::Ptr TelnetConnection::CreatePtr(
-    boost::asio::io_context& io_context) {
-  return Ptr(new TelnetConnection(io_context));
-}
+TelnetConnection::TelnetConnection(boost::asio::io_context& io_context,
+                                   boost::asio::ip::tcp::socket socket,
+                                   unsigned long int id)
+    : BasicConnection<std::string>(io_context, std::move(socket), id) {}
 
 TelnetConnection::~TelnetConnection() {}
-
-tcp::socket& TelnetConnection::GetSocket() { return socket_; }
 
 void TelnetConnection::Start() {
   DEBUG("Starting TelnetConnection for IP: ");
@@ -53,9 +51,6 @@ void TelnetConnection::ActivateNoEcho() {
 void TelnetConnection::DeactivateNoEcho() {
   t_echo_server_.deactivate([this](telnetpp::element elem) { Write(elem); });
 }
-
-TelnetConnection::TelnetConnection(boost::asio::io_context& io_context)
-    : telnet_session_(), socket_(io_context) {}
 
 void TelnetConnection::SetupOptions() {
   t_naws_client_.on_window_size_changed.connect(
@@ -87,7 +82,7 @@ void TelnetConnection::SetupOptions() {
   t_termtype_client_.activate(write_continuation);
 }
 
-void TelnetConnection::Send(std::string message) {
+void TelnetConnection::Send(const std::string& message) {
   std::vector<uint8_t> tmp_vector(message.begin(), message.end());
   telnetpp::element message_bytes(tmp_vector);
 
@@ -101,7 +96,7 @@ void TelnetConnection::Write(telnetpp::element const& data) {
 void TelnetConnection::RawWrite(telnetpp::bytes data) {
   boost::asio::async_write(
       socket_, boost::asio::buffer(data.data(), data.size_bytes()),
-      boost::bind(&TelnetConnection::HandleWrite, shared_from_this(),
+      boost::bind(&TelnetConnection::HandleWrite, this,
                   boost::asio::placeholders::error,
                   boost::asio::placeholders::bytes_transferred));
 }
@@ -118,6 +113,8 @@ void TelnetConnection::ReadFromClient(telnetpp::bytes data) {
   message.erase(std::remove(message.begin(), message.end(), 10), message.end());
   message.erase(std::remove(message.begin(), message.end(), 13), message.end());
   std::cout << message << std::endl;
+
+  Send("Server: " + message + "\n");
 }
 
 void TelnetConnection::Receive() {
