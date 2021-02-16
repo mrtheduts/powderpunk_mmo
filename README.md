@@ -8,9 +8,9 @@ This project is intended to use a C++20 compiler and it requires the following i
 - [CMake](https://cmake.org) (used 3.17)
 
 It also requires the following submodules:
-- [Boost](https://github.com/boostorg/boost) (boost-1.71.0)
-- [gsl-lite](https://github.com/gsl-lite/gsl-lite) (v0.37.0)
-- [Telnet++](https://github.com/KazDragon/telnetpp) (master)
+- [Boost](https://github.com/boostorg/boost) (boost-1.75.0)
+- [gsl-lite](https://github.com/gsl-lite/gsl-lite) (v0.34.0)
+- [Telnet++](https://github.com/KazDragon/telnetpp) (v2.1.2)
 
 ## How to clone it:
 As the repository has submodules, it is required you clone this project with the following command:
