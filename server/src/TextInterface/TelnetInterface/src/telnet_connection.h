@@ -59,6 +59,7 @@ class TelnetConnection : public BasicConnection<std::string> {
   telnetpp::options::echo::server t_echo_server_;  // Echo on user screen
   telnetpp::options::naws::client t_naws_client_;  // Terminal Size
   telnetpp::options::terminal_type::client t_termtype_client_;  // Terminal type
+  telnetpp::byte buffer[INPUT_BUFFER_SIZE];
 };
 
 #endif

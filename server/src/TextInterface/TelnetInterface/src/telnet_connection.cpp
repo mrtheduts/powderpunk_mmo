@@ -14,6 +14,7 @@
 
 #include <Utils/DebugTools/assert_debug_print.h>
 
+#include <boost/fiber/operations.hpp>
 #include <string>
 
 TelnetConnection::TelnetConnection(boost::asio::io_context& io_context,
@@ -31,8 +32,10 @@ void TelnetConnection::Start() {
   SetupOptions();
 
   try {
+    /* Receive(); */
     while (1) {
-      Receive();
+      // TODO: ADD LOCK TO WAIT FOR NEW INPUT
+      boost::this_fiber::yield();
     }
   } catch (boost::system::system_error error) {
     if (error.code() == boost::asio::error::eof) {
@@ -118,23 +121,28 @@ void TelnetConnection::ReadFromClient(telnetpp::bytes data) {
 }
 
 void TelnetConnection::Receive() {
-  boost::system::error_code error;
-  telnetpp::byte buffer[INPUT_BUFFER_SIZE];
-  size_t num_recv_bytes;
+  /* boost::system::error_code error; */
+  /* telnetpp::byte buffer[INPUT_BUFFER_SIZE]; */
+  /* size_t num_recv_bytes = 0; */
 
-  num_recv_bytes =
-      socket_.read_some(boost::asio::buffer(buffer, INPUT_BUFFER_SIZE), error);
-
-  if (error == boost::asio::error::eof) {
-    throw boost::system::system_error(boost::asio::error::eof);
-  }
-
-  telnet_session_.receive(
-      telnetpp::bytes{buffer, num_recv_bytes},
-      [this](telnetpp::bytes data,
-             std::function<void(telnetpp::bytes)> const& /*send*/) {
-        ReadFromClient(data);
-      },
-      [this](telnetpp::bytes data) { RawWrite(data); });
+  socket_.async_receive(
+      boost::asio::buffer(buffer, INPUT_BUFFER_SIZE),
+      [this](const boost::system::error_code& error, size_t num_recv_bytes) {
+        if (error == boost::asio::error::eof) {
+          std::cout << "Connection closed by client\n";
+          throw boost::system::system_error(boost::asio::error::eof);
+        }
+        telnet_session_.receive(
+            telnetpp::bytes{buffer, num_recv_bytes},
+            [this](telnetpp::bytes data,
+                   std::function<void(telnetpp::bytes)> const& /*send*/) {
+              ReadFromClient(data);
+            },
+            [this](telnetpp::bytes data) { RawWrite(data); });
+        Receive();
+      });
+  /* num_recv_bytes += */
+  /*     socket_.read_some(boost::asio::buffer(buffer, INPUT_BUFFER_SIZE),
+   * error); */
 }
 

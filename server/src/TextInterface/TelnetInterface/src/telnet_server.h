@@ -13,7 +13,11 @@
 #ifndef TELNET_SERVER_H
 #define TELNET_SERVER_H
 
+#include <boost/fiber/condition_variable.hpp>
+#include <boost/fiber/mutex.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
+
+#include "Utils/BasicConnection/ts_queue.h"
 #define DEFAULT_PORT 22222
 
 #include <vector>
@@ -41,12 +45,13 @@ class TelnetServer {
  private:
   /* Starts accepting loop for new connections. */
   void StartAccept();
+  void FiberManager();
 
   /* Boost IO context handler for thread-safe operations within it. */
   boost::asio::io_context io_context_;
 
   /* TODO: I'm sure I had plans with it. Now, I have no clue anymore. */
-  boost::thread *t_start_accept_;
+  boost::shared_ptr<boost::thread> t_connections_;
 
   /* Responsible for asynchronously accepting new tcp connections */
   tcp::acceptor acceptor_;
@@ -54,10 +59,12 @@ class TelnetServer {
   unsigned long int next_id_;
 
   /* Thread group responsible for managing TelnetConnections threads. */
-  boost::thread_group t_curr_connections;
+  /* boost::thread_group t_curr_connections; */
 
   /* Thread group responsible for managing TelnetConnections. */
-  std::vector<boost::shared_ptr<TelnetConnection>> curr_connections;
+  TSQueue<boost::shared_ptr<TelnetConnection>> new_conns_;
+  boost::fibers::mutex m_new_conns_;
+  boost::fibers::condition_variable cv_new_conns_;
 
   /* Telnetpp session handler - Server side */
   telnetpp::session telnet_session_;
