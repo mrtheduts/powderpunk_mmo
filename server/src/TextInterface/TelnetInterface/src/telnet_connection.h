@@ -14,6 +14,7 @@
 #define TELNET_CONNECTION_H
 
 #define INPUT_BUFFER_SIZE 1024
+#define OUTPUT_BUFFER_SIZE 1024
 
 #include <Utils/BasicConnection/basic_connection.h>
 
@@ -30,20 +31,29 @@
 #include <telnetpp/session.hpp>
 #include <vector>
 
+static const char WELCOME_BANNER[] =
+    "Welcome to PowderPunk Test Version!\nWhat is your name?\n";
+
+static const char PROMPT[] = "\nsay > ";
+
 class TelnetConnection : public BasicConnection<std::string> {
  public:
   TelnetConnection(boost::asio::io_context& io_context,
                    boost::asio::ip::tcp::socket socket, unsigned long int id);
   ~TelnetConnection();
 
-  void Start();
-  void Send(const std::string& message);
+  void StartReceive();
+  void StartSend();
   void Receive();
+  void AddToSendQueue(const std::string& message);
 
   void ActivateNoEcho();
   void DeactivateNoEcho();
 
  protected:
+  bool Authenticate();
+
+  void Send(const std::string& message);
   /* Install default options on client session */
   void SetupOptions();
 
@@ -51,6 +61,7 @@ class TelnetConnection : public BasicConnection<std::string> {
   void RawWrite(telnetpp::bytes data);
   void HandleWrite(const boost::system::error_code& error, size_t bytes_transf);
 
+  std::string Read();
   void ReadFromClient(telnetpp::bytes data);
   void HandleRead(const boost::system::error_code& error, size_t recv_len);
 
@@ -59,7 +70,9 @@ class TelnetConnection : public BasicConnection<std::string> {
   telnetpp::options::echo::server t_echo_server_;  // Echo on user screen
   telnetpp::options::naws::client t_naws_client_;  // Terminal Size
   telnetpp::options::terminal_type::client t_termtype_client_;  // Terminal type
-  telnetpp::byte buffer[INPUT_BUFFER_SIZE];
+  telnetpp::byte input_buffer_[INPUT_BUFFER_SIZE];
+
+  std::string user_name_;
 };
 
 #endif

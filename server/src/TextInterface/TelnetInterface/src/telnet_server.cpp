@@ -18,6 +18,7 @@
 #include <boost/fiber/algo/round_robin.hpp>
 #include <boost/fiber/all.hpp>
 #include <boost/fiber/operations.hpp>
+#include <boost/log/trivial.hpp>
 #include <boost/smart_ptr/make_shared_object.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
 
@@ -39,13 +40,18 @@ TelnetServer::~TelnetServer() {
 }
 
 void TelnetServer::Start() {
-  /* t_connections_ = */
-  /*     boost::make_shared<boost::thread>(&TelnetServer::FiberManager, this);
-   */
+  t_connections_ =
+      boost::make_shared<boost::thread>(&TelnetServer::FiberManager, this);
   StartAccept();
-  io_context_.run();
+  io_context_.run();  // Should be last: it takes control of the thread
 }
 
+/* StartAccept() -> void
+ *
+ * Asynchronously accepts new connection and adds it to the new connection
+ * queue, calling its Receive function. At the end of the callback, it calls
+ * itself again to maintain the main "recursive" loop.
+ */
 void TelnetServer::StartAccept() {
   acceptor_.async_accept(
       [this](std::error_code error, boost::asio::ip::tcp::socket new_socket) {
@@ -55,12 +61,14 @@ void TelnetServer::StartAccept() {
                   io_context_, std::move(new_socket), next_id_++);
 
           new_conns_.Push(new_conn);
-          std::cout << "Pushed connection " << new_conn->GetId()
-                    << " to tsqueue!\n";
-          new_conn->Receive();
-          cv_new_conns_.notify_one();
+          BOOST_LOG_TRIVIAL(info) << "[TelnetServer] Pushed new connection ("
+                                  << new_conn->GetId() << ") to new_conns_";
+          cv_new_conns_.notify_one();  // He's the one supposed to
+                                       // initialize the receive loop
+
+          new_conn->Receive();  // It's here to stay in the io_context thread
         } else {
-          DEBUG(error.message());
+          BOOST_LOG_TRIVIAL(error) << "[TelnetServer] " << error.message();
         }
 
         StartAccept();
@@ -71,13 +79,21 @@ void TelnetServer::FiberManager() {
   while (true) {
     std::unique_lock<boost::fibers::mutex> lock_new_conns(m_new_conns_);
     cv_new_conns_.wait(lock_new_conns);
+    BOOST_LOG_TRIVIAL(debug) << "[TelnetServer] Received new connection(s)";
+
     while (!new_conns_.IsEmpty()) {
       boost::shared_ptr<TelnetConnection> new_conn = new_conns_.Pop();
-      boost::make_shared<boost::fibers::fiber>(&TelnetConnection::Start,
+
+      // TODO: store these fibers somewhere
+      boost::make_shared<boost::fibers::fiber>(&TelnetConnection::StartReceive,
                                                new_conn)
           ->detach();
-      std::cout << "Started connection " << new_conn->GetId() << " !\n";
-    }
+      boost::make_shared<boost::fibers::fiber>(&TelnetConnection::StartSend,
+                                               new_conn)
+          ->detach();
+      BOOST_LOG_TRIVIAL(info) << "[TelnetServer] Started new connection ("
+                              << new_conn->GetId() << ")";
+    };
   }
 }
 

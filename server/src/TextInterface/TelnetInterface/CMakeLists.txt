@@ -47,7 +47,7 @@ set(BOOST_ROOT ${CMAKE_SOURCE_DIR}/external/boost_install)
 set(BOOST_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/external/boost_install/include)
 set(BOOST_LIBRARY_DIRS ${CMAKE_SOURCE_DIR}/external/boost_install/lib)
 
-find_package(Boost COMPONENTS fiber thread REQUIRED)
+find_package(Boost COMPONENTS fiber thread log REQUIRED)
 include_directories(${BOOST_INCLUDE_DIRS})
 
 find_library(telnetpp SHARED IMPORTED)
@@ -58,6 +58,7 @@ target_link_libraries(${project}
     PUBLIC 
         Boost::fiber
         Boost::thread
+        Boost::log
 		telnetpp
         Utils
 )

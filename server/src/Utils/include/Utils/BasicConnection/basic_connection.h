@@ -15,6 +15,7 @@
 
 #include <boost/asio.hpp>
 #include <boost/enable_shared_from_this.hpp>
+#include <boost/fiber/condition_variable.hpp>
 
 #include "ts_queue.h"
 
@@ -30,16 +31,22 @@ class BasicConnection
   virtual ~BasicConnection(){};
 
   void Disconnect() {
-    if (IsConnected())
-      boost::asio::post(io_context_, [this] { socket_.close(); });
+    boost::asio::post(io_context_, [this] {
+      socket_.cancel();
+      socket_.close();
+    });
   }
   bool IsConnected() { return socket_.is_open(); }
   unsigned int GetId() { return id_; };
 
  private:
-  virtual void Start(){};
-  virtual void Send(const T& /* message */){};
+  virtual void StartReceive(){};
+  virtual void StartSend(){};
+  virtual T Read(){};
   virtual void Receive(){};
+  virtual void Send(const T& /* message */){};
+
+  virtual bool Authenticate(){};
 
  protected:
   boost::asio::io_context& io_context_;
@@ -47,7 +54,11 @@ class BasicConnection
 
   unsigned long int id_;
   TSQueue<T> received_msgs_;
+  boost::fibers::mutex m_new_received_msgs_;
+  boost::fibers::condition_variable cv_new_received_msgs_;
   TSQueue<T> msgs_to_send_;
+  boost::fibers::mutex m_new_msgs_to_send_;
+  boost::fibers::condition_variable cv_new_msgs_to_send_;
 };
 
 #endif
