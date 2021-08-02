@@ -10,9 +10,11 @@
  *
  */
 
+#include <GameServer/game_server.h>
 #include <TelnetInterface/telnet_interface.h>
 #include <Utils/DebugTools/assert_debug_print.h>
 
+#include <boost/smart_ptr/make_shared_object.hpp>
 #include <boost/thread.hpp>
 #include <iostream>
 
@@ -22,8 +24,11 @@ int main() {
   DEBUG("Debug mode activated.\n");
 
   try {
-    TelnetServer telnet_server;
-    boost::thread t_telnet_server(&TelnetServer::Start, &telnet_server);
+    spTelnetServer telnet_server = boost::make_shared<TelnetServer>(0);
+    boost::thread t_telnet_server(&TelnetServer::start, telnet_server);
+
+    GameServer game_server(0);
+    game_server.addTelnetServer(telnet_server);
 
     t_telnet_server.join();
 

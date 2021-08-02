@@ -13,14 +13,12 @@
 #ifndef TELNET_CONNECTION_H
 #define TELNET_CONNECTION_H
 
-#define INPUT_BUFFER_SIZE 1024
-#define OUTPUT_BUFFER_SIZE 1024
-
 #include <Utils/BasicConnection/basic_connection.h>
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <boost/enable_shared_from_this.hpp>
+#include <boost/fiber/condition_variable.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
 #include <string>
@@ -31,6 +29,9 @@
 #include <telnetpp/session.hpp>
 #include <vector>
 
+#define INPUT_BUFFER_SIZE 1024
+#define OUTPUT_BUFFER_SIZE 1024
+
 static const char WELCOME_BANNER[] =
     "Welcome to PowderPunk Test Version!\nWhat is your name?\n";
 
@@ -39,31 +40,37 @@ static const char PROMPT[] = "\nsay > ";
 class TelnetConnection : public BasicConnection<std::string> {
  public:
   TelnetConnection(boost::asio::io_context& io_context,
-                   boost::asio::ip::tcp::socket socket, unsigned long int id);
+                   boost::asio::ip::tcp::socket socket, unsigned long int id,
+                   unsigned long int server_id);
   ~TelnetConnection();
 
-  void StartReceive();
-  void StartSend();
-  void Receive();
-  void AddToSendQueue(const std::string& message);
+  void startReceive() override;
+  void startSend() override;
+  void receive() override;
 
-  void ActivateNoEcho();
-  void DeactivateNoEcho();
+  void addToSendQueue(const std::string& message);
+
+  void activateNoEcho();
+  void deactivateNoEcho();
+
+  std::string read() override;
 
  protected:
-  bool Authenticate();
-
-  void Send(const std::string& message);
   /* Install default options on client session */
-  void SetupOptions();
+  void setupOptions();
+  bool authenticate() override;
 
-  void Write(telnetpp::element const& data);
-  void RawWrite(telnetpp::bytes data);
-  void HandleWrite(const boost::system::error_code& error, size_t bytes_transf);
+  void send(const std::string& message) override;
 
-  std::string Read();
-  void ReadFromClient(telnetpp::bytes data);
-  void HandleRead(const boost::system::error_code& error, size_t recv_len);
+  void write(telnetpp::element const& data);
+  void rawWrite(telnetpp::bytes data);
+  void handleWrite(const boost::system::error_code& error, size_t bytes_transf);
+
+  std::string readPreAuth();
+  std::string read(boost::fibers::condition_variable& cv);
+
+  void readFromClient(telnetpp::bytes data);
+  void handleRead(const boost::system::error_code& error, size_t recv_len);
 
   /* Telnetpp session handler - Client side */
   telnetpp::session telnet_session_;
@@ -72,7 +79,11 @@ class TelnetConnection : public BasicConnection<std::string> {
   telnetpp::options::terminal_type::client t_termtype_client_;  // Terminal type
   telnetpp::byte input_buffer_[INPUT_BUFFER_SIZE];
 
+  boost::fibers::condition_variable cv_pre_auth_received_msgs_;
+
   std::string user_name_;
 };
+
+typedef boost::shared_ptr<TelnetConnection> spTelnetConnection;
 
 #endif

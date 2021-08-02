@@ -12,123 +12,113 @@
 
 #include "telnet_server.h"
 
+#include <DataStructures/user_command.h>
+#include <TextToCommand/text_to_command.h>
 #include <Utils/DebugTools/assert_debug_print.h>
 
 #include <boost/bind.hpp>
-#include <boost/fiber/algo/round_robin.hpp>
 #include <boost/fiber/all.hpp>
-#include <boost/fiber/operations.hpp>
 #include <boost/log/trivial.hpp>
 #include <boost/smart_ptr/make_shared_object.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
 
-#include "telnet_connection.h"
+TelnetServer::TelnetServer(unsigned int id)
+    : BasicServer(id),
+      next_id_{0},
+      acceptor_(io_context_, tcp::endpoint(tcp::v4(), DEFAULT_PORT)) {}
 
-TelnetServer::TelnetServer()
-    : acceptor_(io_context_, tcp::endpoint(tcp::v4(), DEFAULT_PORT)) {
-  next_id_ = 0;
-}
+TelnetServer::~TelnetServer() {}
 
-TelnetServer::TelnetServer(unsigned int port)
-    : acceptor_(io_context_, tcp::endpoint(tcp::v4(), port)) {
-  next_id_ = 0;
-}
+void TelnetServer::start() {
+  t_conn_auth_and_send_fibers_ = boost::make_shared<boost::thread>(
+      &TelnetServer::connAuthAndSendFibers, this);
+  t_conn_read_messages_fibers_ = boost::make_shared<boost::thread>(
+      &TelnetServer::readConnMessagesFibers, this);
 
-TelnetServer::~TelnetServer() {
-  DEBUG("Vou deletar o TelnetServer...");
-  /* t_curr_connections.join_all(); */
-}
-
-void TelnetServer::Start() {
-  t_connections_ =
-      boost::make_shared<boost::thread>(&TelnetServer::FiberManager, this);
-  StartAccept();
+  startAccept();
   io_context_.run();  // Should be last: it takes control of the thread
 }
 
-/* StartAccept() -> void
+/* StartAccept()
  *
  * Asynchronously accepts new connection and adds it to the new connection
  * queue, calling its Receive function. At the end of the callback, it calls
  * itself again to maintain the main "recursive" loop.
  */
-void TelnetServer::StartAccept() {
+void TelnetServer::startAccept() {
   acceptor_.async_accept(
       [this](std::error_code error, boost::asio::ip::tcp::socket new_socket) {
         if (!error) {
           boost::shared_ptr<TelnetConnection> new_conn =
               boost::make_shared<TelnetConnection>(
-                  io_context_, std::move(new_socket), next_id_++);
+                  io_context_, std::move(new_socket), next_id_++, id);
 
-          new_conns_.Push(new_conn);
+          q_auth_and_send_.push(new_conn);
+          q_read_messages_.push(new_conn);
           BOOST_LOG_TRIVIAL(info) << "[TelnetServer] Pushed new connection ("
-                                  << new_conn->GetId() << ") to new_conns_";
-          cv_new_conns_.notify_one();  // He's the one supposed to
-                                       // initialize the receive loop
+                                  << new_conn->id << ") to new_conns_";
+          cv_new_conns_.notify_all();  // He's the one supposed to
+                                       // alert the ConnAuthAndSendFibers and
+                                       // ReadConnMessages
 
-          new_conn->Receive();  // It's here to stay in the io_context thread
+          new_conn->receive();  // It's here to stay in the io_context thread
         } else {
           BOOST_LOG_TRIVIAL(error) << "[TelnetServer] " << error.message();
         }
 
-        StartAccept();
+        startAccept();
       });
 }
 
-void TelnetServer::FiberManager() {
+void TelnetServer::connAuthAndSendFibers() {
   while (true) {
-    std::unique_lock<boost::fibers::mutex> lock_new_conns(m_new_conns_);
+    std::unique_lock<boost::fibers::mutex> lock_new_conns(
+        q_auth_and_send_.q_f_mutex);
     cv_new_conns_.wait(lock_new_conns);
-    BOOST_LOG_TRIVIAL(debug) << "[TelnetServer] Received new connection(s)";
 
-    while (!new_conns_.IsEmpty()) {
-      boost::shared_ptr<TelnetConnection> new_conn = new_conns_.Pop();
+    while (!q_auth_and_send_.isEmpty()) {
+      boost::shared_ptr<TelnetConnection> new_conn = q_auth_and_send_.pop();
 
       // TODO: store these fibers somewhere
-      boost::make_shared<boost::fibers::fiber>(&TelnetConnection::StartReceive,
+      boost::make_shared<boost::fibers::fiber>(&TelnetConnection::startReceive,
                                                new_conn)
           ->detach();
-      boost::make_shared<boost::fibers::fiber>(&TelnetConnection::StartSend,
+      boost::make_shared<boost::fibers::fiber>(&TelnetConnection::startSend,
                                                new_conn)
           ->detach();
-      BOOST_LOG_TRIVIAL(info) << "[TelnetServer] Started new connection ("
-                              << new_conn->GetId() << ")";
+      BOOST_LOG_TRIVIAL(info)
+          << "[TelnetServer] Started new connection (" << new_conn->id << ")";
     };
   }
 }
 
-/* void TelnetServer::HandleAccept(const boost::system::error_code &error, */
-/*                                 boost::asio::ip::tcp::socket new_socket) {
- */
-/*   if (!error) { */
-/*     boost::shared_ptr<TelnetConnection> new_connection = */
-/*         boost::make_shared<TelnetConnection>(io_context_,
- * std::move(new_socket), */
-/*                                              next_id_++); */
-/*     boost::thread t_new_connection(&TelnetConnection::Start,
- * new_connection);
- */
+void TelnetServer::readConnMessagesFibers() {
+  while (true) {
+    std::unique_lock<boost::fibers::mutex> lock_new_conns(
+        q_read_messages_.q_f_mutex);
+    cv_new_conns_.wait(lock_new_conns);
 
-/*     curr_connections.push_back(new_connection); */
-/*     t_curr_connections.add_thread(&t_new_connection); */
-/*   } else { */
-/*     DEBUG(error.message()); */
-/*   } */
+    while (!q_read_messages_.isEmpty()) {
+      boost::shared_ptr<TelnetConnection> new_conn = q_read_messages_.pop();
 
-/*   StartAccept(); */
-/* } */
-/* void TelnetServer::HandleAccept(TelnetConnection::Ptr new_connection, */
-/*                                 const boost::system::error_code& error) {
- */
-/*   if (!error) { */
-/*     boost::thread t_new_connection(&TelnetConnection::Start, */
-/*                                    &(*new_connection)); */
+      // TODO: store these fibers somewhere
+      boost::make_shared<boost::fibers::fiber>(
+          &TelnetServer::sendNewMsgsToGameServer, this, new_conn)
+          ->detach();
+      BOOST_LOG_TRIVIAL(info)
+          << "[TelnetServer] Started new read from (" << new_conn->id << ")";
+    };
+  }
+}
 
-/*     curr_connections.push_back(new_connection); */
-/*     t_curr_connections.add_thread(&t_new_connection); */
-/*   } else { */
-/*     DEBUG(error.message()); */
-/*   } */
+void TelnetServer::sendNewMsgsToGameServer(
+    boost::shared_ptr<TelnetConnection> telnet_connection) {
+  while (true) {
+    std::string msg = telnet_connection->read();
+    boost::shared_ptr<UserCommand> usr_cmd =
+        msgToUsrCmd(telnet_connection->server_id, telnet_connection->id, msg);
+    q_usr_cmds_.fPush(usr_cmd);
+    q_usr_cmds_.q_cv.notify_one();
+  };
+}
 
-/*   this->StartAccept(); */
-/* } */

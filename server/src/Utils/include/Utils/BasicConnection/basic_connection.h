@@ -13,52 +13,55 @@
 #ifndef BASIC_CONNECTION_H
 #define BASIC_CONNECTION_H
 
+#include <Utils/TSStructures/ts_queue.h>
+
 #include <boost/asio.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/fiber/condition_variable.hpp>
 
-#include "ts_queue.h"
-
-template <typename T>
+template <class T>
 class BasicConnection
     : public boost::enable_shared_from_this<BasicConnection<T>> {
  public:
   BasicConnection(boost::asio::io_context& io_context,
-                  boost::asio::ip::tcp::socket socket, unsigned long int id)
-      : io_context_(io_context), socket_(std::move(socket)) {
-    id_ = id;
-  }
+                  boost::asio::ip::tcp::socket socket, unsigned int id,
+                  unsigned int server_id)
+      : id{id},
+        server_id{server_id},
+        io_context_(io_context),
+        socket_(std::move(socket)) {}
+
   virtual ~BasicConnection(){};
 
-  void Disconnect() {
+  void disconnect() {
     boost::asio::post(io_context_, [this] {
       socket_.cancel();
       socket_.close();
     });
   }
-  bool IsConnected() { return socket_.is_open(); }
-  unsigned int GetId() { return id_; };
+
+  bool isConnected() { return socket_.is_open(); }
+
+  unsigned int id;
+  unsigned int server_id;
 
  private:
-  virtual void StartReceive(){};
-  virtual void StartSend(){};
-  virtual T Read(){};
-  virtual void Receive(){};
-  virtual void Send(const T& /* message */){};
+  virtual void startReceive() = 0;
+  virtual void startSend() = 0;
+  virtual T read() = 0;
+  virtual void receive() = 0;
+  virtual void send(const T& /* message */) = 0;
 
-  virtual bool Authenticate(){};
+  virtual bool authenticate() = 0;
 
  protected:
   boost::asio::io_context& io_context_;
   boost::asio::ip::tcp::socket socket_;
 
-  unsigned long int id_;
+  bool authenticated_;
+
   TSQueue<T> received_msgs_;
-  boost::fibers::mutex m_new_received_msgs_;
-  boost::fibers::condition_variable cv_new_received_msgs_;
   TSQueue<T> msgs_to_send_;
-  boost::fibers::mutex m_new_msgs_to_send_;
-  boost::fibers::condition_variable cv_new_msgs_to_send_;
 };
 
 #endif

@@ -8,4 +8,5 @@ set(project TextInterface)
 project(${project} LANGUAGES CXX)
 
 add_subdirectory(TelnetInterface)
+add_subdirectory(TextToCommand)
 

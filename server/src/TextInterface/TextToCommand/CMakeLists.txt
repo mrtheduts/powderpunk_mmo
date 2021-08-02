@@ -1,35 +1,33 @@
 #####################################################################
-# Creating TelnetInterface library target
+# Creating TextToCommand library target
 #####################################################################
 
 cmake_minimum_required(VERSION 3.17)
 
-set(project TelnetInterface)
+set(project TextToCommand)
 
 project(${project} LANGUAGES CXX)
 
-set(TELNETINTERFACE_PUBLIC_HEADERS
-        include/TelnetInterface/telnet_interface.h
+set(TEXTTOCOMMAND_PUBLIC_HEADERS
+        include/TextToCommand/text_to_command.h
 )
 
-set(TELNETINTERFACE_PUBLIC_SOURCE
+set(TEXTTOCOMMAND_PUBLIC_SOURCE
 )
 
-set(TELNETINTERFACE_PRIVATE_HEADERS
-        src/telnet_connection.h
-        src/telnet_server.h
+set(TEXTTOCOMMAND_PRIVATE_HEADERS
+        src/text_to_command.h
 )
 
-set(TELNETINTERFACE_PRIVATE_SOURCE
-        src/telnet_connection.cpp
-        src/telnet_server.cpp
+set(TEXTTOCOMMAND_PRIVATE_SOURCE
+        src/text_to_command.cpp
 )
 
 add_library(${project} 
-        ${TELNETINTERFACE_PUBLIC_HEADERS}
-        ${TELNETINTERFACE_PUBLIC_SOURCE}
-        ${TELNETINTERFACE_PRIVATE_HEADERS}
-        ${TELNETINTERFACE_PRIVATE_SOURCE}
+        ${TEXTTOCOMMAND_PUBLIC_HEADERS}
+        ${TEXTTOCOMMAND_PUBLIC_SOURCE}
+        ${TEXTTOCOMMAND_PRIVATE_HEADERS}
+        ${TEXTTOCOMMAND_PRIVATE_SOURCE}
 )
 
 target_include_directories(${project}
@@ -50,18 +48,15 @@ set(BOOST_LIBRARY_DIRS ${CMAKE_SOURCE_DIR}/external/boost_install/lib)
 find_package(Boost COMPONENTS fiber thread log REQUIRED)
 include_directories(${BOOST_INCLUDE_DIRS})
 
-find_library(telnetpp SHARED IMPORTED)
+find_library(DataStructures SHARED IMPORTED)
 find_library(Utils SHARED IMPORTED)
 
 # Link it to libs
 target_link_libraries(${project}
     PUBLIC 
-        Boost::fiber
         Boost::thread
         Boost::log
-		telnetpp
-        Utils
         DataStructures
-        TextToCommand
+        Utils
 )
 

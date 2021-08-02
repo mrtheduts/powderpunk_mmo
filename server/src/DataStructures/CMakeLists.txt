@@ -20,7 +20,7 @@ set(DATASTRUCTURES_PRIVATE_HEADERS
 )
 
 set(DATASTRUCTURES_PRIVATE_SOURCE
-        src/user_command.c
+        src/user_command.cpp
 )
 
 add_library(${project} 

@@ -19,7 +19,17 @@ set(DEBUGTOOLS_PUBLIC_HEADER_FILES
 # Adding properties of BasicConnection target #######################
 set(BASICCONNECTION_PUBLIC_HEADER_FILES
         include/Utils/BasicConnection/basic_connection.h
-        include/Utils/BasicConnection/ts_queue.h
+)
+
+# Adding properties of BasicServer target ###########################
+set(BASICSERVER_PUBLIC_HEADER_FILES
+        include/Utils/BasicServer/basic_server.h
+)
+
+# Adding properties of TSQueue target ###############################
+set(TSQUEUE_PUBLIC_HEADER_FILES
+    include/Utils/TSStructures/ts_queue.h
+    include/Utils/TSStructures/ts_map.h
 )
 
 #####################################################################
@@ -29,6 +39,8 @@ add_library(${project}
     SHARED
         ${DEBUGTOOLS_PUBLIC_HEADER_FILES}
         ${BASICCONNECTION_PUBLIC_HEADER_FILES}
+        ${BASICSERVER_PUBLIC_HEADER_FILES}
+        ${TSQUEUE_PUBLIC_HEADER_FILES}
 )
 
 target_include_directories(${project}

@@ -12,24 +12,28 @@
 #ifndef USER_COMMAND_H
 #define USER_COMMAND_H
 
-typedef struct {
-  char* mod;
-  char* cmd;
+#include <boost/smart_ptr/shared_ptr.hpp>
+#include <string>
+#include <vector>
 
-  unsigned int num_args;
-  char** args;
+class UserCommand {
+ public:
+  UserCommand(unsigned int server_id, unsigned int conn_id, std::string mod,
+              std::string cmd, std::vector<std::string> args,
+              std::vector<std::string> targets);
+  ~UserCommand();
 
-  unsigned int num_targets;
-  char** targets;
-} UserCommand, *pUserCommand;
+  const unsigned int server_id_;
+  const unsigned int conn_id_;
 
-pUserCommand CreateUsrCmd(char* mod, char* cmd, unsigned int num_args,
-                          char** args, unsigned int num_targets,
-                          char** targets);
+  const std::string mod_;
+  const std::string cmd_;
 
-void DestroyUsrCmd(pUserCommand usr_cmd);
+  const std::vector<std::string> args_;
+  const std::vector<std::string> targets_;
+};
 
-void PrintUsrCmd(pUserCommand usr_cmd);
+typedef boost::shared_ptr<UserCommand> spUserCommand;
 
 #endif
 

@@ -13,61 +13,51 @@
 #ifndef TELNET_SERVER_H
 #define TELNET_SERVER_H
 
+#include <Utils/BasicServer/basic_server.h>
+
+#include <boost/asio.hpp>
 #include <boost/fiber/condition_variable.hpp>
 #include <boost/fiber/mutex.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
-
-#include "Utils/BasicConnection/ts_queue.h"
-#define DEFAULT_PORT 22222
-
-#include <vector>
-
-#define BOOST_ASIO_NO_DEPRECATED
-#include <boost/asio.hpp>
 #include <boost/thread.hpp>
 #include <telnetpp/session.hpp>
+#include <vector>
 
 #include "telnet_connection.h"
+
+#define DEFAULT_PORT 22222
+#define BOOST_ASIO_NO_DEPRECATED
 
 using boost::asio::ip::tcp;
 
 /*
- * Responsible for listening to and creating Telnet connections.
+ * Class responsible for listening to and creating Telnet connections.
  */
-class TelnetServer {
+class TelnetServer : public BasicServer<spTelnetConnection> {
  public:
-  TelnetServer();
-  TelnetServer(unsigned int port);
+  TelnetServer(unsigned int id);
   ~TelnetServer();
 
-  void Start();
+  void start() override;
 
  private:
   /* Starts accepting loop for new connections. */
-  void StartAccept();
-  void FiberManager();
+  void startAccept();
 
-  /* Boost IO context handler for thread-safe operations within it. */
-  boost::asio::io_context io_context_;
+  void connAuthAndSendFibers() override;
+  void readConnMessagesFibers() override;
 
-  /* TODO: I'm sure I had plans with it. Now, I have no clue anymore. */
-  boost::shared_ptr<boost::thread> t_connections_;
+  void sendNewMsgsToGameServer(spTelnetConnection telnet_connection) override;
+
+  unsigned long int next_id_;
 
   /* Responsible for asynchronously accepting new tcp connections */
   tcp::acceptor acceptor_;
 
-  unsigned long int next_id_;
-
-  /* Thread group responsible for managing TelnetConnections threads. */
-  /* boost::thread_group t_curr_connections; */
-
-  /* Thread group responsible for managing TelnetConnections. */
-  TSQueue<boost::shared_ptr<TelnetConnection>> new_conns_;
-  boost::fibers::mutex m_new_conns_;
-  boost::fibers::condition_variable cv_new_conns_;
-
   /* Telnetpp session handler - Server side */
   telnetpp::session telnet_session_;
 };
+
+typedef boost::shared_ptr<TelnetServer> spTelnetServer;
 
 #endif

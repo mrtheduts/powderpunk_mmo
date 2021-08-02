@@ -1,6 +1,2 @@
-#ifndef USER_COMMAND_H
-#define USER_COMMAND_H
+#include "../../src/user_command.h"
 
-#include "../../../src/DataStructures/user_command.h"
-
-#endif
