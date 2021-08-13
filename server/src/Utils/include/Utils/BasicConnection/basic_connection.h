@@ -61,7 +61,10 @@ class BasicConnection
   bool authenticated_;
 
   TSQueue<T> received_msgs_;
+  boost::fibers::mutex received_msgs_f_m_;
+
   TSQueue<T> msgs_to_send_;
+  boost::fibers::mutex msgs_to_send_f_m_;
 };
 
 #endif

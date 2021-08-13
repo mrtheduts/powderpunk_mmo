@@ -72,12 +72,18 @@ void TelnetServer::startAccept() {
 
 void TelnetServer::connAuthAndSendFibers() {
   while (true) {
-    std::unique_lock<boost::fibers::mutex> lock_new_conns(
-        q_auth_and_send_.q_f_mutex);
-    cv_new_conns_.wait(lock_new_conns);
+    {
+      std::unique_lock<boost::fibers::mutex> lock_new_conns(
+          q_auth_and_send_f_m_);
+      cv_new_conns_.wait(lock_new_conns,
+                         [this]() { return !q_auth_and_send_.fIsEmpty(); });
+    }
 
-    while (!q_auth_and_send_.isEmpty()) {
-      boost::shared_ptr<TelnetConnection> new_conn = q_auth_and_send_.pop();
+    std::queue<spTelnetConnection> new_conns = q_auth_and_send_.fPopAll();
+
+    while (!new_conns.empty()) {
+      spTelnetConnection new_conn = new_conns.front();
+      new_conns.pop();
 
       // TODO: store these fibers somewhere
       boost::make_shared<boost::fibers::fiber>(&TelnetConnection::startReceive,
@@ -94,12 +100,19 @@ void TelnetServer::connAuthAndSendFibers() {
 
 void TelnetServer::readConnMessagesFibers() {
   while (true) {
-    std::unique_lock<boost::fibers::mutex> lock_new_conns(
-        q_read_messages_.q_f_mutex);
-    cv_new_conns_.wait(lock_new_conns);
+    BOOST_LOG_TRIVIAL(info) << "[TelnetServer] Waiting new connection...";
+    {
+      std::unique_lock<boost::fibers::mutex> lock_new_conns(
+          q_read_messages_f_m_);
+      cv_new_conns_.wait(lock_new_conns,
+                         [this]() { return !q_read_messages_.fIsEmpty(); });
+    }
 
-    while (!q_read_messages_.isEmpty()) {
-      boost::shared_ptr<TelnetConnection> new_conn = q_read_messages_.pop();
+    std::queue<spTelnetConnection> new_conns = q_read_messages_.fPopAll();
+
+    while (!new_conns.empty()) {
+      spTelnetConnection new_conn = new_conns.front();
+      new_conns.pop();
 
       // TODO: store these fibers somewhere
       boost::make_shared<boost::fibers::fiber>(
@@ -117,8 +130,8 @@ void TelnetServer::sendNewMsgsToGameServer(
     std::string msg = telnet_connection->read();
     boost::shared_ptr<UserCommand> usr_cmd =
         msgToUsrCmd(telnet_connection->server_id, telnet_connection->id, msg);
-    q_usr_cmds_.fPush(usr_cmd);
-    q_usr_cmds_.q_cv.notify_one();
+    q_usr_cmds_.push(usr_cmd);
+    q_usr_cmds_.q_f_cv.notify_one();
   };
 }
 

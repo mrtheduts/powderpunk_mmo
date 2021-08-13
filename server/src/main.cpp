@@ -24,10 +24,12 @@ int main() {
   DEBUG("Debug mode activated.\n");
 
   try {
+    GameServer game_server(0);
+    game_server.start();
+
     spTelnetServer telnet_server = boost::make_shared<TelnetServer>(0);
     boost::thread t_telnet_server(&TelnetServer::start, telnet_server);
 
-    GameServer game_server(0);
     game_server.addTelnetServer(telnet_server);
 
     t_telnet_server.join();

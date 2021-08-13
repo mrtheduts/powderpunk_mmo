@@ -113,12 +113,6 @@ class TSMap {
     map_[key] = elem;
   }
 
-  /* Thread-level mutex */
-  std::mutex m_mutex;
-
-  /* Fiber-level mutex */
-  boost::fibers::mutex m_f_mutex;
-
   /* Thread-level condition variable */
   boost::condition_variable m_cv;
 
@@ -126,6 +120,12 @@ class TSMap {
   boost::fibers::condition_variable m_f_cv;
 
  private:
+  /* Thread-level mutex */
+  std::mutex m_mutex;
+
+  /* Fiber-level mutex */
+  boost::fibers::mutex m_f_mutex;
+
   /* Non-thread-safe map */
   std::map<Key, T> map_;
 };

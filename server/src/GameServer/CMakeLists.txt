@@ -44,7 +44,7 @@ set(BOOST_ROOT ${CMAKE_SOURCE_DIR}/external/boost_install)
 set(BOOST_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/external/boost_install/include)
 set(BOOST_LIBRARY_DIRS ${CMAKE_SOURCE_DIR}/external/boost_install/lib)
 
-find_package(Boost COMPONENTS thread log REQUIRED)
+find_package(Boost COMPONENTS fiber thread log REQUIRED)
 include_directories(${BOOST_INCLUDE_DIRS})
 
 #####################################################################
@@ -58,16 +58,15 @@ include_directories(${BOOST_INCLUDE_DIRS})
 find_library(DataStructures SHARED IMPORTED)
 find_library(TelnetInterface SHARED IMPORTED)
 find_library(Utils SHARED IMPORTED)
-# find_library(UserPool SHARED IMPORTED)
 
 # Link it to libs
 target_link_libraries(${project}
     PRIVATE 
+        Boost::fiber
         Boost::thread
         Boost::log
         DataStructures
         TelnetInterface
         Utils
-        # UserPool
 )
 

@@ -13,19 +13,22 @@
 #include "text_to_command.h"
 
 #include <boost/make_shared.hpp>
+#include <iostream>
 
 boost::shared_ptr<UserCommand> msgToUsrCmd(unsigned long int server_id,
                                            unsigned long int connection_id,
                                            std::string msg) {
-  std::string mod = NULL;
+  std::string mod = "";
   std::string cmd = "say";
   std::vector<std::string> args = std::vector<std::string>();
   std::vector<std::string> targets = std::vector<std::string>();
 
   args.push_back(msg);
 
-  return boost::make_shared<UserCommand>(server_id, connection_id, mod, cmd,
-                                         args, targets);
+  spUserCommand usr_cmd = boost::make_shared<UserCommand>(
+      server_id, connection_id, mod, cmd, args, targets);
+
+  return usr_cmd;
 }
 
 /*

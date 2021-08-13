@@ -20,6 +20,7 @@
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/fiber/condition_variable.hpp>
 #include <boost/thread.hpp>
+#include <boost/thread/pthread/condition_variable_fwd.hpp>
 
 typedef boost::shared_ptr<boost::thread> spThread;
 
@@ -36,6 +37,10 @@ class BasicServer : public boost::enable_shared_from_this<BasicServer<T>> {
   virtual void start() = 0;
 
   unsigned int id;
+
+  /* Queue to store new UserCommands to be read by GameServer */
+  TSQueue<spUserCommand> q_usr_cmds_;
+  boost::fibers::mutex q_usr_cmds_m_f_;
 
  protected:
   BasicServer(unsigned int id) : id{id} {};
@@ -75,13 +80,12 @@ class BasicServer : public boost::enable_shared_from_this<BasicServer<T>> {
   /* Queue to store new connections waiting to have their auth process and
    * message sending loop to be started */
   TSQueue<T> q_auth_and_send_;
+  boost::fibers::mutex q_auth_and_send_f_m_;
 
   /* Queue to store new connections waiting to have their auth process and
    * message sending loop to be started */
   TSQueue<T> q_read_messages_;
-
-  /* Queue to store new UserCommands to be read by GameServer */
-  TSQueue<boost::shared_ptr<UserCommand>> q_usr_cmds_;
+  boost::fibers::mutex q_read_messages_f_m_;
 };
 
 #endif

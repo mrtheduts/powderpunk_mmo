@@ -53,15 +53,19 @@ void TelnetConnection::startSend() {
     while (true) {
       std::string msg = "";
 
-      do {
+      {
         std::unique_lock<boost::fibers::mutex> lock_new_send_msg(
-            msgs_to_send_.q_f_mutex);
+            msgs_to_send_f_m_);
         msgs_to_send_.q_f_cv.wait(
-            lock_new_send_msg, [this]() { return msgs_to_send_.size() > 0; });
+            lock_new_send_msg, [this]() { return !msgs_to_send_.fIsEmpty(); });
+      }
 
-        msg += msgs_to_send_.pop();
+      std::queue<std::string> msgs = msgs_to_send_.fPopAll();
 
-      } while (!msgs_to_send_.isEmpty());
+      while (!msgs.empty()) {
+        msg += msgs.front();
+        msgs.pop();
+      }
 
       /* msg += PROMPT; */
 
@@ -189,13 +193,21 @@ std::string TelnetConnection::read() { return read(received_msgs_.q_f_cv); }
 std::string TelnetConnection::read(boost::fibers::condition_variable& cv) {
   std::string message = "";
 
-  do {
-    std::unique_lock<boost::fibers::mutex> lock_new_rec_msg(
-        received_msgs_.q_f_mutex);
-    cv.wait(lock_new_rec_msg, [this]() { return received_msgs_.size() > 0; });
+  while (message.back() != '\n') {
+    {
+      std::unique_lock<boost::fibers::mutex> lock_new_rec_msg(
+          received_msgs_f_m_);
+      cv.wait(lock_new_rec_msg,
+              [this]() { return !received_msgs_.fIsEmpty(); });
+    }
 
-    message += received_msgs_.pop();
-  } while (message.back() != '\n' && !received_msgs_.isEmpty());
+    std::queue<std::string> msgs = received_msgs_.fPopAll();
+
+    while (!msgs.empty()) {
+      message += msgs.front();
+      msgs.pop();
+    }
+  }
 
   return message;
 }
@@ -231,18 +243,21 @@ void TelnetConnection::receive() {
                 // message?
                 if (message.back() == '\n') {
                   if (authenticated_) {
-                    received_msgs_.q_cv
+                    received_msgs_.q_f_cv
                         .notify_one();  // Notifies TelnetServer of new message
+                    BOOST_LOG_TRIVIAL(debug)
+                        << "TC[" << id << "] Received message["
+                        << message.size() << "], pushed to received_msgs_";
                   } else {
                     cv_pre_auth_received_msgs_
                         .notify_one();  // Notifies TelnetServer of new pre-auth
                                         // message
+                    BOOST_LOG_TRIVIAL(debug)
+                        << "TC[" << id << "] Received message["
+                        << message.size()
+                        << "], pushed to pre_auth_received_msgs_";
                   }
                 }
-
-                BOOST_LOG_TRIVIAL(debug)
-                    << "TC[" << id << "] Received message[" << message.size()
-                    << "], pushed to received_msgs_";
               },
               [this](telnetpp::bytes data) { rawWrite(data); });
 

@@ -15,6 +15,7 @@
 #include <boost/fiber/condition_variable.hpp>
 #include <boost/fiber/mutex.hpp>
 #include <boost/thread/condition_variable.hpp>
+#include <iostream>
 #include <mutex>
 #include <queue>
 
@@ -33,7 +34,7 @@ class TSQueue {
    * @return a boolean indicating if queue is empty.
    */
   bool isEmpty() {
-    std::lock_guard<std::mutex> lock(q_mutex);
+    boost::unique_lock<boost::mutex> lock(q_mutex);
     return queue_.empty();
   }
 
@@ -43,7 +44,7 @@ class TSQueue {
    * @return a unsigned int indicating queue size.
    */
   unsigned int size() {
-    std::lock_guard<std::mutex> lock(q_mutex);
+    boost::unique_lock<boost::mutex> lock(q_mutex);
     return queue_.size();
   }
 
@@ -53,11 +54,26 @@ class TSQueue {
    * @return the first element of the queue.
    */
   T pop() {
-    std::lock_guard<std::mutex> lock(q_mutex);
+    boost::unique_lock<boost::mutex> lock(q_mutex);
     T elem = queue_.front();
     queue_.pop();
+    lock.unlock();
 
     return elem;
+  }
+
+  /*
+   * Pops all the elements of the queue.
+   *
+   * @return all elements of the queue.
+   */
+  std::queue<T> popAll() {
+    boost::unique_lock<boost::mutex> lock(q_mutex);
+
+    std::queue<T> elems;
+    elems.swap(queue_);
+
+    return elems;
   }
 
   /*
@@ -66,8 +82,22 @@ class TSQueue {
    * @param new element to be pushed to queue.
    */
   void push(const T& elem) {
-    std::lock_guard<std::mutex> lock(q_mutex);
+    boost::unique_lock<boost::mutex> lock(q_mutex);
     queue_.push(elem);
+    lock.unlock();
+  }
+
+  /*
+   * Pushes a new element to the queue.
+   *
+   * @param new element to be pushed to queue.
+   */
+  void pushAll(std::queue<T> elems) {
+    boost::unique_lock<boost::mutex> lock(q_mutex);
+    while (!elems.empty()) {
+      queue_.push(elems.front());
+      elems.pop();
+    }
   }
 
   /*
@@ -76,7 +106,7 @@ class TSQueue {
    * @return a boolean indicating if queue is empty.
    */
   bool fIsEmpty() {
-    std::lock_guard<boost::fibers::mutex> lock(q_f_mutex);
+    boost::unique_lock<boost::fibers::mutex> lock(q_f_mutex);
     return queue_.empty();
   }
 
@@ -86,7 +116,7 @@ class TSQueue {
    * @return a unsigned int indicating queue size.
    */
   unsigned int fSize() {
-    std::lock_guard<boost::fibers::mutex> lock(q_f_mutex);
+    boost::unique_lock<boost::fibers::mutex> lock(q_f_mutex);
     return queue_.size();
   }
 
@@ -96,11 +126,25 @@ class TSQueue {
    * @return the first element of the queue.
    */
   T fPop() {
-    std::lock_guard<boost::fibers::mutex> lock(q_f_mutex);
+    boost::unique_lock<boost::fibers::mutex> lock(q_f_mutex);
     T elem = queue_.front();
     queue_.pop();
 
     return elem;
+  }
+
+  /*
+   * Pops all the elements of the queue.
+   *
+   * @return all elements of the queue.
+   */
+  std::queue<T> fPopAll() {
+    boost::unique_lock<boost::fibers::mutex> lock(q_f_mutex);
+
+    std::queue<T> elems;
+    elems.swap(queue_);
+
+    return elems;
   }
 
   /*
@@ -109,15 +153,9 @@ class TSQueue {
    * @param new element to be pushed to queue.
    */
   void fPush(const T& elem) {
-    std::lock_guard<boost::fibers::mutex> lock(q_f_mutex);
+    boost::unique_lock<boost::fibers::mutex> lock(q_f_mutex);
     queue_.push(elem);
   }
-
-  /* Thread-level mutex */
-  std::mutex q_mutex;
-
-  /* Fiber-level mutex */
-  boost::fibers::mutex q_f_mutex;
 
   /* Thread-level condition variable */
   boost::condition_variable q_cv;
@@ -126,6 +164,12 @@ class TSQueue {
   boost::fibers::condition_variable q_f_cv;
 
  private:
+  /* Thread-level mutex */
+  boost::mutex q_mutex;
+
+  /* Fiber-level mutex */
+  boost::fibers::mutex q_f_mutex;
+
   /* Non-thread-safe queue */
   std::queue<T> queue_;
 };
