@@ -12,7 +12,10 @@
 
 #include "text_to_command.h"
 
+// External Headers
 #include <boost/make_shared.hpp>
+
+// C++ Headers
 #include <iostream>
 
 boost::shared_ptr<UserCommand> msgToUsrCmd(unsigned long int server_id,

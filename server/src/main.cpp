@@ -10,20 +10,25 @@
  *
  */
 
+// Src Headers
 #include <GameServer/game_server.h>
+#include <Logger/logger.h>
 #include <TelnetInterface/telnet_interface.h>
 #include <Utils/DebugTools/assert_debug_print.h>
 
+// External Headers
 #include <boost/smart_ptr/make_shared_object.hpp>
 #include <boost/thread.hpp>
+
+// C++ Headers
 #include <iostream>
 
 int main() {
-  std::cout << "It compiled!" << std::endl;
-
-  DEBUG("Debug mode activated.\n");
-
   try {
+    Logger::init();
+    spLogger logger = Logger::getLogger("Main Function");
+    logger->info("Powderpunk MMO Server started!");
+
     GameServer game_server(0);
     game_server.start();
 

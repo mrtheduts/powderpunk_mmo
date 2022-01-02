@@ -18,6 +18,7 @@
 #include <boost/asio.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/fiber/condition_variable.hpp>
+#include <boost/lexical_cast.hpp>
 
 template <class T>
 class BasicConnection
@@ -41,6 +42,9 @@ class BasicConnection
   }
 
   bool isConnected() { return socket_.is_open(); }
+  std::string getConnIP() {
+    return boost::lexical_cast<std::string>(socket_.remote_endpoint());
+  }
 
   unsigned int id;
   unsigned int server_id;

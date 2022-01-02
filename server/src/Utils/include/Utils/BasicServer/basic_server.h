@@ -55,7 +55,7 @@ class BasicServer : public boost::enable_shared_from_this<BasicServer<T>> {
   /*
    * Thread function to use as fibers to start connection reading loop.
    */
-  virtual void readConnMessagesFibers() = 0;
+  virtual void connReadMessagesFibers() = 0;
 
   /*
    * Fiber function loop to send incoming messages to GameServer.

@@ -1,35 +1,32 @@
 #####################################################################
-# Creating TelnetInterface library target
+# Creating Game Server library target
 #####################################################################
-
 cmake_minimum_required(VERSION 3.17)
 
-set(project TelnetInterface)
+set(project Logger)
 
-project(${project} LANGUAGES CXX)
+project(${project})
 
-set(TELNETINTERFACE_PUBLIC_HEADERS
-        include/TelnetInterface/telnet_interface.h
+set(LOGGER_PUBLIC_HEADERS
+    include/Logger/logger.h
 )
 
-set(TELNETINTERFACE_PUBLIC_SOURCE
+set(LOGGER_PUBLIC_SOURCE
 )
 
-set(TELNETINTERFACE_PRIVATE_HEADERS
-        src/telnet_connection.h
-        src/telnet_server.h
+set(LOGGER_PRIVATE_HEADERS
+        src/logger.h
 )
 
-set(TELNETINTERFACE_PRIVATE_SOURCE
-        src/telnet_connection.cpp
-        src/telnet_server.cpp
+set(LOGGER_PRIVATE_SOURCE
+        src/logger.cpp
 )
 
 add_library(${project} 
-        ${TELNETINTERFACE_PUBLIC_HEADERS}
-        ${TELNETINTERFACE_PUBLIC_SOURCE}
-        ${TELNETINTERFACE_PRIVATE_HEADERS}
-        ${TELNETINTERFACE_PRIVATE_SOURCE}
+        ${LOGGER_PUBLIC_HEADERS}
+        ${LOGGER_PUBLIC_SOURCE}
+        ${LOGGER_PRIVATE_HEADERS}
+        ${LOGGER_PRIVATE_SOURCE}
 )
 
 target_include_directories(${project}
@@ -47,23 +44,18 @@ set(BOOST_ROOT ${CMAKE_SOURCE_DIR}/external/boost_install)
 set(BOOST_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/external/boost_install/include)
 set(BOOST_LIBRARY_DIRS ${CMAKE_SOURCE_DIR}/external/boost_install/lib)
 
-find_package(Boost COMPONENTS fiber thread log REQUIRED)
+find_package(Boost COMPONENTS log_setup log REQUIRED)
+
 include_directories(${BOOST_INCLUDE_DIRS})
 
-find_library(telnetpp SHARED IMPORTED)
-find_library(Logger SHARED IMPORTED)
-find_library(Utils SHARED IMPORTED)
+#####################################################################
+# Adding local libs 
+#####################################################################
 
 # Link it to libs
 target_link_libraries(${project}
-    PUBLIC 
-        Boost::fiber
-        Boost::thread
+    PRIVATE 
+        Boost::log_setup
         Boost::log
-		telnetpp
-        Logger
-        Utils
-        DataStructures
-        TextToCommand
 )
 

@@ -13,11 +13,14 @@
 #ifndef GAME_SERVER_H
 #define GAME_SERVER_H
 
+// Src Headers
 #include <DataStructures/user_command.h>
+#include <Logger/logger.h>
 #include <TelnetInterface/telnet_interface.h>
 #include <Utils/TSStructures/ts_map.h>
 #include <Utils/TSStructures/ts_queue.h>
 
+// External Headers
 #include <boost/smart_ptr/shared_ptr.hpp>
 
 class GameServer {
@@ -26,7 +29,6 @@ class GameServer {
   ~GameServer();
 
   void start();
-
   void addTelnetServer(spTelnetServer telnet_server);
 
   const unsigned int id;
@@ -46,6 +48,8 @@ class GameServer {
   TSQueue<spUserCommand> incoming_usr_cmds_;
 
   spThread t_read_telnet_usr_cmds_;
+
+  spLogger logger_;
 };
 
 typedef boost::shared_ptr<GameServer> spGameServer;

@@ -13,18 +13,25 @@
 #ifndef TELNET_SERVER_H
 #define TELNET_SERVER_H
 
+// Src Headers
+#include <Logger/logger.h>
 #include <Utils/BasicServer/basic_server.h>
 
+// External Headers
 #include <boost/asio.hpp>
 #include <boost/fiber/condition_variable.hpp>
 #include <boost/fiber/mutex.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/thread.hpp>
 #include <telnetpp/session.hpp>
+
+// C++ Headers
 #include <vector>
 
+// Local Headers
 #include "telnet_connection.h"
 
+// Defines
 #define DEFAULT_PORT 22222
 #define BOOST_ASIO_NO_DEPRECATED
 
@@ -45,7 +52,7 @@ class TelnetServer : public BasicServer<spTelnetConnection> {
   void startAccept();
 
   void connAuthAndSendFibers() override;
-  void readConnMessagesFibers() override;
+  void connReadMessagesFibers() override;
 
   void sendNewMsgsToGameServer(spTelnetConnection telnet_connection) override;
 
@@ -56,6 +63,8 @@ class TelnetServer : public BasicServer<spTelnetConnection> {
 
   /* Telnetpp session handler - Server side */
   telnetpp::session telnet_session_;
+
+  spLogger logger_;
 };
 
 typedef boost::shared_ptr<TelnetServer> spTelnetServer;

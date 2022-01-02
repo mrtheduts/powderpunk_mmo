@@ -12,10 +12,12 @@
 
 #include "telnet_server.h"
 
+// Src Headers
 #include <DataStructures/user_command.h>
 #include <TextToCommand/text_to_command.h>
 #include <Utils/DebugTools/assert_debug_print.h>
 
+// External Headers
 #include <boost/bind.hpp>
 #include <boost/fiber/all.hpp>
 #include <boost/log/trivial.hpp>
@@ -25,7 +27,9 @@
 TelnetServer::TelnetServer(unsigned int id)
     : BasicServer(id),
       next_id_{0},
-      acceptor_(io_context_, tcp::endpoint(tcp::v4(), DEFAULT_PORT)) {}
+      acceptor_(io_context_, tcp::endpoint(tcp::v4(), DEFAULT_PORT)) {
+  logger_ = Logger::getLogger("TelnetServer", id);
+}
 
 TelnetServer::~TelnetServer() {}
 
@@ -33,8 +37,9 @@ void TelnetServer::start() {
   t_conn_auth_and_send_fibers_ = boost::make_shared<boost::thread>(
       &TelnetServer::connAuthAndSendFibers, this);
   t_conn_read_messages_fibers_ = boost::make_shared<boost::thread>(
-      &TelnetServer::readConnMessagesFibers, this);
+      &TelnetServer::connReadMessagesFibers, this);
 
+  logger_->info("Started accept connections");
   startAccept();
   io_context_.run();  // Should be last: it takes control of the thread
 }
@@ -55,15 +60,14 @@ void TelnetServer::startAccept() {
 
           q_auth_and_send_.push(new_conn);
           q_read_messages_.push(new_conn);
-          BOOST_LOG_TRIVIAL(info) << "[TelnetServer] Pushed new connection ("
-                                  << new_conn->id << ") to new_conns_";
+          logger_->info("Accepted new connection [%d]", new_conn->id);
           cv_new_conns_.notify_all();  // He's the one supposed to
                                        // alert the ConnAuthAndSendFibers and
                                        // ReadConnMessages
 
           new_conn->receive();  // It's here to stay in the io_context thread
         } else {
-          BOOST_LOG_TRIVIAL(error) << "[TelnetServer] " << error.message();
+          logger_->error(error.message());
         }
 
         startAccept();
@@ -71,6 +75,7 @@ void TelnetServer::startAccept() {
 }
 
 void TelnetServer::connAuthAndSendFibers() {
+  logger_->debug("Starting auth and send fibers");
   while (true) {
     {
       std::unique_lock<boost::fibers::mutex> lock_new_conns(
@@ -92,15 +97,15 @@ void TelnetServer::connAuthAndSendFibers() {
       boost::make_shared<boost::fibers::fiber>(&TelnetConnection::startSend,
                                                new_conn)
           ->detach();
-      BOOST_LOG_TRIVIAL(info)
-          << "[TelnetServer] Started new connection (" << new_conn->id << ")";
+      logger_->debug("Started send and receive fibers for connection [%d]",
+                     new_conn->id);
     };
   }
 }
 
-void TelnetServer::readConnMessagesFibers() {
+void TelnetServer::connReadMessagesFibers() {
+  logger_->debug("Starting read fibers");
   while (true) {
-    BOOST_LOG_TRIVIAL(info) << "[TelnetServer] Waiting new connection...";
     {
       std::unique_lock<boost::fibers::mutex> lock_new_conns(
           q_read_messages_f_m_);
@@ -118,8 +123,8 @@ void TelnetServer::readConnMessagesFibers() {
       boost::make_shared<boost::fibers::fiber>(
           &TelnetServer::sendNewMsgsToGameServer, this, new_conn)
           ->detach();
-      BOOST_LOG_TRIVIAL(info)
-          << "[TelnetServer] Started new read from (" << new_conn->id << ")";
+      logger_->debug("Started new read fiber for connection [%d]",
+                     new_conn->id);
     };
   }
 }

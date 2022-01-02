@@ -40,6 +40,7 @@ include_directories(${BOOST_INCLUDE_DIRS})
 #####################################################################
 add_subdirectory(DataStructures)
 add_subdirectory(GameServer)
+add_subdirectory(Logger)
 add_subdirectory(TextInterface)
 add_subdirectory(Utils)
 
@@ -51,6 +52,7 @@ target_link_libraries(powderpunk_server
     PRIVATE 
         Boost::thread
         GameServer
+        Logger
         TelnetInterface
         Utils
 )
