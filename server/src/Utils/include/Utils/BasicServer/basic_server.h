@@ -36,7 +36,7 @@ class BasicServer : public boost::enable_shared_from_this<BasicServer<T>> {
    */
   virtual void start() = 0;
 
-  unsigned int id;
+  const unsigned int id;
 
   /* Queue to store new UserCommands to be read by GameServer */
   TSQueue<spUserCommand> q_usr_cmds_;

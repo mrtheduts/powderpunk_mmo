@@ -50,7 +50,7 @@ void GameServer::createReadTelnetUsrCmdsFiber() {
       telnet_servers.pop();
 
       logger_->info("Adding new TelnetServer (%d) to the GameServer",
-                    std::to_string(new_telnet_server->id));
+                    new_telnet_server->id);
       telnet_servers_.put(new_telnet_server->id, new_telnet_server);
 
       logger_->debug("Starte fiber creation of TelnetServer [%d]",

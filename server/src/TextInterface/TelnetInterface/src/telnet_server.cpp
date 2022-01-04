@@ -60,7 +60,8 @@ void TelnetServer::startAccept() {
 
           q_auth_and_send_.push(new_conn);
           q_read_messages_.push(new_conn);
-          logger_->info("Accepted new connection [%d]", new_conn->id);
+          logger_->info("Accepted new connection [%d] from %s", new_conn->id,
+                        new_conn->getConnIP().c_str());
           cv_new_conns_.notify_all();  // He's the one supposed to
                                        // alert the ConnAuthAndSendFibers and
                                        // ReadConnMessages
