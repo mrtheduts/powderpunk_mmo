@@ -14,7 +14,6 @@
 #define TELNET_SERVER_H
 
 // Src Headers
-#include <Logger/logger.h>
 #include <Utils/BasicServer/basic_server.h>
 
 // External Headers
@@ -56,15 +55,11 @@ class TelnetServer : public BasicServer<spTelnetConnection> {
 
   void sendNewMsgsToGameServer(spTelnetConnection telnet_connection) override;
 
-  unsigned long int next_id_;
-
   /* Responsible for asynchronously accepting new tcp connections */
   tcp::acceptor acceptor_;
 
   /* Telnetpp session handler - Server side */
   telnetpp::session telnet_session_;
-
-  spLogger logger_;
 };
 
 typedef boost::shared_ptr<TelnetServer> spTelnetServer;

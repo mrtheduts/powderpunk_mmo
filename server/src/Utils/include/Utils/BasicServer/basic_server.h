@@ -13,9 +13,12 @@
 #ifndef BASIC_SERVER_H
 #define BASIC_SERVER_H
 
+// Src Headers
 #include <DataStructures/user_command.h>
+#include <Logger/logger.h>
 #include <Utils/TSStructures/ts_queue.h>
 
+// External Headers
 #include <boost/asio.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/fiber/condition_variable.hpp>
@@ -43,7 +46,9 @@ class BasicServer : public boost::enable_shared_from_this<BasicServer<T>> {
   boost::fibers::mutex q_usr_cmds_m_f_;
 
  protected:
-  BasicServer(unsigned int id) : id{id} {};
+  BasicServer(unsigned int id) : id{id}, next_id_{0} {};
+  BasicServer(unsigned int id, unsigned int next_id)
+      : id{id}, next_id_{next_id} {};
   ~BasicServer(){};
 
   /*
@@ -64,6 +69,11 @@ class BasicServer : public boost::enable_shared_from_this<BasicServer<T>> {
    * push them as UserCommand to the GameServer through q_user_cmds_ queue.
    */
   virtual void sendNewMsgsToGameServer(T connection) = 0;
+
+  /* Logger object */
+  spLogger logger_;
+
+  unsigned long int next_id_;
 
   /* Boost IO context handler for thread-safe operations within it. */
   boost::asio::io_context io_context_;

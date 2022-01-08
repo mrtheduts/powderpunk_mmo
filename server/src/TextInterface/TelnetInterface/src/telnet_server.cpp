@@ -26,7 +26,6 @@
 
 TelnetServer::TelnetServer(unsigned int id)
     : BasicServer(id),
-      next_id_{0},
       acceptor_(io_context_, tcp::endpoint(tcp::v4(), DEFAULT_PORT)) {
   logger_ = Logger::getLogger("TelnetServer", id);
 }
@@ -138,6 +137,7 @@ void TelnetServer::sendNewMsgsToGameServer(
         msgToUsrCmd(telnet_connection->server_id, telnet_connection->id, msg);
     q_usr_cmds_.push(usr_cmd);
     q_usr_cmds_.q_f_cv.notify_one();
+    logger_->debug("Received command %s", usr_cmd->toString().c_str());
   };
 }
 

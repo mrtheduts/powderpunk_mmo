@@ -13,7 +13,7 @@
 #ifndef TEXT_TO_COMMAND_H
 #define TEXT_TO_COMMAND_H
 
-// Local Headers
+// Src Headers
 #include <DataStructures/user_command.h>
 
 // C++ Headers
@@ -22,7 +22,7 @@
 
 boost::shared_ptr<UserCommand> msgToUsrCmd(unsigned long int server_id,
                                            unsigned long int connection_id,
-                                           std::string msg);
+                                           std::string& msg);
 
 #endif
 

@@ -13,9 +13,6 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#define MB 1024 * 1024
-#define LOG_FILE_SIZE 10
-
 // External Headers
 #include <boost/log/core.hpp>
 #include <boost/log/sources/severity_logger.hpp>
@@ -25,6 +22,10 @@
 
 // C++ Headers
 #include <string>
+
+// Defines
+#define MB 1024 * 1024
+#define LOG_FILE_SIZE 10
 
 using namespace boost;
 

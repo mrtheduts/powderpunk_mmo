@@ -12,7 +12,10 @@
 #ifndef USER_COMMAND_H
 #define USER_COMMAND_H
 
+// External Headers
 #include <boost/smart_ptr/shared_ptr.hpp>
+
+// C++ Headers
 #include <string>
 #include <vector>
 
@@ -23,14 +26,16 @@ class UserCommand {
               std::vector<std::string> targets);
   ~UserCommand();
 
-  const unsigned int server_id_;
-  const unsigned int conn_id_;
+  const unsigned int server_id;
+  const unsigned int conn_id;
 
-  const std::string mod_;
-  const std::string cmd_;
+  const std::string mod;
+  const std::string cmd;
 
-  const std::vector<std::string> args_;
-  const std::vector<std::string> targets_;
+  const std::vector<std::string> args;
+  const std::vector<std::string> targets;
+
+  std::string toString();
 };
 
 typedef boost::shared_ptr<UserCommand> spUserCommand;
