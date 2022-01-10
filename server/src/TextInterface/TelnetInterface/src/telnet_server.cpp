@@ -134,7 +134,8 @@ void TelnetServer::sendNewMsgsToGameServer(
   while (true) {
     std::string msg = telnet_connection->read();
     boost::shared_ptr<UserCommand> usr_cmd =
-        msgToUsrCmd(telnet_connection->server_id, telnet_connection->id, msg);
+        msgToUsrCmd(telnet_connection->server_id, telnet_connection->id,
+                    telnet_connection->getUsrId(), msg);
     q_usr_cmds_.push(usr_cmd);
     q_usr_cmds_.q_f_cv.notify_one();
     logger_->debug("Received command %s", usr_cmd->toString().c_str());

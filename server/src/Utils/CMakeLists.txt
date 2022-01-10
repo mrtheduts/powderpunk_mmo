@@ -59,16 +59,19 @@ set(BOOST_LIBRARY_DIRS ${CMAKE_SOURCE_DIR}/external/boost_install/lib)
 find_package(Boost COMPONENTS thread system REQUIRED)
 include_directories(${BOOST_INCLUDE_DIRS})
 
+find_library(DataStructures SHARED IMPORTED)
+
 # Link it to libs
 target_link_libraries(${project}
     PUBLIC
         Boost::thread
         Boost::system
+        DataStructures
 )
 
 
 target_compile_options(${project} PRIVATE -Werror -Wall -Wpedantic -Wextra)
-
 target_compile_features(${project} PRIVATE cxx_std_14)
+
 set_target_properties(${project} PROPERTIES LINKER_LANGUAGE CXX)
 

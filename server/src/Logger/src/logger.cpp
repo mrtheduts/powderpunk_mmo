@@ -30,6 +30,11 @@
 #include <iomanip>
 #include <iostream>
 
+// Defines
+#define TIMESTAMP_SIZE 30
+#define SEVERITY_SIZE 7
+#define CLASS_SIZE 30
+
 using namespace boost;
 
 void Logger::init() {
@@ -49,44 +54,69 @@ void Logger::init() {
       std::clog,
       log::keywords::format =
           log::expressions::format("[%1%] %2% @ %3% : %4%") %
-          log::expressions::max_size_decor<char>(30)
+          log::expressions::max_size_decor<char>(TIMESTAMP_SIZE)
               [log::expressions::stream
-               << std::setw(30)
+               << std::setw(TIMESTAMP_SIZE)
                << log::expressions::format_date_time<boost::posix_time::ptime>(
                       "TimeStamp", "%Y-%m-%d %H:%M:%S.%f")] %
           log::expressions::max_size_decor<char>(
-              7)[log::expressions::stream << std::setw(7)
-                                          << log::trivial::severity] %
+              SEVERITY_SIZE)[log::expressions::stream
+                             << std::setw(SEVERITY_SIZE)
+                             << log::trivial::severity] %
           log::expressions::max_size_decor<char>(
-              19)[log::expressions::stream
-                  << std::setw(19)
-                  << log::expressions::attr<std::string>("Class")] %
+              CLASS_SIZE)[log::expressions::stream
+                          << std::setw(CLASS_SIZE)
+                          << log::expressions::attr<std::string>("Class")] %
           log::expressions::smessage);
 }
 
 spLogger Logger::getLogger(std::string class_name) {
   spLogger new_logger = boost::make_shared<Logger>(class_name);
-
   return new_logger;
 }
 
 spLogger Logger::getLogger(std::string class_name, unsigned int id) {
   spLogger new_logger = boost::make_shared<Logger>(class_name, id);
+  return new_logger;
+}
 
+spLogger Logger::getLogger(std::string class_name, unsigned int id,
+                           unsigned int server_id) {
+  spLogger new_logger = boost::make_shared<Logger>(class_name, id, server_id);
   return new_logger;
 }
 
 Logger::Logger(std::string class_name)
-    : class_name_{class_name}, has_id_{false}, id_{0} {
+    : class_name_{class_name},
+      has_id_{false},
+      id_{0},
+      has_server_id_{false},
+      server_id_{0} {
   logger_.add_attribute("Class",
                         log::attributes::constant<std::string>(class_name));
 }
 
 Logger::Logger(std::string class_name, unsigned int id)
-    : class_name_{class_name}, has_id_{true}, id_{id} {
+    : class_name_{class_name},
+      has_id_{true},
+      id_{id},
+      has_server_id_{false},
+      server_id_{0} {
   logger_.add_attribute("Class",
                         log::attributes::constant<std::string>(
                             class_name + " [" + std::to_string(id) + "]"));
+}
+
+Logger::Logger(std::string class_name, unsigned int id, unsigned int server_id)
+    : class_name_{class_name},
+      has_id_{true},
+      id_{id},
+      has_server_id_{true},
+      server_id_{server_id} {
+  logger_.add_attribute(
+      "Class", log::attributes::constant<std::string>(
+                   class_name + " [S" + std::to_string(server_id) + ":" +
+                   std::to_string(id) + "]"));
 }
 
 Logger::~Logger() {}

@@ -13,22 +13,27 @@
 #ifndef TELNET_CONNECTION_H
 #define TELNET_CONNECTION_H
 
+// Src Headers
 #include <Utils/BasicConnection/basic_connection.h>
 
+// External Headers
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/fiber/condition_variable.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
-#include <string>
 #include <telnetpp/core.hpp>
 #include <telnetpp/options/echo/server.hpp>
 #include <telnetpp/options/naws/client.hpp>
 #include <telnetpp/options/terminal_type/client.hpp>
 #include <telnetpp/session.hpp>
+
+// C++ Headers
+#include <string>
 #include <vector>
 
+// Defines
 #define INPUT_BUFFER_SIZE 1024
 #define OUTPUT_BUFFER_SIZE 1024
 
@@ -68,8 +73,6 @@ class TelnetConnection : public BasicConnection<std::string> {
 
   std::string readPreAuth();
   std::string read(boost::fibers::condition_variable& cv);
-
-  void readFromClient(telnetpp::bytes data);
   void handleRead(const boost::system::error_code& error, size_t recv_len);
 
   /* Telnetpp session handler - Client side */

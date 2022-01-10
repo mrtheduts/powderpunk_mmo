@@ -12,12 +12,16 @@
 
 #include "telnet_connection.h"
 
-#include <Utils/DebugTools/assert_debug_print.h>
+// Src Headers
+#include <LoginManager/login_manager.h>
 
+// External Headers
 #include <boost/chrono/duration.hpp>
 #include <boost/fiber/operations.hpp>
 #include <boost/log/trivial.hpp>
 #include <boost/thread/lock_types.hpp>
+
+// C++ Headers
 #include <chrono>
 #include <string>
 
@@ -25,29 +29,38 @@ TelnetConnection::TelnetConnection(boost::asio::io_context& io_context,
                                    boost::asio::ip::tcp::socket socket,
                                    unsigned long int id,
                                    unsigned long int server_id)
-    : BasicConnection(io_context, std::move(socket), id, server_id) {}
+    : BasicConnection(io_context, std::move(socket), id, server_id) {
+  logger_ = Logger::getLogger("TelnetConnection", id, server_id);
+}
 
 TelnetConnection::~TelnetConnection() {}
 
 void TelnetConnection::startReceive() {
-  BOOST_LOG_TRIVIAL(info) << "TC[" << id << "] Started receive loop for IP: "
-                          << socket_.remote_endpoint();
+  logger_->debug("Started receive loop for %s", getConnIP().c_str());
 
   try {
     setupOptions();
+
+    addToSendQueue(WELCOME_BANNER);
     authenticate();
+
+    if (authenticated_) {
+      logger_->info("Authenticated as \"%s\"", user_->username.c_str());
+      addToSendQueue("Welcome, " + user_name_ + "!\n");
+    } else {
+      send("User already logged. Bye!\n");
+      disconnect();
+    }
   } catch (boost::system::system_error error) {
     if (error.code() == boost::asio::error::eof) {
-      BOOST_LOG_TRIVIAL(info)
-          << "TC[" << id << "] Ending for IP: " << socket_.remote_endpoint();
+      logger_->warning("Ending connection");
       return;
     }
   }
 }
 
 void TelnetConnection::startSend() {
-  BOOST_LOG_TRIVIAL(info) << "TC[" << id << "] Started send loop for IP: "
-                          << socket_.remote_endpoint();
+  logger_->debug("Started send loop for %s", getConnIP().c_str());
 
   try {
     while (true) {
@@ -67,54 +80,47 @@ void TelnetConnection::startSend() {
         msgs.pop();
       }
 
+      // TODO: make proper msg preparation
       /* msg += PROMPT; */
 
       send(msg);
-      BOOST_LOG_TRIVIAL(debug)
-          << "TC[" << id << "] message to be sent: " << msg;
     }
   } catch (boost::system::system_error error) {
     if (error.code() == boost::asio::error::eof) {
-      BOOST_LOG_TRIVIAL(info)
-          << "TC[" << id << "] Ending for IP: " << socket_.remote_endpoint();
+      logger_->warning("Ending connection");
       return;
     }
   }
 }
 
 bool TelnetConnection::authenticate() {
-  addToSendQueue(WELCOME_BANNER);
-
-  user_name_ = readPreAuth();
-
+  std::string username = readPreAuth();
   user_name_.erase(std::remove(user_name_.begin(), user_name_.end(), 10),
                    user_name_.end());
   user_name_.erase(std::remove(user_name_.begin(), user_name_.end(), 13),
                    user_name_.end());
 
-  authenticated_ = true;
+  spLoginManager login_manager = LoginManager::getLoginManager();
+  user_ = login_manager->authenticateUser(username);
+  authenticated_ = user_ != NULL;
 
-  BOOST_LOG_TRIVIAL(debug) << "TC[" << id << "] Defined user_name_ as "
-                           << user_name_;
-
-  addToSendQueue("Welcome, " + user_name_ + "!\n");
-
-  return true;
+  return authenticated_;
 }
 
 void TelnetConnection::activateNoEcho() {
+  logger_->debug("Activate No Echo");
   t_echo_server_.activate([this](telnetpp::element elem) { write(elem); });
 }
 
 void TelnetConnection::deactivateNoEcho() {
+  logger_->debug("Deactivate No Echo");
   t_echo_server_.deactivate([this](telnetpp::element elem) { write(elem); });
 }
 
 void TelnetConnection::setupOptions() {
   t_naws_client_.on_window_size_changed.connect(
       [this](const int& width, const int& height, auto&& /*continuation*/) {
-        BOOST_LOG_TRIVIAL(debug) << "TC[" << this->id << "] (W,H) = "
-                                 << "(" << width << "," << height << ")";
+        logger_->debug("(W,H) = (%d,%d)", width, height);
       });
 
   t_termtype_client_.on_state_changed.connect([this](auto&& continuation) {
@@ -125,9 +131,8 @@ void TelnetConnection::setupOptions() {
 
   t_termtype_client_.on_terminal_type.connect(
       [this](auto&& type, auto&& /*continuation*/) {
-        BOOST_LOG_TRIVIAL(debug)
-            << "TC[" << this->id
-            << "] Terminal type: " << std::string(type.begin(), type.end());
+        logger_->debug("Terminal type: %s",
+                       std::string(type.begin(), type.end()).c_str());
       });
 
   telnet_session_.install(t_echo_server_);
@@ -178,9 +183,8 @@ void TelnetConnection::rawWrite(telnetpp::bytes data) {
 void TelnetConnection::handleWrite(const boost::system::error_code& error,
                                    size_t bytes_transf) {
   if (error) {
-    BOOST_LOG_TRIVIAL(error)
-        << "TC[" << this->id << "] Bytes transferred:" << bytes_transf << ". "
-        << error.message();
+    logger_->error("Bytes transferred: %d. Error: %s", bytes_transf,
+                   error.message().c_str());
   }
 }
 
@@ -209,17 +213,12 @@ std::string TelnetConnection::read(boost::fibers::condition_variable& cv) {
     }
   }
 
+  message.erase(std::remove(message.begin(), message.end(), '\r'),
+                message.end());
+  message.erase(std::remove(message.begin(), message.end(), '\n'),
+                message.end());
+
   return message;
-}
-
-void TelnetConnection::readFromClient(telnetpp::bytes data) {
-  std::string message(data.begin(), data.end());
-
-  message.erase(std::remove(message.begin(), message.end(), 10), message.end());
-  message.erase(std::remove(message.begin(), message.end(), 13), message.end());
-  std::cout << message << std::endl;
-
-  addToSendQueue("Server: " + message + "\n");
 }
 
 void TelnetConnection::receive() {
@@ -228,34 +227,28 @@ void TelnetConnection::receive() {
 
       [this](const boost::system::error_code& error, size_t num_recv_bytes) {
         if (error == boost::asio::error::eof) {
-          BOOST_LOG_TRIVIAL(info) << "TC[" << id << "] Closed by client";
+          logger_->info("Closed by client");
           disconnect();
         } else {
           telnet_session_.receive(
               telnetpp::bytes{input_buffer_, num_recv_bytes},
               [this](telnetpp::bytes data,
                      std::function<void(telnetpp::bytes)> const& /*send*/) {
-                std::string message(data.begin(), data.end());
+                std::string msg(data.begin(), data.end());
 
-                received_msgs_.push(message);
+                received_msgs_.push(msg);
 
                 // TODO: Is it guaranteed to have a '\n' at the end of a
                 // message?
-                if (message.back() == '\n') {
+                if (msg.back() == '\n') {
+                  logger_->debug("Received message of size %d", msg.size());
                   if (authenticated_) {
                     received_msgs_.q_f_cv
                         .notify_one();  // Notifies TelnetServer of new message
-                    BOOST_LOG_TRIVIAL(debug)
-                        << "TC[" << id << "] Received message["
-                        << message.size() << "], pushed to received_msgs_";
                   } else {
                     cv_pre_auth_received_msgs_
                         .notify_one();  // Notifies TelnetServer of new pre-auth
                                         // message
-                    BOOST_LOG_TRIVIAL(debug)
-                        << "TC[" << id << "] Received message["
-                        << message.size()
-                        << "], pushed to pre_auth_received_msgs_";
                   }
                 }
               },

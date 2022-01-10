@@ -14,6 +14,7 @@
 
 // External Headers
 #include <boost/log/trivial.hpp>
+#include <boost/smart_ptr/make_shared_object.hpp>
 
 GameServer::GameServer(const unsigned int id) : id{id} {
   logger_ = Logger::getLogger("GameServer", id);
@@ -23,6 +24,8 @@ GameServer::~GameServer() {}
 void GameServer::start() {
   t_read_telnet_usr_cmds_ = boost::make_shared<boost::thread>(
       &GameServer::createReadTelnetUsrCmdsFiber, this);
+  t_process_usr_cmds_ =
+      boost::make_shared<boost::thread>(&GameServer::processUsrCmds, this);
 }
 
 void GameServer::addTelnetServer(spTelnetServer telnet_server) {
@@ -66,8 +69,8 @@ void GameServer::createReadTelnetUsrCmdsFiber() {
 }
 
 void GameServer::readTelnetUsrCmds(spTelnetServer telnet_server) {
+  logger_->info("Starting TelnetServer [%d] read loop", telnet_server->id);
   while (true) {
-    logger_->info("Starting TelnetServer [%d] read loop", telnet_server->id);
     {
       std::unique_lock<boost::fibers::mutex> lock_new_usr_cmds(
           telnet_server->q_usr_cmds_m_f_);
@@ -76,11 +79,34 @@ void GameServer::readTelnetUsrCmds(spTelnetServer telnet_server) {
           [telnet_server]() { return !telnet_server->q_usr_cmds_.isEmpty(); });
     }
 
-    while (!telnet_server->q_usr_cmds_.isEmpty()) {
-      logger_->debug("Received new UserCommands from TelnetServer [%d]",
-                     telnet_server->id);
-      incoming_usr_cmds_.pushAll(telnet_server->q_usr_cmds_.popAll());
+    bool has_new_usr_cmds = !telnet_server->q_usr_cmds_.isEmpty();
+    {
+      std::unique_lock<boost::mutex> lock_new_usr_cmds(q_incoming_usr_cmds_m_);
+      while (!telnet_server->q_usr_cmds_.isEmpty()) {
+        logger_->debug("Received new UserCommands from TelnetServer [%d]",
+                       telnet_server->id);
+        q_incoming_usr_cmds_.pushAll(telnet_server->q_usr_cmds_.popAll());
+      }
+    }
+    if (has_new_usr_cmds) {
+      q_incoming_usr_cmds_.q_cv.notify_one();
     }
   }
 }
 
+void GameServer::processUsrCmds() {
+  while (true) {
+    {
+      boost::unique_lock<boost::mutex> lock_new_usr_cmds(
+          q_incoming_usr_cmds_m_);
+      q_incoming_usr_cmds_.q_cv.wait(lock_new_usr_cmds, [this]() {
+        return !this->q_incoming_usr_cmds_.isEmpty();
+      });
+
+      while (!q_incoming_usr_cmds_.isEmpty()) {
+        logger_->debug("Cmd: %s",
+                       q_incoming_usr_cmds_.pop()->toString().c_str());
+      }
+    }
+  }
+}

@@ -10,17 +10,20 @@ project(${project} LANGUAGES CXX)
 
 set(DATASTRUCTURES_PUBLIC_HEADERS
         include/DataStructures/user_command.h
+        include/DataStructures/user.h
 )
 
 set(DATASTRUCTURES_PUBLIC_SOURCE
 )
 
 set(DATASTRUCTURES_PRIVATE_HEADERS
-        src/user_command.h
+    src/Commands/user_command.h
+    src/User/user.h
 )
 
 set(DATASTRUCTURES_PRIVATE_SOURCE
-        src/user_command.cpp
+    src/Commands/user_command.cpp
+    src/User/user.cpp
 )
 
 add_library(${project} 

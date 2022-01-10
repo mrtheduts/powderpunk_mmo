@@ -37,19 +37,23 @@ class GameServer {
   void createReadTelnetUsrCmdsFiber();
   void readTelnetUsrCmds(spTelnetServer telnet_Server);
 
+  void processUsrCmds();
+
+  /* Logger object */
+  spLogger logger_;
+
   TSQueue<spTelnetServer> new_telnet_servers_;
 
   /* Thread-level condition variable */
   boost::fibers::mutex new_telnet_servers_m_f_;
   boost::condition_variable new_telnet_servers_cv_;
-
   TSMap<unsigned int, spTelnetServer> telnet_servers_;
 
-  TSQueue<spUserCommand> incoming_usr_cmds_;
+  boost::mutex q_incoming_usr_cmds_m_;
+  TSQueue<spUserCommand> q_incoming_usr_cmds_;
 
   spThread t_read_telnet_usr_cmds_;
-
-  spLogger logger_;
+  spThread t_process_usr_cmds_;
 };
 
 typedef boost::shared_ptr<GameServer> spGameServer;

@@ -4,11 +4,14 @@
  *  Author: Eduardo "mrtheduts" Souza
  *          eduardomoreirafds@gmail.com
  *
- *  Date:   09 Jan 2022
+ *  Date:   13 Aug 2021
  *
  *  (C) Copyright 2021 Eduardo "mrtheduts" Souza All Rights Reserved
  *
  */
 
-#include "../../src/Commands/user_command.h"
+#include "user.h"
 
+User::User(unsigned int id, std::string username)
+    : id{id}, username{username} {}
+User::~User() {}

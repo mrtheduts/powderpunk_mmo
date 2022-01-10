@@ -16,11 +16,12 @@
 #include <string>
 
 UserCommand::UserCommand(unsigned int server_id, unsigned int conn_id,
-                         std::string mod, std::string cmd,
+                         unsigned int user_id, std::string mod, std::string cmd,
                          std::vector<std::string> args,
                          std::vector<std::string> targets)
     : server_id(server_id),
       conn_id(conn_id),
+      user_id{user_id},
       mod(mod),
       cmd(cmd),
       args(args),
@@ -30,7 +31,8 @@ UserCommand::~UserCommand() {}
 
 std::string UserCommand::toString() {
   std::string result = "{ [S" + std::to_string(server_id) + ":C" +
-                       std::to_string(conn_id) + "] mod {" + mod + "} {" + cmd;
+                       std::to_string(conn_id) + ":U" +
+                       std::to_string(user_id) + "] mod {" + mod + "} {" + cmd;
 
   auto concat_func = [](const std::string &a, const std::string &b) {
     if (a.empty() && !b.empty()) {

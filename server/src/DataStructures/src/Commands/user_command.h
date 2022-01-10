@@ -21,13 +21,14 @@
 
 class UserCommand {
  public:
-  UserCommand(unsigned int server_id, unsigned int conn_id, std::string mod,
-              std::string cmd, std::vector<std::string> args,
-              std::vector<std::string> targets);
+  UserCommand(unsigned int server_id, unsigned int conn_id,
+              unsigned int user_id, std::string mod, std::string cmd,
+              std::vector<std::string> args, std::vector<std::string> targets);
   ~UserCommand();
 
   const unsigned int server_id;
   const unsigned int conn_id;
+  const unsigned int user_id;
 
   const std::string mod;
   const std::string cmd;

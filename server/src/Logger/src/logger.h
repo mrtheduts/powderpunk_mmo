@@ -49,9 +49,13 @@ class Logger : public boost::enable_shared_from_this<Logger> {
   static boost::shared_ptr<Logger> getLogger(std::string class_name);
   static boost::shared_ptr<Logger> getLogger(std::string class_name,
                                              unsigned int id);
+  static boost::shared_ptr<Logger> getLogger(std::string class_name,
+                                             unsigned int server_id,
+                                             unsigned int id);
 
   Logger(std::string class_name);
   Logger(std::string class_name, unsigned int id);
+  Logger(std::string class_name, unsigned int id, unsigned int server_id);
   ~Logger();
 
   template <typename... Args>
@@ -90,8 +94,12 @@ class Logger : public boost::enable_shared_from_this<Logger> {
   log::sources::severity_logger_mt<log::trivial::severity_level> logger_;
 
   const std::string class_name_;
+
   const bool has_id_;
   const unsigned int id_;
+
+  const bool has_server_id_;
+  const unsigned int server_id_;
 };
 
 typedef boost::shared_ptr<Logger> spLogger;

@@ -22,6 +22,7 @@
 
 boost::shared_ptr<UserCommand> msgToUsrCmd(unsigned long int server_id,
                                            unsigned long int connection_id,
+                                           unsigned long int user_id,
                                            std::string& msg);
 
 #endif

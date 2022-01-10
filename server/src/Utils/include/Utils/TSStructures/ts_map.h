@@ -28,6 +28,26 @@ class TSMap {
   virtual ~TSMap(){};
 
   /*
+   * Checks if there is a given key
+   *
+   * @return a boolean indicating if there is such key.
+   */
+  bool has(Key key) {
+    std::lock_guard<std::mutex> lock(m_mutex);
+    return map_.count(key);
+  }
+
+  /*
+   * Checks if there is a given key
+   *
+   * @return a boolean indicating if there is such key.
+   */
+  bool erase(Key key) {
+    std::lock_guard<std::mutex> lock(m_mutex);
+    return map_.erase(key);
+  }
+
+  /*
    * Checks if map is empty.
    *
    * @return a boolean indicating if map is empty.
@@ -68,6 +88,16 @@ class TSMap {
   void put(const Key key, const T& elem) {
     std::lock_guard<std::mutex> lock(m_mutex);
     map_[key] = elem;
+  }
+
+  /*
+   * Checks if there is a given key
+   *
+   * @return a boolean indicating if there is such key.
+   */
+  bool fHas(Key key) {
+    std::lock_guard<boost::fibers::mutex> lock(m_f_mutex);
+    return map_.count(key);
   }
 
   /*

@@ -13,13 +13,20 @@
 #ifndef BASIC_CONNECTION_H
 #define BASIC_CONNECTION_H
 
+// Src Headers
+#include <DataStructures/user.h>
+#include <Logger/logger.h>
+#include <LoginManager/login_manager.h>
 #include <Utils/TSStructures/ts_queue.h>
 
+// External Headers
 #include <boost/asio.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/fiber/condition_variable.hpp>
 #include <boost/lexical_cast.hpp>
 
+// TODO: Refactor to be connection type free. Create one class for TCP and UDP
+// next.
 template <class T>
 class BasicConnection
     : public boost::enable_shared_from_this<BasicConnection<T>> {
@@ -30,11 +37,16 @@ class BasicConnection
       : id{id},
         server_id{server_id},
         io_context_(io_context),
-        socket_(std::move(socket)) {}
+        socket_(std::move(socket)) {
+    user_ = NULL;
+  }
 
   virtual ~BasicConnection(){};
 
   void disconnect() {
+    if (user_ != NULL) {
+      LoginManager::getLoginManager()->disconnectUser(user_->username);
+    }
     boost::asio::post(io_context_, [this] {
       socket_.cancel();
       socket_.close();
@@ -46,8 +58,10 @@ class BasicConnection
     return boost::lexical_cast<std::string>(socket_.remote_endpoint());
   }
 
-  unsigned int id;
-  unsigned int server_id;
+  unsigned int getUsrId() { return user_->id; }
+
+  const unsigned int id;
+  const unsigned int server_id;
 
  private:
   virtual void startReceive() = 0;
@@ -59,9 +73,13 @@ class BasicConnection
   virtual bool authenticate() = 0;
 
  protected:
+  /* Logger object */
+  spLogger logger_;
+
   boost::asio::io_context& io_context_;
   boost::asio::ip::tcp::socket socket_;
 
+  spUser user_;
   bool authenticated_;
 
   TSQueue<T> received_msgs_;

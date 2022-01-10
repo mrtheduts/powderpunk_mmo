@@ -21,14 +21,12 @@
 std::string preprocessMsg(std::string msg) {
   std::string res = msg;
 
-  res.erase(std::remove(res.begin(), res.end(), '\r'), res.end());
-  res.erase(std::remove(res.begin(), res.end(), '\n'), res.end());
-
   return res;
 }
 
 boost::shared_ptr<UserCommand> msgToUsrCmd(unsigned long int server_id,
                                            unsigned long int connection_id,
+                                           unsigned long int user_id,
                                            std::string& msg) {
   std::string preparedMsg = preprocessMsg(msg);
 
@@ -40,7 +38,7 @@ boost::shared_ptr<UserCommand> msgToUsrCmd(unsigned long int server_id,
   args.push_back(preparedMsg);
 
   spUserCommand usr_cmd = boost::make_shared<UserCommand>(
-      server_id, connection_id, mod, cmd, args, targets);
+      server_id, connection_id, user_id, mod, cmd, args, targets);
 
   return usr_cmd;
 }

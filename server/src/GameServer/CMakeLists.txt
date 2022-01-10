@@ -57,6 +57,7 @@ include_directories(${BOOST_INCLUDE_DIRS})
 #####################################################################
 find_library(DataStructures SHARED IMPORTED)
 find_library(Logger SHARED IMPORTED)
+find_library(LoginManager SHARED IMPORTED)
 find_library(TelnetInterface SHARED IMPORTED)
 find_library(Utils SHARED IMPORTED)
 
@@ -66,6 +67,7 @@ target_link_libraries(${project}
         Boost::fiber
         Boost::thread
         DataStructures
+        LoginManager
         Logger
         TelnetInterface
         Utils
