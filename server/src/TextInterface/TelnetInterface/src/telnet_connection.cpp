@@ -197,7 +197,7 @@ std::string TelnetConnection::read() { return read(received_msgs_.q_f_cv); }
 std::string TelnetConnection::read(boost::fibers::condition_variable& cv) {
   std::string message = "";
 
-  while (message.back() != '\n') {
+  while (message.empty() || message.back() != '\n') {
     {
       std::unique_lock<boost::fibers::mutex> lock_new_rec_msg(
           received_msgs_f_m_);
