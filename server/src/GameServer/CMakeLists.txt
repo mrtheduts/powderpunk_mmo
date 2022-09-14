@@ -9,6 +9,7 @@ project(${project})
 
 set(GAMESERVER_PUBLIC_HEADERS
         include/GameServer/game_server.h
+        include/GameServer/commands.h
 )
 
 set(GAMESERVER_PUBLIC_SOURCE
@@ -20,6 +21,7 @@ set(GAMESERVER_PRIVATE_HEADERS
 
 set(GAMESERVER_PRIVATE_SOURCE
         src/game_server.cpp
+        src/Commands/commands.cpp
 )
 
 add_library(${project} 

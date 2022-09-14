@@ -104,9 +104,12 @@ void GameServer::processUsrCmds() {
       });
 
       while (!q_incoming_usr_cmds_.isEmpty()) {
-        logger_->debug("Cmd: %s",
-                       q_incoming_usr_cmds_.pop()->toString().c_str());
+        spUserCommand new_command = q_incoming_usr_cmds_.pop();
+        logger_->debug("Cmd: %s", new_command->toString().c_str());
+        runUsrCmds(new_command);
       }
     }
   }
 }
+
+void GameServer::runUsrCmds(spUserCommand cmd) { logger_->info("runUsrCmds"); }

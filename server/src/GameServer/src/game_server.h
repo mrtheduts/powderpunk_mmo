@@ -38,6 +38,7 @@ class GameServer {
   void readTelnetUsrCmds(spTelnetServer telnet_Server);
 
   void processUsrCmds();
+  void runUsrCmds(spUserCommand cmd);
 
   /* Logger object */
   spLogger logger_;
