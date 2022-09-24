@@ -32,13 +32,14 @@ boost::shared_ptr<UserCommand> msgToUsrCmd(unsigned long int server_id,
 
   std::string mod = "";
   std::string cmd = "say";
+  UserCommand::Type cmd_type = UserCommand::Type::SAY;
   std::vector<std::string> args = std::vector<std::string>();
   std::vector<std::string> targets = std::vector<std::string>();
 
   args.push_back(preparedMsg);
 
   spUserCommand usr_cmd = boost::make_shared<UserCommand>(
-      server_id, connection_id, user_id, mod, cmd, args, targets);
+      server_id, connection_id, user_id, mod, cmd, cmd_type, args, targets);
 
   return usr_cmd;
 }

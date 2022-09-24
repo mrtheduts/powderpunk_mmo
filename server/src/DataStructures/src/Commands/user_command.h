@@ -21,9 +21,12 @@
 
 class UserCommand {
  public:
+  enum Type { SAY };
+
   UserCommand(unsigned int server_id, unsigned int conn_id,
               unsigned int user_id, std::string mod, std::string cmd,
-              std::vector<std::string> args, std::vector<std::string> targets);
+              Type cmd_type, std::vector<std::string> args,
+              std::vector<std::string> targets);
   ~UserCommand();
 
   const unsigned int server_id;
@@ -32,6 +35,7 @@ class UserCommand {
 
   const std::string mod;
   const std::string cmd;
+  const Type cmd_type;
 
   const std::vector<std::string> args;
   const std::vector<std::string> targets;

@@ -4,9 +4,26 @@
  *  Author: Eduardo "mrtheduts" Souza
  *          eduardomoreirafds@gmail.com
  *
- *  Date:   13 Sep 2022
+ *  Date:   14 Sep 2021
  *
  *  (C) Copyright 2022 Eduardo "mrtheduts" Souza All Rights Reserved
  *
  */
+#ifndef EVENT_H
+#define EVENT_H
 
+class Event {
+ public:
+  enum Type { MESSAGE };
+
+  ~Event();
+
+  static Event createMessage();
+
+  const Type type;
+
+ private:
+  Event(Type type);
+};
+
+#endif

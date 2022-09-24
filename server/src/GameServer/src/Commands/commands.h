@@ -6,7 +6,7 @@
  *
  *  Date:   08 Sep 2022
  *
- *  (C) Copyright 2021 Eduardo "mrtheduts" Souza All Rights Reserved
+ *  (C) Copyright 2022 Eduardo "mrtheduts" Souza All Rights Reserved
  *
  */
 

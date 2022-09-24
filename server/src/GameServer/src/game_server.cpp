@@ -112,4 +112,12 @@ void GameServer::processUsrCmds() {
   }
 }
 
-void GameServer::runUsrCmds(spUserCommand cmd) { logger_->info("runUsrCmds"); }
+void GameServer::runUsrCmds(spUserCommand cmd) {
+  switch (cmd->cmd_type) {
+    case UserCommand::Type::SAY:
+      say(cmd);
+      break;
+  }
+}
+
+void GameServer::say(spUserCommand cmd) { std::string msg = cmd->args[0]; }

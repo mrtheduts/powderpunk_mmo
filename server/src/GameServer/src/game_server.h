@@ -40,6 +40,11 @@ class GameServer {
   void processUsrCmds();
   void runUsrCmds(spUserCommand cmd);
 
+  void sendEventToEveryone();
+
+  /* Commands */
+  void say(spUserCommand cmd);
+
   /* Logger object */
   spLogger logger_;
 
