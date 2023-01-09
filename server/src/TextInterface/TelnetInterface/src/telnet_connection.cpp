@@ -10,10 +10,10 @@
  *
  */
 
-#include "telnet_connection.h"
+#include "telnet_connection.hpp"
 
 // Src Headers
-#include <LoginManager/login_manager.h>
+#include <LoginManager/login_manager.hpp>
 
 // External Headers
 #include <boost/chrono/duration.hpp>

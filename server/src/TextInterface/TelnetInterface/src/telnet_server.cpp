@@ -10,12 +10,12 @@
  *
  */
 
-#include "telnet_server.h"
+#include "telnet_server.hpp"
 
 // Src Headers
-#include <DataStructures/user_command.h>
-#include <TextToCommand/text_to_command.h>
-#include <Utils/DebugTools/assert_debug_print.h>
+#include <DataStructures/user_command.hpp>
+#include <TextToCommand/text_to_command.hpp>
+#include <Utils/DebugTools/assert_debug_print.hpp>
 
 // External Headers
 #include <boost/bind.hpp>

@@ -11,10 +11,10 @@
  */
 
 // Src Headers
-#include <GameServer/game_server.h>
-#include <Logger/logger.h>
-#include <TelnetInterface/telnet_interface.h>
-#include <Utils/DebugTools/assert_debug_print.h>
+#include <GameServer/game_server.hpp>
+#include <Logger/logger.hpp>
+#include <TelnetInterface/telnet_interface.hpp>
+#include <Utils/DebugTools/assert_debug_print.hpp>
 
 // External Headers
 #include <boost/smart_ptr/make_shared_object.hpp>

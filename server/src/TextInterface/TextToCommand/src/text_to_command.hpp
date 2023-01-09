@@ -14,7 +14,7 @@
 #define TEXT_TO_COMMAND_H
 
 // Src Headers
-#include <DataStructures/user_command.h>
+#include <DataStructures/user_command.hpp>
 
 // C++ Headers
 #include <string>

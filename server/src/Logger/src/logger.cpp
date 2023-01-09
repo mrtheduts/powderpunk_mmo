@@ -10,7 +10,7 @@
  *
  */
 
-#include "logger.h"
+#include "logger.hpp"
 
 // External Headers
 #include <boost/date_time/posix_time/ptime.hpp>

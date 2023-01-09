@@ -9,15 +9,15 @@ set(project TelnetInterface)
 project(${project} LANGUAGES CXX)
 
 set(TELNETINTERFACE_PUBLIC_HEADERS
-        include/TelnetInterface/telnet_interface.h
+        include/TelnetInterface/telnet_interface.hpp
 )
 
 set(TELNETINTERFACE_PUBLIC_SOURCE
 )
 
 set(TELNETINTERFACE_PRIVATE_HEADERS
-        src/telnet_connection.h
-        src/telnet_server.h
+        src/telnet_connection.hpp
+        src/telnet_server.hpp
 )
 
 set(TELNETINTERFACE_PRIVATE_SOURCE

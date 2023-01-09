@@ -14,9 +14,9 @@
 #define BASIC_SERVER_H
 
 // Src Headers
-#include <DataStructures/user_command.h>
-#include <Logger/logger.h>
-#include <Utils/TSStructures/ts_queue.h>
+#include <DataStructures/user_command.hpp>
+#include <Logger/logger.hpp>
+#include <Utils/TSStructures/ts_queue.hpp>
 
 // External Headers
 #include <boost/asio.hpp>

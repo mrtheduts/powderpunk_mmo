@@ -10,7 +10,7 @@
  *
  */
 
-#include "text_to_command.h"
+#include "text_to_command.hpp"
 
 // External Headers
 #include <boost/make_shared.hpp>

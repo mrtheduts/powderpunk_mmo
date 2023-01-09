@@ -14,7 +14,7 @@
 #define TELNET_CONNECTION_H
 
 // Src Headers
-#include <Utils/BasicConnection/basic_connection.h>
+#include <Utils/BasicConnection/basic_connection.hpp>
 
 // External Headers
 #include <boost/asio.hpp>

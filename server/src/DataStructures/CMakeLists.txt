@@ -9,16 +9,16 @@ set(project DataStructures)
 project(${project} LANGUAGES CXX)
 
 set(DATASTRUCTURES_PUBLIC_HEADERS
-        include/DataStructures/user_command.h
-        include/DataStructures/user.h
+        include/DataStructures/user_command.hpp
+        include/DataStructures/user.hpp
 )
 
 set(DATASTRUCTURES_PUBLIC_SOURCE
 )
 
 set(DATASTRUCTURES_PRIVATE_HEADERS
-    src/Commands/user_command.h
-    src/User/user.h
+    src/Commands/user_command.hpp
+    src/User/user.hpp
 )
 
 set(DATASTRUCTURES_PRIVATE_SOURCE

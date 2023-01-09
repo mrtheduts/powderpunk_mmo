@@ -8,15 +8,15 @@ set(project GameServer)
 project(${project})
 
 set(GAMESERVER_PUBLIC_HEADERS
-        include/GameServer/game_server.h
-        include/GameServer/commands.h
+        include/GameServer/game_server.hpp
+        include/GameServer/commands.hpp
 )
 
 set(GAMESERVER_PUBLIC_SOURCE
 )
 
 set(GAMESERVER_PRIVATE_HEADERS
-        src/game_server.h
+        src/game_server.hpp
 )
 
 set(GAMESERVER_PRIVATE_SOURCE

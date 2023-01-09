@@ -14,10 +14,10 @@
 #define BASIC_CONNECTION_H
 
 // Src Headers
-#include <DataStructures/user.h>
-#include <Logger/logger.h>
-#include <LoginManager/login_manager.h>
-#include <Utils/TSStructures/ts_queue.h>
+#include <DataStructures/user.hpp>
+#include <Logger/logger.hpp>
+#include <LoginManager/login_manager.hpp>
+#include <Utils/TSStructures/ts_queue.hpp>
 
 // External Headers
 #include <boost/asio.hpp>

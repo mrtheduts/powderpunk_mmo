@@ -10,5 +10,5 @@
  *
  */
 
-#include "../../src/telnet_server.h"
+#include "../../src/telnet_server.hpp"
 

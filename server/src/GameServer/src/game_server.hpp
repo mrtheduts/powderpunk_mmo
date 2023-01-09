@@ -14,11 +14,11 @@
 #define GAME_SERVER_H
 
 // Src Headers
-#include <DataStructures/user_command.h>
-#include <Logger/logger.h>
-#include <TelnetInterface/telnet_interface.h>
-#include <Utils/TSStructures/ts_map.h>
-#include <Utils/TSStructures/ts_queue.h>
+#include <DataStructures/user_command.hpp>
+#include <Logger/logger.hpp>
+#include <TelnetInterface/telnet_interface.hpp>
+#include <Utils/TSStructures/ts_map.hpp>
+#include <Utils/TSStructures/ts_queue.hpp>
 
 // External Headers
 #include <boost/smart_ptr/shared_ptr.hpp>

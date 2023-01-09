@@ -13,23 +13,23 @@ project(${project} LANGUAGES CXX)
 
 # Adding properties of DebugTools target ############################
 set(DEBUGTOOLS_PUBLIC_HEADER_FILES
-        include/Utils/DebugTools/assert_debug_print.h
+        include/Utils/DebugTools/assert_debug_print.hpp
 )
 
 # Adding properties of BasicConnection target #######################
 set(BASICCONNECTION_PUBLIC_HEADER_FILES
-        include/Utils/BasicConnection/basic_connection.h
+        include/Utils/BasicConnection/basic_connection.hpp
 )
 
 # Adding properties of BasicServer target ###########################
 set(BASICSERVER_PUBLIC_HEADER_FILES
-        include/Utils/BasicServer/basic_server.h
+        include/Utils/BasicServer/basic_server.hpp
 )
 
 # Adding properties of TSQueue target ###############################
 set(TSQUEUE_PUBLIC_HEADER_FILES
-    include/Utils/TSStructures/ts_queue.h
-    include/Utils/TSStructures/ts_map.h
+    include/Utils/TSStructures/ts_queue.hpp
+    include/Utils/TSStructures/ts_map.hpp
 )
 
 #####################################################################

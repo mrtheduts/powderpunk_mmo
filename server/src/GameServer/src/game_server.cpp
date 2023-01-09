@@ -10,7 +10,7 @@
  *
  */
 
-#include "game_server.h"
+#include "game_server.hpp"
 
 // External Headers
 #include <boost/log/trivial.hpp>

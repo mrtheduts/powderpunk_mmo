@@ -14,7 +14,7 @@
 #define TELNET_SERVER_H
 
 // Src Headers
-#include <Utils/BasicServer/basic_server.h>
+#include <Utils/BasicServer/basic_server.hpp>
 
 // External Headers
 #include <boost/asio.hpp>
@@ -28,7 +28,7 @@
 #include <vector>
 
 // Local Headers
-#include "telnet_connection.h"
+#include "telnet_connection.hpp"
 
 // Defines
 #define DEFAULT_PORT 22222

@@ -9,6 +9,6 @@
  *  (C) Copyright 2022 Eduardo "mrtheduts" Souza All Rights Reserved
  *
  */
-#include "event.h"
+#include "event.hpp"
 
 Event::Event(Event::Type type) : type(type) {}

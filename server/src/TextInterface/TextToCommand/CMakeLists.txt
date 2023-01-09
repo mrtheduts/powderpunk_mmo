@@ -9,14 +9,14 @@ set(project TextToCommand)
 project(${project} LANGUAGES CXX)
 
 set(TEXTTOCOMMAND_PUBLIC_HEADERS
-        include/TextToCommand/text_to_command.h
+        include/TextToCommand/text_to_command.hpp
 )
 
 set(TEXTTOCOMMAND_PUBLIC_SOURCE
 )
 
 set(TEXTTOCOMMAND_PRIVATE_HEADERS
-        src/text_to_command.h
+        src/text_to_command.hpp
 )
 
 set(TEXTTOCOMMAND_PRIVATE_SOURCE

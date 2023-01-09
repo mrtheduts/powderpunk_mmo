@@ -14,10 +14,10 @@
 #define LOGIN_MANAGER_H
 
 // Src Headers
-#include <DataStructures/user.h>
-#include <Logger/logger.h>
-#include <Utils/TSStructures/ts_map.h>
-#include <Utils/TSStructures/ts_queue.h>
+#include <DataStructures/user.hpp>
+#include <Logger/logger.hpp>
+#include <Utils/TSStructures/ts_map.hpp>
+#include <Utils/TSStructures/ts_queue.hpp>
 
 // External Headers
 #include <boost/smart_ptr/shared_ptr.hpp>

@@ -10,7 +10,7 @@
  *
  */
 
-#include "user.h"
+#include "user.hpp"
 
 User::User(unsigned int id, std::string username)
     : id{id}, username{username} {}

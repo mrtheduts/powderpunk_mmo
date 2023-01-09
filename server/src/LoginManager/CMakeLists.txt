@@ -8,14 +8,14 @@ set(project LoginManager)
 project(${project})
 
 set(LOGINMANAGER_PUBLIC_HEADERS
-    include/LoginManager/login_manager.h
+    include/LoginManager/login_manager.hpp
 )
 
 set(LOGINMANAGER_PUBLIC_SOURCE
 )
 
 set(LOGINMANAGER_PRIVATE_HEADERS
-        src/login_manager.h
+        src/login_manager.hpp
 )
 
 set(LOGINMANAGER_PRIVATE_SOURCE

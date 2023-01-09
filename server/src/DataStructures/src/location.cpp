@@ -10,7 +10,7 @@
  *
  */
 
-#include "location.h"
+#include "location.hpp"
 
 User::User(std::string username, unsigned int location_id)
     : username_{username}, location_id_{location_id} {}

@@ -8,14 +8,14 @@ set(project Logger)
 project(${project})
 
 set(LOGGER_PUBLIC_HEADERS
-    include/Logger/logger.h
+    include/Logger/logger.hpp
 )
 
 set(LOGGER_PUBLIC_SOURCE
 )
 
 set(LOGGER_PRIVATE_HEADERS
-        src/logger.h
+        src/logger.hpp
 )
 
 set(LOGGER_PRIVATE_SOURCE
