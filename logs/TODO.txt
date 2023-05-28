@@ -1,0 +1,7 @@
+PW Mobile -> ver esquemas de moedas;
+Fazer uma lista de todas as features macro do jogo;
+
+Pay to keep-up -> consegue comprar SOMENTE o que conseguiria normalmente grindando;
+Se você não farmar o item no dia ainda, pode comprar;
+
+Itens farmáveis -> presos ao personagem;
