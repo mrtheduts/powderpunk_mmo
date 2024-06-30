@@ -10,8 +10,12 @@
  *
  */
 
-#ifndef LOGGER_H
-#define LOGGER_H
+#ifndef SERVER_SRC_LOGGER_SRC_LOGGER_HPP_
+#define SERVER_SRC_LOGGER_SRC_LOGGER_HPP_
+
+// C++ Headers
+#include <memory>
+#include <string>
 
 // External Headers
 #include <boost/log/core.hpp>
@@ -19,9 +23,6 @@
 #include <boost/log/trivial.hpp>
 #include <boost/smart_ptr/enable_shared_from_this.hpp>
 #include <boost/smart_ptr/shared_ptr.hpp>
-
-// C++ Headers
-#include <string>
 
 // Defines
 #define MB 1024 * 1024
@@ -53,7 +54,7 @@ class Logger : public boost::enable_shared_from_this<Logger> {
                                              unsigned int server_id,
                                              unsigned int id);
 
-  Logger(std::string class_name);
+  explicit Logger(std::string class_name);
   Logger(std::string class_name, unsigned int id);
   Logger(std::string class_name, unsigned int id, unsigned int server_id);
   ~Logger();
@@ -89,7 +90,8 @@ class Logger : public boost::enable_shared_from_this<Logger> {
   }
 
  private:
-  void logWithSeverity(std::string& msg, log::trivial::severity_level severity);
+  void logWithSeverity(const std::string& msg,
+                       log::trivial::severity_level severity);
 
   log::sources::severity_logger_mt<log::trivial::severity_level> logger_;
 
@@ -104,5 +106,4 @@ class Logger : public boost::enable_shared_from_this<Logger> {
 
 typedef boost::shared_ptr<Logger> spLogger;
 
-#endif
-
+#endif  // SERVER_SRC_LOGGER_SRC_LOGGER_HPP_

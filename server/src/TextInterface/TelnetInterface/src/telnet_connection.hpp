@@ -10,8 +10,12 @@
  *
  */
 
-#ifndef TELNET_CONNECTION_H
-#define TELNET_CONNECTION_H
+#ifndef SERVER_SRC_TEXTINTERFACE_TELNETINTERFACE_SRC_TELNET_CONNECTION_HPP_
+#define SERVER_SRC_TEXTINTERFACE_TELNETINTERFACE_SRC_TELNET_CONNECTION_HPP_
+
+// C++ Headers
+#include <string>
+#include <vector>
 
 // Src Headers
 #include <Utils/BasicConnection/basic_connection.hpp>
@@ -29,10 +33,6 @@
 #include <telnetpp/options/terminal_type/client.hpp>
 #include <telnetpp/session.hpp>
 
-// C++ Headers
-#include <string>
-#include <vector>
-
 // Defines
 #define INPUT_BUFFER_SIZE 1024
 #define OUTPUT_BUFFER_SIZE 1024
@@ -44,7 +44,7 @@ static const char PROMPT[] = "\nsay > ";
 
 class TelnetConnection : public BasicConnection<std::string> {
  public:
-  TelnetConnection(boost::asio::io_context& io_context,
+  TelnetConnection(const boost::asio::io_context& io_context,
                    boost::asio::ip::tcp::socket socket, unsigned long int id,
                    unsigned long int server_id);
   ~TelnetConnection();
@@ -72,7 +72,7 @@ class TelnetConnection : public BasicConnection<std::string> {
   void handleWrite(const boost::system::error_code& error, size_t bytes_transf);
 
   std::string readPreAuth();
-  std::string read(boost::fibers::condition_variable& cv);
+  std::string read(const boost::fibers::condition_variable& cv);
   void handleRead(const boost::system::error_code& error, size_t recv_len);
 
   /* Telnetpp session handler - Client side */
@@ -89,4 +89,4 @@ class TelnetConnection : public BasicConnection<std::string> {
 
 typedef boost::shared_ptr<TelnetConnection> spTelnetConnection;
 
-#endif
+#endif  // SERVER_SRC_TEXTINTERFACE_TELNETINTERFACE_SRC_TELNET_CONNECTION_HPP_

@@ -12,6 +12,10 @@
 
 #include "logger.hpp"
 
+// C++ Headers
+#include <iomanip>
+#include <iostream>
+
 // External Headers
 #include <boost/date_time/posix_time/ptime.hpp>
 #include <boost/log/detail/format.hpp>
@@ -26,10 +30,6 @@
 #include <boost/log/utility/setup/common_attributes.hpp>
 #include <boost/log/utility/setup/console.hpp>
 
-// C++ Headers
-#include <iomanip>
-#include <iostream>
-
 // Defines
 #define TIMESTAMP_SIZE 30
 #define SEVERITY_SIZE 7
@@ -40,7 +40,7 @@ using namespace boost;
 void Logger::init() {
   log::add_common_attributes();
 
-  // TODO: Make file logging work
+  // TODO(mrtheduts): Make file logging work
   /* log::add_file_log( */
   /*     log::keywords::file_name = "active.log", */
   /*     log::keywords::target_file_name = "powderpunk_%Y-%m-%d_%2N.log", */
@@ -121,8 +121,7 @@ Logger::Logger(std::string class_name, unsigned int id, unsigned int server_id)
 
 Logger::~Logger() {}
 
-void Logger::logWithSeverity(std::string& msg,
+void Logger::logWithSeverity(const std::string& msg,
                              log::trivial::severity_level severity) {
   BOOST_LOG_SEV(logger_, severity) << msg;
 }
-

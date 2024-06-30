@@ -10,20 +10,18 @@
  *
  */
 
-#ifndef TEXT_TO_COMMAND_H
-#define TEXT_TO_COMMAND_H
+#ifndef SERVER_SRC_TEXTINTERFACE_TEXTTOCOMMAND_TEXT_TO_COMMAND_HPP_
+#define SERVER_SRC_TEXTINTERFACE_TEXTTOCOMMAND_TEXT_TO_COMMAND_HPP_
+
+// C++ Headers
+#include <string>
 
 // Src Headers
 #include <DataStructures/user_command.hpp>
 
-// C++ Headers
-#include <string>
-#include <tuple>
-
 boost::shared_ptr<UserCommand> msgToUsrCmd(unsigned long int server_id,
                                            unsigned long int connection_id,
                                            unsigned long int user_id,
-                                           std::string& msg);
+                                           const std::string& msg);
 
-#endif
-
+#endif  // SERVER_SRC_TEXTINTERFACE_TEXTTOCOMMAND_TEXT_TO_COMMAND_HPP_

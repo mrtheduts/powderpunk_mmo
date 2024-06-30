@@ -10,8 +10,12 @@
  *
  */
 
-#ifndef LOGIN_MANAGER_H
-#define LOGIN_MANAGER_H
+#ifndef SERVER_SRC_LOGINMANAGER_SRC_LOGIN_MANAGER_HPP_
+#define SERVER_SRC_LOGINMANAGER_SRC_LOGIN_MANAGER_HPP_
+
+// C++ Headers
+#include <string>
+#include <utility>
 
 // Src Headers
 #include <DataStructures/user.hpp>
@@ -21,9 +25,6 @@
 
 // External Headers
 #include <boost/smart_ptr/shared_ptr.hpp>
-
-// C++ Headers
-#include <utility>
 
 class LoginManager {
  public:
@@ -45,4 +46,4 @@ class LoginManager {
 
 typedef boost::shared_ptr<LoginManager> spLoginManager;
 
-#endif
+#endif  // SERVER_SRC_LOGINMANAGER_SRC_LOGIN_MANAGER_HPP_

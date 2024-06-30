@@ -10,8 +10,11 @@
  *
  */
 
-#ifndef TELNET_SERVER_H
-#define TELNET_SERVER_H
+#ifndef SERVER_SRC_TEXTINTERFACE_TELNETINTERFACE_TELNET_SERVER_HPP_
+#define SERVER_SRC_TEXTINTERFACE_TELNETINTERFACE_TELNET_SERVER_HPP_
+
+// C++ Headers
+#include <vector>
 
 // Src Headers
 #include <Utils/BasicServer/basic_server.hpp>
@@ -23,9 +26,6 @@
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/thread.hpp>
 #include <telnetpp/session.hpp>
-
-// C++ Headers
-#include <vector>
 
 // Local Headers
 #include "telnet_connection.hpp"
@@ -41,7 +41,7 @@ using boost::asio::ip::tcp;
  */
 class TelnetServer : public BasicServer<spTelnetConnection> {
  public:
-  TelnetServer(unsigned int id);
+  explicit TelnetServer(unsigned int id);
   ~TelnetServer();
 
   void start() override;
@@ -64,4 +64,4 @@ class TelnetServer : public BasicServer<spTelnetConnection> {
 
 typedef boost::shared_ptr<TelnetServer> spTelnetServer;
 
-#endif
+#endif  // SERVER_SRC_TEXTINTERFACE_TELNETINTERFACE_TELNET_SERVER_HPP_

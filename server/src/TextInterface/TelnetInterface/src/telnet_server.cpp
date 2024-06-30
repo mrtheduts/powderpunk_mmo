@@ -12,6 +12,11 @@
 
 #include "telnet_server.hpp"
 
+// C++ Headers
+#include <queue>
+#include <string>
+#include <utility>
+
 // Src Headers
 #include <DataStructures/user_command.hpp>
 #include <TextToCommand/text_to_command.hpp>
@@ -90,7 +95,7 @@ void TelnetServer::connAuthAndSendFibers() {
       spTelnetConnection new_conn = new_conns.front();
       new_conns.pop();
 
-      // TODO: store these fibers somewhere
+      // TODO(mrtheduts): store these fibers somewhere
       boost::make_shared<boost::fibers::fiber>(&TelnetConnection::startReceive,
                                                new_conn)
           ->detach();
@@ -99,7 +104,7 @@ void TelnetServer::connAuthAndSendFibers() {
           ->detach();
       logger_->debug("Started send and receive fibers for connection [%d]",
                      new_conn->id);
-    };
+    }
   }
 }
 
@@ -119,13 +124,13 @@ void TelnetServer::connReadMessagesFibers() {
       spTelnetConnection new_conn = new_conns.front();
       new_conns.pop();
 
-      // TODO: store these fibers somewhere
+      // TODO(mrtheduts): store these fibers somewhere
       boost::make_shared<boost::fibers::fiber>(
           &TelnetServer::sendNewMsgsToGameServer, this, new_conn)
           ->detach();
       logger_->debug("Started new read fiber for connection [%d]",
                      new_conn->id);
-    };
+    }
   }
 }
 
@@ -139,6 +144,5 @@ void TelnetServer::sendNewMsgsToGameServer(
     q_usr_cmds_.push(usr_cmd);
     q_usr_cmds_.q_f_cv.notify_one();
     logger_->debug("Received command %s", usr_cmd->toString().c_str());
-  };
+  }
 }
-

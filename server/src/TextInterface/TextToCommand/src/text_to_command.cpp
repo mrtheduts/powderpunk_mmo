@@ -12,11 +12,12 @@
 
 #include "text_to_command.hpp"
 
-// External Headers
-#include <boost/make_shared.hpp>
-
 // C++ Headers
 #include <iostream>
+#include <vector>
+
+// External Headers
+#include <boost/make_shared.hpp>
 
 std::string preprocessMsg(std::string msg) {
   std::string res = msg;
@@ -27,7 +28,7 @@ std::string preprocessMsg(std::string msg) {
 boost::shared_ptr<UserCommand> msgToUsrCmd(unsigned long int server_id,
                                            unsigned long int connection_id,
                                            unsigned long int user_id,
-                                           std::string& msg) {
+                                           const std::string& msg) {
   std::string preparedMsg = preprocessMsg(msg);
 
   std::string mod = "";
@@ -71,4 +72,3 @@ spUserCommand TranslateInput(const id_input input) {
   return cmd;
 }
 */
-

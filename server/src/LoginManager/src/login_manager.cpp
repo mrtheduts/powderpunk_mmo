@@ -12,6 +12,9 @@
 
 #include "login_manager.hpp"
 
+// C++ Headers
+#include <string>
+
 // External Headers
 #include <boost/log/trivial.hpp>
 #include <boost/smart_ptr/make_shared_object.hpp>
@@ -30,7 +33,7 @@ boost::shared_ptr<LoginManager> LoginManager::getLoginManager() {
   return singleton_;
 }
 
-// TODO: throw exception regarding user already logged
+// TODO(mrtheduts): throw exception regarding user already logged
 spUser LoginManager::authenticateUser(std::string username) {
   spUser user = NULL;
 
@@ -45,4 +48,3 @@ spUser LoginManager::authenticateUser(std::string username) {
 void LoginManager::disconnectUser(std::string username) {
   online_users_.erase(username);
 }
-

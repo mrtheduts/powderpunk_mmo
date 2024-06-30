@@ -10,6 +10,9 @@
  *
  */
 
+// C++ Headers
+#include <iostream>
+
 // Src Headers
 #include <GameServer/game_server.hpp>
 #include <Logger/logger.hpp>
@@ -19,9 +22,6 @@
 // External Headers
 #include <boost/smart_ptr/make_shared_object.hpp>
 #include <boost/thread.hpp>
-
-// C++ Headers
-#include <iostream>
 
 int main() {
   try {
@@ -38,11 +38,9 @@ int main() {
     game_server.addTelnetServer(telnet_server);
 
     t_telnet_server.join();
-
   } catch (std::exception& e) {
     std::cerr << e.what() << std::endl;
   }
 
   return 0;
 }
-

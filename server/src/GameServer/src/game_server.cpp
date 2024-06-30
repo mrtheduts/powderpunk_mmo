@@ -12,6 +12,10 @@
 
 #include "game_server.hpp"
 
+// C++ Headers
+#include <queue>
+#include <string>
+
 // External Headers
 #include <boost/log/trivial.hpp>
 #include <boost/smart_ptr/make_shared_object.hpp>
@@ -58,7 +62,7 @@ void GameServer::createReadTelnetUsrCmdsFiber() {
 
       logger_->debug("Starte fiber creation of TelnetServer [%d]",
                      new_telnet_server->id);
-      // TODO: store these fibers somewhere
+      // TODO(mrtheduts): store these fibers somewhere
       boost::make_shared<boost::fibers::fiber>(&GameServer::readTelnetUsrCmds,
                                                this, new_telnet_server)
           ->detach();

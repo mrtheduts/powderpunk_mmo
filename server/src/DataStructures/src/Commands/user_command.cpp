@@ -9,6 +9,7 @@
  *  (C) Copyright 2021 Eduardo "mrtheduts" Souza All Rights Reserved
  *
  */
+
 #include "user_command.hpp"
 
 // C++ Headers
@@ -62,4 +63,3 @@ std::string UserCommand::toString() {
 
   return result;
 }
-

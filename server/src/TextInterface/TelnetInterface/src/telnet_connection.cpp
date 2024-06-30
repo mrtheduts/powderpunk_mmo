@@ -12,6 +12,11 @@
 
 #include "telnet_connection.hpp"
 
+// C++ Headers
+#include <queue>
+#include <string>
+#include <utility>
+
 // Src Headers
 #include <LoginManager/login_manager.hpp>
 
@@ -21,11 +26,7 @@
 #include <boost/log/trivial.hpp>
 #include <boost/thread/lock_types.hpp>
 
-// C++ Headers
-#include <chrono>
-#include <string>
-
-TelnetConnection::TelnetConnection(boost::asio::io_context& io_context,
+TelnetConnection::TelnetConnection(const boost::asio::io_context& io_context,
                                    boost::asio::ip::tcp::socket socket,
                                    unsigned long int id,
                                    unsigned long int server_id)
@@ -80,7 +81,7 @@ void TelnetConnection::startSend() {
         msgs.pop();
       }
 
-      // TODO: make proper msg preparation
+      // TODO(mrtheduts): make proper msg preparation
       /* msg += PROMPT; */
 
       send(msg);
@@ -238,8 +239,8 @@ void TelnetConnection::receive() {
 
                 received_msgs_.push(msg);
 
-                // TODO: Is it guaranteed to have a '\n' at the end of a
-                // message?
+                // TODO(mrtheduts): Is it guaranteed to have a '\n' at the end
+                // of a message?
                 if (msg.back() == '\n') {
                   logger_->debug("Received message of size %d", msg.size());
                   if (authenticated_) {
@@ -258,4 +259,3 @@ void TelnetConnection::receive() {
         }
       });
 }
-

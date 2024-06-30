@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef GAME_SERVER_H
-#define GAME_SERVER_H
+#ifndef SERVER_SRC_GAMESERVER_SRC_GAME_SERVER_HPP_
+#define SERVER_SRC_GAMESERVER_SRC_GAME_SERVER_HPP_
 
 // Src Headers
 #include <DataStructures/user_command.hpp>
@@ -25,7 +25,7 @@
 
 class GameServer {
  public:
-  GameServer(const unsigned int id);
+  explicit GameServer(const unsigned int id);
   ~GameServer();
 
   void start();
@@ -64,4 +64,4 @@ class GameServer {
 
 typedef boost::shared_ptr<GameServer> spGameServer;
 
-#endif
+#endif  // SERVER_SRC_GAMESERVER_SRC_GAME_SERVER_HPP_

@@ -41,7 +41,7 @@ class BasicConnection
     user_ = NULL;
   }
 
-  virtual ~BasicConnection(){};
+  virtual ~BasicConnection(){}
 
   void disconnect() {
     if (user_ != NULL) {
