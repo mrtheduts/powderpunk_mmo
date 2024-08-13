@@ -1,5 +1,6 @@
-![A stampede of Sandworms - by kekaik](https://cg3.cgsociety.org/uploads/images/original/kekaik-stampede-1-2155d580-p9yu.jpeg)
 ## Powderpunk MMO
+
+> Status: Archived
 
 Powderpunk is a pretentious project for a MMO.
 
